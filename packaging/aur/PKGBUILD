@@ -10,7 +10,7 @@ depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'webkitgtk-6.0')
 makedepends=('git')
 optdepends=('python-pytest: for running the test suite')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('27dee2c1bb44f56798953f3f6c7f857cd756c605d6a46f6d4535a2f3a355576a')
+sha256sums=('b1a965a9ae3196fdf172b27f057f0c8006cce51ad04168effd9ddcf1c1818c97')
 
 package() {
     cd "$srcdir/$pkgname-$pkgver"

@@ -42,4 +42,4 @@ modules:
     sources:
       - type: archive
         url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.0.2.tar.gz
-        sha256: 27dee2c1bb44f56798953f3f6c7f857cd756c605d6a46f6d4535a2f3a355576a
+        sha256: b1a965a9ae3196fdf172b27f057f0c8006cce51ad04168effd9ddcf1c1818c97
