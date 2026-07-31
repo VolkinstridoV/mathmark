@@ -24,6 +24,15 @@
   body[data-tool=hand] canvas{cursor:grab}
   body.panning canvas{cursor:grabbing}
 
+  /* ввод текста: обычное поле, поставленное поверх холста там, где ткнули */
+  #typing{
+    position:absolute; display:none; z-index:5; margin:0; padding:2px 4px;
+    border:1.5px solid var(--accent); border-radius:6px; outline:none; resize:none;
+    background:var(--paper); color:var(--ink); overflow:hidden; white-space:pre;
+    font-family:"Noto Serif",Georgia,serif; line-height:1.25; min-width:60px;
+  }
+  #typing.on{display:block}
+
   /* панель слева: инструменты */
   #tools{
     position:absolute; left:14px; top:50%; transform:translateY(-50%);
@@ -69,6 +78,8 @@
 </head>
 <body data-tool="pen">
 <canvas id="c"></canvas>
+
+<textarea id="typing" spellcheck="false"></textarea>
 
 <div id="tools"></div>
 

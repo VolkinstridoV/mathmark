@@ -46,11 +46,12 @@
     rect:   '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>',
     ellipse:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>',
     triangle:'<svg viewBox="0 0 24 24"><path d="M12 4L20 19H4z"/></svg>',
+    text:   '<svg viewBox="0 0 24 24"><path d="M5 6V4h14v2"/><path d="M12 4v16"/><path d="M9 20h6"/></svg>',
     undo:   '<svg viewBox="0 0 24 24"><path d="M9 7L4 12l5 5"/><path d="M4 12h11a5 5 0 010 10h-2"/></svg>',
     redo:   '<svg viewBox="0 0 24 24"><path d="M15 7l5 5-5 5"/><path d="M20 12H9a5 5 0 000 10h2"/></svg>',
   };
 
-  var TOOLS = ['select', 'hand', null, 'pen', 'marker', 'eraser', null,
+  var TOOLS = ['select', 'hand', null, 'text', 'pen', 'marker', 'eraser', null,
                'line', 'arrow', 'rect', 'ellipse', 'triangle', null, 'undo', 'redo'];
 
   /* ——————————— перевод мировых и экранных координат ——————————— */
@@ -135,6 +136,14 @@
     } else if (it.t === 'shape') {
       shapePath(it);
       ctx.stroke();
+    } else if (it.t === 'text') {
+      ctx.fillStyle = it.color;
+      ctx.font = it.size + 'px "Noto Serif", Georgia, serif';
+      ctx.textBaseline = 'top';
+      var lines = it.text.split('\n');
+      for (var k = 0; k < lines.length; k++) {
+        ctx.fillText(lines[k], it.x, it.y + k * it.size * 1.25);
+      }
     }
     ctx.globalAlpha = 1;
 
@@ -181,6 +190,13 @@
       var x = Math.min.apply(null, xs), y = Math.min.apply(null, ys);
       return { x: x, y: y, w: Math.max.apply(null, xs) - x, h: Math.max.apply(null, ys) - y };
     }
+    if (it.t === 'text') {
+      ctx.font = it.size + 'px "Noto Serif", Georgia, serif';
+      var ls = it.text.split('\n');
+      var wide = 0;
+      for (var q = 0; q < ls.length; q++) wide = Math.max(wide, ctx.measureText(ls[q]).width);
+      return { x: it.x, y: it.y, w: Math.max(12, wide), h: ls.length * it.size * 1.25 };
+    }
     return {
       x: Math.min(it.x, it.x + it.w2), y: Math.min(it.y, it.y + it.h2),
       w: Math.abs(it.w2), h: Math.abs(it.h2),
@@ -219,6 +235,11 @@
       var i = hit(wpt);
       if (i >= 0) { push(); items.splice(i, 1); selected = -1; markDirty(); draw(); }
       drag = { kind: 'erase' };
+      return;
+    }
+
+    if (tool === 'text') {
+      startTyping(wpt, null);
       return;
     }
 
@@ -281,6 +302,19 @@
     document.body.classList.remove('panning');
     draw();
   }
+  /* Двойное нажатие пишет текст где угодно и каким угодно инструментом —
+     самый быстрый путь, не переключаясь на отдельный инструмент. */
+  cv.addEventListener('dblclick', function (e) {
+    var p = pos(e);
+    var wpt = toWorld(p.x, p.y);
+    var i = hit(wpt);
+    if (i >= 0 && items[i].t === 'text') {
+      startTyping({ x: items[i].x, y: items[i].y }, i);
+    } else {
+      startTyping(wpt, null);
+    }
+  });
+
   cv.addEventListener('pointerup', stop);
   cv.addEventListener('pointercancel', stop);
 
@@ -308,6 +342,7 @@
       var b = bounds(items[i]);
       var pad = Math.max(8, items[i].w);
       if (p.x < b.x - pad || p.y < b.y - pad || p.x > b.x + b.w + pad || p.y > b.y + b.h + pad) continue;
+      if (items[i].t === 'text') return i;
       if (items[i].t === 'stroke') {
         var pts = items[i].pts;
         for (var k = 1; k < pts.length; k++) {
@@ -328,6 +363,63 @@
     var dx = p.x - (a[0] + t * vx), dy = p.y - (a[1] + t * vy);
     return dx * dx + dy * dy < pad * pad;
   }
+
+  /* ——————————— надписи ——————————— */
+
+  var typing = document.getElementById('typing');
+  var typingAt = null;      // куда пишем, в мировых координатах
+  var typingIndex = -1;     // правим существующую надпись или создаём новую
+
+  function startTyping(wpt, index) {
+    typingAt = { x: wpt.x, y: wpt.y };
+    typingIndex = index === null ? -1 : index;
+    var size = typingIndex >= 0 ? items[typingIndex].size : Math.max(12, width * 6);
+    typing.value = typingIndex >= 0 ? items[typingIndex].text : '';
+    typing.style.left = (wpt.x * view.z + view.x) + 'px';
+    typing.style.top = (wpt.y * view.z + view.y) + 'px';
+    typing.style.fontSize = (size * view.z) + 'px';
+    typing.style.color = typingIndex >= 0 ? items[typingIndex].color : color;
+    typing.classList.add('on');
+    fitTyping();
+    typing.focus();
+    typing.setSelectionRange(typing.value.length, typing.value.length);
+  }
+
+  function fitTyping() {
+    typing.style.width = 'auto';
+    typing.style.height = 'auto';
+    typing.style.width = Math.max(60, typing.scrollWidth + 8) + 'px';
+    typing.style.height = (typing.scrollHeight + 2) + 'px';
+  }
+
+  function stopTyping(keep) {
+    if (!typing.classList.contains('on')) return;
+    var text = typing.value.replace(/\s+$/, '');
+    typing.classList.remove('on');
+    if (!keep) { typingAt = null; typingIndex = -1; draw(); return; }
+
+    push();
+    if (typingIndex >= 0) {
+      if (text) items[typingIndex].text = text;
+      else items.splice(typingIndex, 1);
+    } else if (text) {
+      items.push({
+        t: 'text', color: color, size: Math.max(12, width * 6),
+        x: round(typingAt.x), y: round(typingAt.y), text: text,
+      });
+    }
+    typingAt = null; typingIndex = -1;
+    markDirty();
+    draw();
+  }
+
+  typing.addEventListener('input', fitTyping);
+  typing.addEventListener('blur', function () { stopTyping(true); });
+  typing.addEventListener('keydown', function (e) {
+    e.stopPropagation();
+    if (e.key === 'Escape') { e.preventDefault(); stopTyping(false); }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); stopTyping(true); }
+  });
 
   /* ——————————— отмена ——————————— */
 
@@ -425,7 +517,47 @@
     draw();
   }
 
+  var buffer = null;      // что скопировано
+
   document.addEventListener('keydown', function (e) {
+    if (typing.classList.contains('on')) return;   // пишем текст — клавиши его
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+      e.preventDefault();
+      if (selected >= 0) buffer = clone(items[selected]);
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+      e.preventDefault();
+      if (!buffer) return;
+      push();
+      var copy = clone(buffer);
+      shift(copy, 24, 24);
+      items.push(copy);
+      selected = items.length - 1;
+      setTool('select');
+      markDirty();
+      draw();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'x') {
+      e.preventDefault();
+      if (selected >= 0) { buffer = clone(items[selected]); push(); items.splice(selected, 1); selected = -1; markDirty(); draw(); }
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      if (selected >= 0) {
+        push();
+        var dup = clone(items[selected]);
+        shift(dup, 24, 24);
+        items.push(dup);
+        selected = items.length - 1;
+        markDirty();
+        draw();
+      }
+      return;
+    }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
       e.preventDefault();
       e.shiftKey ? redo() : undo();
@@ -435,12 +567,18 @@
     if (e.key === 'Delete' || e.key === 'Backspace') {
       if (selected >= 0) { push(); items.splice(selected, 1); selected = -1; markDirty(); draw(); }
     }
-    var keys = { v: 'select', h: 'hand', p: 'pen', m: 'marker', e: 'eraser',
+    var keys = { s: 'select', h: 'hand', p: 'pen', m: 'marker', e: 'eraser', g: 'text',
                  l: 'line', a: 'arrow', r: 'rect', o: 'ellipse', t: 'triangle' };
     if (!e.ctrlKey && !e.metaKey && keys[e.key.toLowerCase()]) setTool(keys[e.key.toLowerCase()]);
   });
 
   /* ——————————— наружу ——————————— */
+
+  function shift(it, dx, dy) {
+    if (it.t === 'stroke') {
+      for (var i = 0; i < it.pts.length; i++) { it.pts[i][0] += dx; it.pts[i][1] += dy; }
+    } else { it.x += dx; it.y += dy; }
+  }
 
   function markDirty() {
     if (!dirty) { dirty = true; send('onDirty', ''); }

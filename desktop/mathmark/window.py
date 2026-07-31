@@ -40,6 +40,13 @@ CSS = b"""
 .mathmark-progress trough { min-height: 4px; }
 .mathmark-progress progress { min-height: 4px; background: linear-gradient(90deg, #7C3AED, #A855F7); }
 .mathmark-hit { font-family: monospace; font-size: 0.82em; opacity: 0.7; }
+.mathmark-board {
+  background: linear-gradient(100deg, #7C3AED, #A855F7);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+}
+.mathmark-board:hover { background: linear-gradient(100deg, #8B5CF6, #B366FA); }
 row.mathmark-row { padding: 6px 4px; }
 """
 
@@ -234,7 +241,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.board_btn.set_child(Gtk.Box(spacing=6))
         self.board_btn.get_child().append(Gtk.Image.new_from_icon_name("view-grid-symbolic"))
         self.board_btn.get_child().append(Gtk.Label(label=t("board.open")))
-        self.board_btn.add_css_class("suggested-action")
+        self.board_btn.add_css_class("mathmark-board")
         self.board_btn.connect("clicked", lambda *_: self.get_application().open_board(self))
         head.pack_end(self.board_btn)
 

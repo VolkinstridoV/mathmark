@@ -57,6 +57,7 @@ class BoardWindow(Adw.ApplicationWindow):
         self.connect("close-request", self._on_close)
 
         self._build()
+        self.set_focus(self.web)
         if path is not None:
             self.open(path)
 
@@ -117,7 +118,7 @@ class BoardWindow(Adw.ApplicationWindow):
         self.web.evaluate_javascript(script, -1, None, None, None, None, None)
 
     def _labels(self) -> str:
-        keys = ("board.select", "board.hand", "board.pen", "board.marker", "board.eraser",
+        keys = ("board.select", "board.hand", "board.text", "board.pen", "board.marker", "board.eraser",
                 "board.line", "board.arrow", "board.rect", "board.ellipse", "board.triangle",
                 "board.undo", "board.redo", "board.fit", "board.zoomIn", "board.zoomOut")
         out = {k.split(".", 1)[1]: t(k) for k in keys}
@@ -128,6 +129,8 @@ class BoardWindow(Adw.ApplicationWindow):
             return
         dark = Adw.StyleManager.get_default().get_dark()
         self._js(f"Board.setLabels({self._labels()});Board.setTheme({str(dark).lower()});")
+        # без этого нажатия клавиш до страницы не доходят и отмена не работает
+        self.web.grab_focus()
         if self.path is not None:
             self._js(f"Board.load({json.dumps(self._read())});")
 
