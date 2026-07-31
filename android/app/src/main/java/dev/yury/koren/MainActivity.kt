@@ -1,0 +1,247 @@
+package dev.yury.koren
+
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.Settings as AndroidSettings
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import java.io.File
+
+/**
+ * «Корень» — читалка математики.
+ *
+ * Три экрана: список папки, чтение файла, настройки. Всё состояние живёт
+ * в файлах — отметки в самих `.md`, настройки в `koren.conf`, — поэтому
+ * приложение и Claude Code в терминале не мешают друг другу.
+ */
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { App() }
+    }
+}
+
+private enum class Screen { LIST, DOC, SET }
+
+@Composable
+private fun App() {
+    val ctx = LocalContext.current
+    val settings = remember { Settings(ctx) }
+
+    var theme by remember { mutableStateOf(settings.theme) }
+    var scale by remember { mutableFloatStateOf(settings.scale) }
+    var folder by remember { mutableStateOf(settings.folder) }
+
+    KorenTheme(theme) {
+        val colors = LocalKoren.current
+        val repo = remember(folder) { FilesRepo(File(folder)) }
+
+        var screen by remember { mutableStateOf(Screen.LIST) }
+        var doc by remember { mutableStateOf<File?>(null) }
+        var reload by remember { mutableIntStateOf(0) }
+
+        // возвращение из фона: файлы могли поменяться из терминала
+        val owner = LocalLifecycleOwner.current
+        DisposableEffect(owner) {
+            val obs = LifecycleEventObserver { _, e ->
+                if (e == Lifecycle.Event.ON_RESUME) reload++
+            }
+            owner.lifecycle.addObserver(obs)
+            onDispose { owner.lifecycle.removeObserver(obs) }
+        }
+
+        Surface(Modifier.fillMaxSize(), color = colors.bg) {
+            when (screen) {
+                Screen.LIST -> ListScreen(
+                    repo = repo,
+                    colors = colors,
+                    reload = reload,
+                    onOpen = { f -> doc = f; screen = Screen.DOC },
+                    onSettings = { screen = Screen.SET },
+                    onChanged = { reload++ },
+                )
+
+                Screen.DOC -> doc?.let { f ->
+                    DocScreen(
+                        file = f,
+                        repo = repo,
+                        colors = colors,
+                        theme = theme,
+                        scale = scale,
+                        onBack = { screen = Screen.LIST; reload++ },
+                    )
+                } ?: run { screen = Screen.LIST }
+
+                Screen.SET -> SettingsScreen(
+                    settings = settings,
+                    colors = colors,
+                    theme = theme,
+                    scale = scale,
+                    folder = folder,
+                    onTheme = { theme = it; settings.theme = it; settings.save() },
+                    onScale = { scale = it; settings.scale = it; settings.save() },
+                    onFolder = { folder = it; settings.folder = it; settings.save() },
+                    onBack = { screen = Screen.LIST; reload++ },
+                )
+            }
+        }
+    }
+}
+
+/** Шапка с фиолетовым градиентом — общая для всех экранов. */
+@Composable
+fun Bar(
+    colors: KorenColors,
+    title: String,
+    subtitle: String? = null,
+    left: (@Composable () -> Unit)? = null,
+    right: (@Composable () -> Unit)? = null,
+) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(Brush.horizontalGradient(colors.gradient))
+    ) {
+        Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .padding(horizontal = 6.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (left != null) left() else Spacer(Modifier.width(10.dp))
+            Column(Modifier.weight(1f).padding(horizontal = 6.dp)) {
+                Text(
+                    title,
+                    color = androidx.compose.ui.graphics.Color.White,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                )
+                if (subtitle != null) {
+                    Text(
+                        subtitle,
+                        color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.82f),
+                        style = MaterialTheme.typography.labelMedium,
+                        maxLines = 1,
+                    )
+                }
+            }
+            right?.invoke()
+        }
+    }
+}
+
+// ——— доступ к файлам и выбор папки ———
+
+fun hasFilesAccess(): Boolean =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Environment.isExternalStorageManager() else true
+
+fun openFilesAccessSettings(ctx: Context) {
+    runCatching {
+        ctx.startActivity(
+            Intent(
+                AndroidSettings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                Uri.parse("package:${ctx.packageName}"),
+            )
+        )
+    }.onFailure {
+        runCatching { ctx.startActivity(Intent(AndroidSettings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)) }
+    }
+}
+
+/**
+ * Системный выбор папки отдаёт не путь, а ссылку вида `primary:Math`.
+ * Для встроенной памяти её можно развернуть в обычный путь — с ним работает
+ * весь остальной код. Для карты памяти путь не восстановить, тогда остаётся
+ * вписать его вручную.
+ */
+fun treeUriToPath(uri: Uri): String? {
+    val id = runCatching { DocumentsContract.getTreeDocumentId(uri) }.getOrNull() ?: return null
+    val parts = id.split(":", limit = 2)
+    if (parts.size != 2 || parts[0] != "primary") return null
+    val tail = parts[1]
+    val base = Environment.getExternalStorageDirectory().absolutePath
+    return if (tail.isEmpty()) base else "$base/$tail"
+}
+
+@Composable
+fun rememberFolderPicker(onPicked: (String?) -> Unit) =
+    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            onPicked(res.data?.data?.let(::treeUriToPath))
+        }
+    }
+
+fun folderPickIntent(): Intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+
+fun copyToClipboard(ctx: Context, label: String, text: String) {
+    val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    cm.setPrimaryClip(ClipData.newPlainText(label, text))
+}
+
+/** Пустой список — с подсказкой, куда класть файлы. */
+@Composable
+fun EmptyFolder(colors: KorenColors, folder: String, canRead: Boolean, onGrant: () -> Unit) {
+    Column(
+        Modifier.fillMaxSize().padding(34.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        RootMark(colors, 72.dp)
+        Spacer(Modifier.height(20.dp))
+        if (!canRead) {
+            Text(
+                "Нет доступа к файлам",
+                color = colors.text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "Приложение читает обычную папку в памяти телефона. " +
+                    "Разреши доступ ко всем файлам — иначе список будет пустым.",
+                color = colors.dim,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = onGrant) { Text("Разрешить") }
+        } else {
+            Text("В папке пусто", color = colors.text, style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "Положи файлы .md в $folder — они появятся здесь сами.",
+                color = colors.dim,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
+
+@Composable
+fun <T> ListOf(items: List<T>, row: @Composable (T) -> Unit) {
+    LazyColumn(Modifier.fillMaxSize()) { items(items) { row(it) } }
+}
