@@ -9,7 +9,7 @@
 
 app-id: dev.yury.mathmark
 runtime: org.gnome.Platform
-runtime-version: '49'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: mathmark
 
@@ -28,9 +28,9 @@ modules:
     buildsystem: simple
     build-commands:
       - install -Dm755 desktop/mathmark-launcher /app/bin/mathmark
-      - cp -r desktop/mathmark /app/lib/mathmark
-      - mkdir -p /app/share/mathmark
-      - cp -r shared/reader shared/prompt /app/share/mathmark/
+      - mkdir -p /app/lib/mathmark /app/share/mathmark
+      - cp -r desktop/mathmark/. /app/lib/mathmark/
+      - cp -r shared/reader shared/prompt shared/i18n /app/share/mathmark/
       - install -Dm644 desktop/dev.yury.mathmark.desktop /app/share/applications/dev.yury.mathmark.desktop
       - install -Dm644 desktop/data/dev.yury.mathmark.svg /app/share/icons/hicolor/scalable/apps/dev.yury.mathmark.svg
       - install -Dm644 desktop/data/dev.yury.mathmark.metainfo.xml /app/share/metainfo/dev.yury.mathmark.metainfo.xml

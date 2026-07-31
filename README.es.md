@@ -33,7 +33,8 @@ MathMark hace dos cosas y se niega a hacer más: **mostrar las matemáticas como
 |---|---|
 | **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
 | **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
-| **Otros Linux** | ejecutar desde el código, ver [Escritorio](#escritorio) |
+| **Cualquier Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, un archivo, se instala con `flatpak install ./mathmark-1.0.flatpak` |
+| **Desde el código** | ver [Escritorio](#escritorio) |
 
 Sin cuenta, sin red, sin telemetría. El motor de fórmulas viaja dentro de la aplicación.
 

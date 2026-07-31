@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>dev.yury.mathmark</id>
-  <name>Корень</name>
-  <summary>Читалка математики в файлах markdown</summary>
+  <name>MathMark</name>
+
+  <summary>Reader for maths written in Markdown</summary>
+  <summary xml:lang="ru">Читалка математики в файлах Markdown</summary>
+  <summary xml:lang="es">Lector de matemáticas escritas en Markdown</summary>
+
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
+  <developer id="io.github.volkinstridov">
+    <name>VolkinstridoV</name>
+  </developer>
 
   <description>
     <p>
+      Shows .md files with formulas the way textbooks print them: integrals,
+      matrices, fractions, roots. Problems and topics are marked with one tap,
+      and marking changes exactly one byte in the file — indentation, blank
+      lines and the order of lines are left untouched.
+    </p>
+    <p>
+      Formulas are rendered by KaTeX. No internet, no account, no database:
+      marks live in your own files, settings are plain text.
+    </p>
+    <p xml:lang="ru">
       Показывает файлы .md с формулами так, как их печатают в учебниках:
       интегралы, матрицы, дроби, корни. Задачи и темы отмечаются одним
-      нажатием, при этом в файле меняется ровно один символ — остальное
-      остаётся байт в байт, включая отступы и порядок строк.
+      нажатием, при этом в файле меняется ровно один символ.
     </p>
-    <p>Формулы рисует KaTeX. Интернет не нужен, своей базы нет.</p>
+    <p xml:lang="es">
+      Muestra archivos .md con fórmulas como se imprimen en los libros de texto:
+      integrales, matrices, fracciones, raíces. Marcar cambia exactamente un byte.
+    </p>
   </description>
 
   <launchable type="desktop-id">dev.yury.mathmark.desktop</launchable>
+  <url type="homepage">https://github.com/VolkinstridoV/mathmark</url>
+  <url type="bugtracker">https://github.com/VolkinstridoV/mathmark/issues</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Reading a cheat sheet with formulas</caption>
+      <image>https://raw.githubusercontent.com/VolkinstridoV/mathmark/main/shots/20-desktop-doc.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Search across every file</caption>
+      <image>https://raw.githubusercontent.com/VolkinstridoV/mathmark/main/shots/21-desktop-search.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>How much is done</caption>
+      <image>https://raw.githubusercontent.com/VolkinstridoV/mathmark/main/shots/22-desktop-stats.png</image>
+    </screenshot>
+  </screenshots>
+
   <content_rating type="oars-1.1"/>
 
   <releases>
     <release version="1.0" date="2026-07-31">
-      <description><p>Первый выпуск.</p></description>
+      <description><p>First release.</p></description>
     </release>
   </releases>
 </component>

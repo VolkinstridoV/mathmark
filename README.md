@@ -33,7 +33,8 @@ MathMark does two things and refuses to do more: **show the maths properly, and 
 |---|---|
 | **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
 | **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
-| **Other Linux** | run from source, see [Desktop](#desktop) below |
+| **Any Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, one file, installs with `flatpak install ./mathmark-1.0.flatpak` |
+| **From source** | see [Desktop](#desktop) below |
 
 No account, no network, no telemetry. The formula engine ships inside the app.
 

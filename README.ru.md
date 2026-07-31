@@ -33,7 +33,8 @@ MathMark делает две вещи и наотрез отказывается
 |---|---|
 | **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
 | **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
-| **Другие Linux** | запуск из исходников, см. [ниже](#настольная-версия) |
+| **Любой Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, один файл, ставится `flatpak install ./mathmark-1.0.flatpak` |
+| **Из исходников** | см. [ниже](#настольная-версия) |
 
 Ни учётной записи, ни интернета, ни слежки. Движок формул лежит внутри приложения.
 
