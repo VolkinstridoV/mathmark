@@ -71,3 +71,18 @@ def subtitle(c: Counts) -> str:
     if c.sections:
         return t("sections." + plural_form(c.sections, _current), c.sections)
     return t("counts.reference")
+
+
+def sync_message(r) -> str:
+    """Человеческий итог синхронизации."""
+    if r.error:
+        return r.error
+    parts = []
+    if r.changed == 0 and not r.conflicts:
+        parts.append(t("sync.nothing"))
+    else:
+        parts.append(t("sync.done", len(r.uploaded), len(r.downloaded),
+                       len(r.merged) + len(r.deleted_here) + len(r.deleted_there)))
+    if r.conflicts:
+        parts.append(t("sync.conflicts", len(r.conflicts)))
+    return ". ".join(parts)

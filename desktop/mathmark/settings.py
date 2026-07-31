@@ -30,6 +30,10 @@ class Settings:
         self.scale = 1.0
         self.theme = "auto"          # auto | light | dark
         self.lang = "auto"           # auto | en | ru | es
+        # синхронизация: по умолчанию выключена, ничего никуда не уходит
+        self.sync_on = False
+        self.sync_repo = ""
+        self.sync_token = ""
         self.width = 1180
         self.height = 820
         self.sidebar = True
@@ -54,6 +58,12 @@ class Settings:
                     self.theme = v
                 elif k == "lang" and v in ("auto", "en", "ru", "es"):
                     self.lang = v
+                elif k == "sync":
+                    self.sync_on = v not in ("0", "false", "нет")
+                elif k == "repo":
+                    self.sync_repo = v
+                elif k == "token":
+                    self.sync_token = v
                 elif k == "width":
                     self.width = max(480, int(v))
                 elif k == "height":
@@ -63,6 +73,11 @@ class Settings:
             except ValueError:
                 continue
 
+    @property
+    def sync_ready(self) -> bool:
+        """Настроено ли всё, что нужно для кнопки."""
+        return bool(self.sync_on and self.sync_repo.strip() and self.sync_token.strip())
+
     def save(self) -> None:
         try:
             self.file.parent.mkdir(parents=True, exist_ok=True)
@@ -71,6 +86,9 @@ class Settings:
                 f"scale={self.scale:g}\n"
                 f"theme={self.theme}\n"
                 f"lang={self.lang}\n"
+                f"sync={1 if self.sync_on else 0}\n"
+                f"repo={self.sync_repo}\n"
+                f"token={self.sync_token}\n"
                 f"width={self.width}\n"
                 f"height={self.height}\n"
                 f"sidebar={1 if self.sidebar else 0}\n",

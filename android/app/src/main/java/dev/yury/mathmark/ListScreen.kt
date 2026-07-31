@@ -37,6 +37,8 @@ fun ListScreen(
     onOpen: (File) -> Unit,
     onSettings: () -> Unit,
     onChanged: () -> Unit,
+    syncing: Boolean = false,
+    onSync: () -> Unit = {},
 ) {
     val ctx = LocalContext.current
     var access by remember { mutableStateOf(hasFilesAccess()) }
@@ -103,6 +105,7 @@ fun ListScreen(
             } else null,
             right = {
                 Row {
+                    IconBtn(if (syncing) "…" else "⟳") { if (!syncing) onSync() }
                     IconBtn("⌕") { searching = !searching; if (!searching) query = "" }
                     IconBtn("+") { newFolder = true }
                     IconBtn("⚙") { onSettings() }

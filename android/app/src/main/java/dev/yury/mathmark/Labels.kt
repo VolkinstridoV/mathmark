@@ -12,3 +12,23 @@ fun subtitleOf(c: Counts): String = when (c.kind) {
         if (c.sections > 0) L.f("sections." + MdItems.pluralForm(c.sections, L.current), c.sections)
         else L["counts.reference"]
 }
+
+/** Человеческий итог синхронизации. */
+fun syncMessage(r: SyncReport): String {
+    r.error?.let { return it }
+    val parts = ArrayList<String>()
+    if (r.changed == 0 && r.conflicts.isEmpty()) {
+        parts.add(L["sync.nothing"])
+    } else {
+        parts.add(
+            L.f(
+                "sync.done",
+                r.uploaded.size,
+                r.downloaded.size,
+                r.merged.size + r.deletedHere.size + r.deletedThere.size,
+            )
+        )
+    }
+    if (r.conflicts.isNotEmpty()) parts.add(L.f("sync.conflicts", r.conflicts.size))
+    return parts.joinToString(". ")
+}

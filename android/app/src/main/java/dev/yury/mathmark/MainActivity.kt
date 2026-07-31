@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -68,6 +71,34 @@ private fun App() {
         var doc by remember { mutableStateOf<File?>(null) }
         var reload by remember { mutableIntStateOf(0) }
 
+        val scope = rememberCoroutineScope()
+        var syncing by remember { mutableStateOf(false) }
+
+        /** Синхронизация идёт в стороне от рисования — иначе окно замирает. */
+        fun doSync() {
+            if (syncing) return
+            if (!settings.syncReady) {
+                android.widget.Toast.makeText(ctx, L["sync.notSet"], android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
+            syncing = true
+            android.widget.Toast.makeText(ctx, L["sync.running"], android.widget.Toast.LENGTH_SHORT).show()
+            scope.launch {
+                val report = withContext(Dispatchers.IO) {
+                    Sync(
+                        folder = File(settings.folder),
+                        stateDir = ctx.filesDir,
+                        remote = GitHub(settings.syncRepo, settings.syncToken),
+                        device = "телефон",
+                    ).run()
+                }
+                syncing = false
+                android.widget.Toast.makeText(ctx, syncMessage(report), android.widget.Toast.LENGTH_LONG).show()
+                reload++
+            }
+        }
+
+
         // возвращение из фона: файлы могли поменяться из терминала
         val owner = LocalLifecycleOwner.current
         DisposableEffect(owner) {
@@ -87,6 +118,8 @@ private fun App() {
                     onOpen = { f -> doc = f; screen = Screen.DOC },
                     onSettings = { screen = Screen.SET },
                     onChanged = { reload++ },
+                    syncing = syncing,
+                    onSync = { doSync() },
                 )
 
                 Screen.DOC -> doc?.let { f ->
@@ -111,6 +144,7 @@ private fun App() {
                     onFolder = { folder = it; settings.folder = it; settings.save() },
                     lang = lang,
                     onLang = { lang = it; settings.lang = it; settings.save(); L.load(ctx, it) },
+                    onSync = { doSync() },
                     onBack = { screen = Screen.LIST; reload++ },
                 )
             }

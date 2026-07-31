@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+import threading
 from pathlib import Path
 
 import gi
@@ -22,7 +23,8 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
 
 from . import md_items as md  # noqa: E402
 from .files import Entry, FilesRepo  # noqa: E402
-from .i18n import subtitle, t  # noqa: E402
+from .i18n import subtitle, sync_message, t  # noqa: E402
+from .sync import GitHub, Sync  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
 from .settings import Settings  # noqa: E402
 
@@ -140,6 +142,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.text: str = ""
         self.toc: list[tuple[str, str]] = []
         self._writing: set[str] = set()   # свои записи, чтобы не перечитывать самих себя
+        self._syncing = False
         self._monitors: list[Gio.FileMonitor] = []
 
         self.set_default_size(self.st.width, self.st.height)
@@ -232,6 +235,11 @@ class MathMarkWindow(Adw.ApplicationWindow):
         prn = Gtk.Button(icon_name="printer-symbolic", tooltip_text=t("desk.print"))
         prn.connect("clicked", lambda *_: self.do_print())
         head.pack_end(prn)
+
+        self.sync_btn = Gtk.Button(icon_name="view-refresh-symbolic",
+                                   tooltip_text=t("sync.button"))
+        self.sync_btn.connect("clicked", lambda *_: self.do_sync())
+        head.pack_end(self.sync_btn)
 
         view.add_top_bar(head)
 
@@ -517,6 +525,44 @@ class MathMarkWindow(Adw.ApplicationWindow):
         GLib.timeout_add(120, lambda: (self.refresh(), False)[1])
 
     # ——— прочее ———
+
+    def do_sync(self) -> None:
+        """
+        Синхронизация идёт в отдельной нити — иначе окно замирает на время
+        обращения к сети. Обратно в окно возвращаемся через GLib.idle_add,
+        трогать виджеты из чужой нити нельзя.
+        """
+        if self._syncing:
+            return
+        if not self.st.sync_ready:
+            self.toast(t("sync.notSet"))
+            return
+        self._syncing = True
+        self.sync_btn.set_sensitive(False)
+        self.toast(t("sync.running"))
+
+        def work():
+            report = Sync(
+                folder=Path(self.st.folder),
+                state_dir=self.st.file.parent,
+                gh=GitHub(self.st.sync_repo, self.st.sync_token),
+                device="компьютер",
+            ).run()
+            GLib.idle_add(done, report)
+
+        def done(report):
+            self._syncing = False
+            self.sync_btn.set_sensitive(True)
+            self.toast(sync_message(report))
+            self.refresh()
+            if self.current is not None:
+                fresh = self.repo.read(self.current)
+                if fresh != self.text:
+                    self.text = fresh
+                    self._render()
+            return False
+
+        threading.Thread(target=work, daemon=True).start()
 
     def do_print(self) -> None:
         op = WebKit.PrintOperation(web_view=self.web)

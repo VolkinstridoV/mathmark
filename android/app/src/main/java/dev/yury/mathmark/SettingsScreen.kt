@@ -29,6 +29,7 @@ fun SettingsScreen(
     folder: String,
     lang: String,
     onLang: (String) -> Unit,
+    onSync: () -> Unit,
     onTheme: (String) -> Unit,
     onScale: (Float) -> Unit,
     onFolder: (String) -> Unit,
@@ -36,6 +37,10 @@ fun SettingsScreen(
 ) {
     val ctx = LocalContext.current
     var typing by remember { mutableStateOf(false) }
+    var editing by remember { mutableStateOf<String?>(null) }
+    var syncOn by remember { mutableStateOf(settings.syncOn) }
+    var repo by remember { mutableStateOf(settings.syncRepo) }
+    var token by remember { mutableStateOf(settings.syncToken) }
 
     BackHandler { onBack() }
     var live by remember(scale) { mutableFloatStateOf(scale) }
@@ -123,6 +128,47 @@ fun SettingsScreen(
             }
             HorizontalDivider(color = colors.divider)
 
+            Group(L["sync.title"], colors)
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(L["sync.enabled"], color = colors.text,
+                         style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        if (settings.syncReady) settings.syncRepo else L["sync.notSet"],
+                        color = colors.dim, style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                Switch(
+                    checked = syncOn,
+                    onCheckedChange = { syncOn = it; settings.syncOn = it; settings.save() },
+                    colors = SwitchDefaults.colors(checkedTrackColor = colors.accent),
+                )
+            }
+            HorizontalDivider(color = colors.divider)
+            Item(L["sync.repo"], repo.ifBlank { L["sync.repoHint"] }, colors) { editing = "repo" }
+            Item(
+                L["sync.token"],
+                if (token.isBlank()) L["sync.tokenEmpty"] else L["sync.tokenSet"],
+                colors,
+            ) { editing = "token" }
+            Item(L["sync.check"], L["sync.checkHint"], colors) {
+                if (!settings.syncReady) {
+                    Toast.makeText(ctx, L["sync.notSet"], Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(ctx, L["sync.running"], Toast.LENGTH_SHORT).show()
+                    Thread {
+                        val problem = GitHub(settings.syncRepo, settings.syncToken).check()
+                        android.os.Handler(android.os.Looper.getMainLooper()).post {
+                            Toast.makeText(ctx, problem ?: L["sync.ok"], Toast.LENGTH_LONG).show()
+                        }
+                    }.start()
+                }
+            }
+            Item(L["sync.button"], L["sync.title"], colors) { onSync() }
+
             Group(L["settings.ai"], colors)
             Item(
                 L["settings.copyPrompt"],
@@ -162,6 +208,21 @@ fun SettingsScreen(
                 }
             }
         }
+    }
+
+    editing?.let { what ->
+        NameDialog(
+            title = if (what == "repo") L["sync.repo"] else L["sync.token"],
+            initial = if (what == "repo") repo else token,
+            colors = colors,
+            onCancel = { editing = null },
+            onOk = { value ->
+                if (what == "repo") { repo = value.trim(); settings.syncRepo = repo }
+                else { token = value.trim(); settings.syncToken = token }
+                settings.save()
+                editing = null
+            },
+        )
     }
 
     if (typing) {

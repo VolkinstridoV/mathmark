@@ -158,6 +158,20 @@ object MdItems {
         )
     }
 
+    /** Строка без символа отметки — чтобы сравнивать «всё, кроме галочки». */
+    fun stripMark(line: String): String? {
+        val m = ITEM.matchEntire(line) ?: return null
+        if (!pairs(m.groupValues[2], m.groupValues[4])) return null
+        return m.groupValues[1] + "- " + m.groupValues[2] + m.groupValues[4] + " " + m.groupValues[5]
+    }
+
+    /** Отметка строки, если это вообще отмечаемая строка. */
+    fun markOf(line: String): Mark? {
+        val m = ITEM.matchEntire(line) ?: return null
+        if (!pairs(m.groupValues[2], m.groupValues[4])) return null
+        return Mark.of(m.groupValues[3][0])
+    }
+
     /**
      * Какая форма слова нужна для числа: у русского три, у английского
      * и испанского две. Правило чистое, без Android, поэтому проверяется тестом.

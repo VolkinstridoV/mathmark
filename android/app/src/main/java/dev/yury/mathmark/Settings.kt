@@ -24,6 +24,11 @@ class Settings(ctx: Context) {
     var theme: String = "auto"   // auto | light | dark
     var lang: String = "auto"    // auto | en | ru | es
 
+    // синхронизация: по умолчанию выключена, ничего никуда не уходит
+    var syncOn: Boolean = false
+    var syncRepo: String = ""
+    var syncToken: String = ""
+
     init {
         load()
     }
@@ -41,6 +46,9 @@ class Settings(ctx: Context) {
                     "scale" -> v.toFloatOrNull()?.let { scale = it.coerceIn(0.8f, 1.6f) }
                     "theme" -> if (v in setOf("auto", "light", "dark")) theme = v
                     "lang" -> if (v in setOf("auto", "en", "ru", "es")) lang = v
+                    "sync" -> syncOn = v == "1" || v == "true"
+                    "repo" -> syncRepo = v
+                    "token" -> syncToken = v
                 }
             }
         }
@@ -54,11 +62,18 @@ class Settings(ctx: Context) {
                     appendLine("scale=$scale")
                     appendLine("theme=$theme")
                     appendLine("lang=$lang")
+                    appendLine("sync=${if (syncOn) 1 else 0}")
+                    appendLine("repo=$syncRepo")
+                    appendLine("token=$syncToken")
                 },
                 Charsets.UTF_8,
             )
         }
     }
+
+    /** Настроено ли всё, что нужно для кнопки. */
+    val syncReady: Boolean
+        get() = syncOn && syncRepo.isNotBlank() && syncToken.isNotBlank()
 
     companion object {
         const val DEFAULT_FOLDER = "/sdcard/Math"

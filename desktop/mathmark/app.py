@@ -29,6 +29,7 @@ SHORTCUTS = [
     ("Ctrl + B", "keys.sidebar"),
     ("Ctrl + R", "keys.refresh"),
     ("F11", "keys.fullscreen"),
+    ("Ctrl + S", "keys.sync"),
     ("Ctrl + Q", "keys.quit"),
 ]
 
@@ -84,6 +85,7 @@ class MathMarkApp(Adw.Application):
         add("fullscreen", lambda: (win.unfullscreen() if win.is_fullscreen() else win.fullscreen()), "F11")
         add("quit", lambda: (win.close(), self.quit()), "<Ctrl>q")
         add("copy-prompt", win.copy_prompt)
+        add("sync", win.do_sync, "<Ctrl>s")
         add("new-folder", lambda: win._ask_name(
             t("list.newFolder"), "", lambda n: (win.repo.create_folder(n), win.refresh())))
         add("settings", lambda: self._settings_dialog(win))
@@ -171,6 +173,63 @@ class MathMarkApp(Adw.Application):
         look.add(lang_row)
         page.add(look)
 
+        sync_group = Adw.PreferencesGroup(title=t("sync.title"))
+
+        on_row = Adw.SwitchRow(title=t("sync.enabled"), active=win.st.sync_on)
+
+        def sync_toggled(row, *_):
+            win.st.sync_on = row.get_active()
+            win.st.save()
+
+        on_row.connect("notify::active", sync_toggled)
+        sync_group.add(on_row)
+
+        repo_row = Adw.EntryRow(title=t("sync.repo"), text=win.st.sync_repo)
+
+        def repo_changed(row, *_):
+            win.st.sync_repo = row.get_text().strip()
+            win.st.save()
+
+        repo_row.connect("changed", repo_changed)
+        sync_group.add(repo_row)
+
+        token_row = Adw.PasswordEntryRow(title=t("sync.token"), text=win.st.sync_token)
+
+        def token_changed(row, *_):
+            win.st.sync_token = row.get_text().strip()
+            win.st.save()
+
+        token_row.connect("changed", token_changed)
+        sync_group.add(token_row)
+
+        check_row = Adw.ActionRow(title=t("sync.check"), subtitle=t("sync.checkHint"))
+        check_btn = Gtk.Button(label=t("sync.check"), valign=Gtk.Align.CENTER)
+
+        def do_check(*_):
+            import threading
+
+            from gi.repository import GLib
+
+            from .sync import GitHub
+
+            check_btn.set_sensitive(False)
+
+            def work():
+                problem = GitHub(win.st.sync_repo, win.st.sync_token).check()
+                GLib.idle_add(show, problem)
+
+            def show(problem):
+                check_btn.set_sensitive(True)
+                check_row.set_subtitle(problem or t("sync.ok"))
+                return False
+
+            threading.Thread(target=work, daemon=True).start()
+
+        check_btn.connect("clicked", do_check)
+        check_row.add_suffix(check_btn)
+        sync_group.add(check_row)
+        page.add(sync_group)
+
         ai = Adw.PreferencesGroup(
             title=t("settings.ai"),
             description=t("settings.copyPromptHint"),
@@ -189,7 +248,7 @@ class MathMarkApp(Adw.Application):
         ))
         page.add(about)
 
-        dlg = Adw.PreferencesDialog()
+        dlg = Adw.PreferencesDialog(title=t("settings.title"))
         dlg.add(page)
         dlg.present(win)
 
@@ -204,7 +263,7 @@ class MathMarkApp(Adw.Application):
             row.add_suffix(label)
             group.add(row)
         page.add(group)
-        dlg = Adw.PreferencesDialog()
+        dlg = Adw.PreferencesDialog(title=t("desk.shortcuts"))
         dlg.add(page)
         dlg.present(win)
 
