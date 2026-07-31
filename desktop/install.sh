@@ -19,7 +19,7 @@ exec python3 "$REPO/desktop/run.py" "\$@"
 EOF
 chmod +x "$BIN/mathmark"
 
-sed "s|^Exec=mathmark|Exec=$BIN/koren|" "$REPO/desktop/dev.yury.mathmark.desktop" \
+sed "s|^Exec=mathmark|Exec=$BIN/mathmark|" "$REPO/desktop/dev.yury.mathmark.desktop" \
     > "$SHARE/applications/dev.yury.mathmark.desktop"
 cp "$REPO/desktop/data/dev.yury.mathmark.svg" "$SHARE/icons/hicolor/scalable/apps/"
 
