@@ -5,23 +5,28 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- знак корня с чертой -->
+    <!--
+      Всё содержимое держится внутри круга радиусом 30 от центра (54,54):
+      круглая маска на Pixel срезает всё, что дальше 36, и запас нужен.
+    -->
+
+    <!-- знак корня с чертой над подкоренным -->
     <path
-        android:pathData="M26,58 L34,58 L43,78 L57,32 L86,32"
+        android:pathData="M33,57 L39,57 L46,71 L56,38 L77,38"
         android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="5.5"
+        android:strokeWidth="5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 
     <!-- икс под чертой -->
     <path
-        android:pathData="M62,46 L76,66"
+        android:pathData="M60,48 L70,62"
         android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="5"
+        android:strokeWidth="4.6"
         android:strokeLineCap="round" />
     <path
-        android:pathData="M76,46 L62,66"
+        android:pathData="M70,48 L60,62"
         android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="5"
+        android:strokeWidth="4.6"
         android:strokeLineCap="round" />
 </vector>
