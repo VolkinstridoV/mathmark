@@ -1,0 +1,23 @@
+{
+  "en": [
+    "First release: reading .md files with formulas rendered by KaTeX, offline",
+    "Problems and topics with three states each; marking changes exactly one byte",
+    "Folders, table of contents, four icons picked by what is inside a file",
+    "Desktop build: two panes, search across files, printing, folder watching",
+    "English, Русский, Español"
+  ],
+  "ru": [
+    "Первый выпуск: чтение файлов .md с формулами, которые рисует KaTeX, без интернета",
+    "Задачи и темы, у каждой три состояния; отметка меняет ровно один байт",
+    "Папки, оглавление, четыре значка по тому, что внутри файла",
+    "Настольная версия: две колонки, поиск по всем файлам, печать, слежение за папкой",
+    "English, Русский, Español"
+  ],
+  "es": [
+    "Primera versión: lectura de archivos .md con fórmulas dibujadas por KaTeX, sin internet",
+    "Tareas y temas, cada uno con tres estados; marcar cambia exactamente un byte",
+    "Carpetas, índice, cuatro iconos según lo que hay dentro del archivo",
+    "Versión de escritorio: dos paneles, búsqueda, impresión, vigilancia de la carpeta",
+    "English, Русский, Español"
+  ]
+}

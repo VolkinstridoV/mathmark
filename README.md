@@ -11,6 +11,8 @@ Marking a task changes exactly one byte in your file.
 
 [Русский](README.ru.md) · [Español](README.es.md)
 
+[What changed in every version](CHANGELOG.md)
+
 <img src="shots/phone-01-list.png" width="230"> <img src="shots/phone-02-doc.png" width="230"> <img src="shots/phone-03-doc-light.png" width="230">
 
 <img src="shots/20-desktop-doc.png" width="750">
@@ -18,6 +20,10 @@ Marking a task changes exactly one byte in your file.
 </div>
 
 ---
+
+> **Obsidian is a knowledge base that also renders formulas. This is a tracker for
+> going through maths, living inside your own files.** If a knowledge base is what
+> you need — take Obsidian, it is good at that.
 
 ## Why
 
@@ -119,7 +125,9 @@ On the desktop the same text sits under a button in the settings. It explains th
 ## Desktop
 
 <div align="center">
-<img src="shots/21-desktop-search.png" width="370"> <img src="shots/22-desktop-stats.png" width="370">
+<img src="shots/25-desktop-editor.png" width="370"> <img src="shots/21-desktop-search.png" width="370">
+
+<img src="shots/22-desktop-stats.png" width="370"> <img src="shots/26-desktop-light.png" width="370">
 </div>
 
 The desktop build is the same program, and it draws through the very same page as the phone: `shared/reader/` is used by both, so the two cannot drift apart.

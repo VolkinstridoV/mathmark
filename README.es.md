@@ -11,6 +11,8 @@ Marcar una tarea cambia exactamente un byte del archivo.
 
 [English](README.md) · [Русский](README.ru.md)
 
+[Qué cambió en cada versión](CHANGELOG.es.md)
+
 <img src="shots/phone-01-list.png" width="230"> <img src="shots/phone-02-doc.png" width="230"> <img src="shots/phone-03-doc-light.png" width="230">
 
 <img src="shots/20-desktop-doc.png" width="750">
@@ -18,6 +20,10 @@ Marcar una tarea cambia exactamente un byte del archivo.
 </div>
 
 ---
+
+> **Obsidian es una base de conocimiento que además dibuja fórmulas. Esto es un
+> registro del avance en matemáticas que vive dentro de tus propios archivos.**
+> Si lo que necesitas es una base de conocimiento, usa Obsidian: lo hace bien.
 
 ## Por qué
 
@@ -119,7 +125,9 @@ En el escritorio ese mismo texto está bajo un botón en los ajustes. Explica lo
 ## Escritorio
 
 <div align="center">
-<img src="shots/21-desktop-search.png" width="370"> <img src="shots/22-desktop-stats.png" width="370">
+<img src="shots/25-desktop-editor.png" width="370"> <img src="shots/21-desktop-search.png" width="370">
+
+<img src="shots/22-desktop-stats.png" width="370"> <img src="shots/26-desktop-light.png" width="370">
 </div>
 
 La versión de escritorio es el mismo programa y dibuja **con la misma página** que el móvil: `shared/reader/` lo usan las dos, así que no pueden separarse.

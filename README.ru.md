@@ -11,6 +11,8 @@
 
 [English](README.md) · [Español](README.es.md)
 
+[Что менялось в каждой версии](CHANGELOG.ru.md)
+
 <img src="shots/ru/phone-01-list.png" width="230"> <img src="shots/ru/phone-02-doc.png" width="230"> <img src="shots/ru/phone-03-doc-light.png" width="230">
 
 <img src="shots/ru/20-desktop-doc.png" width="750">
@@ -18,6 +20,10 @@
 </div>
 
 ---
+
+> **Obsidian — база знаний, которая умеет и формулы. Это — трекер прохождения
+> математики, живущий внутри твоих собственных файлов.** Нужна база знаний —
+> бери Obsidian, он с этим справляется.
 
 ## Зачем
 
@@ -72,7 +78,7 @@ $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$
 ## Что умеет
 
 <div align="center">
-<img src="shots/ru/phone-04b-hidden-open.png" width="195"> <img src="shots/ru/phone-05-search.png" width="195"> <img src="shots/ru/phone-09-stats.png" width="195"> <img src="shots/ru/phone-10-reminder.png" width="195">
+<img src="shots/ru/phone-04b-hidden-open.png" width="195"> <img src="shots/ru/phone-05-search.png" width="195"> <img src="shots/ru/phone-11-editor.png" width="195"> <img src="shots/ru/phone-09-stats.png" width="195"> <img src="shots/ru/phone-10-reminder.png" width="195">
 </div>
 
 - **Настоящие формулы.** Дроби, корни любой степени, кратные и контурные интегралы, суммы и произведения с пределами, матрицы и определители, системы, многострочные выкладки, греческие буквы, множества и кванторы, тензорные индексы, цепные дроби, скобки под группой членов. Рисует [KaTeX](https://katex.org) шрифтом Computer Modern — тем самым, которым набраны учебники.
@@ -119,7 +125,9 @@ content query --uri content://dev.yury.mathmark/prompt
 ## Настольная версия
 
 <div align="center">
-<img src="shots/ru/21-desktop-search.png" width="370"> <img src="shots/ru/22-desktop-stats.png" width="370">
+<img src="shots/ru/25-desktop-editor.png" width="370"> <img src="shots/ru/21-desktop-search.png" width="370">
+
+<img src="shots/ru/22-desktop-stats.png" width="370"> <img src="shots/ru/24-desktop-light.png" width="370">
 </div>
 
 Это та же программа, и рисует она **через ту же самую страницу**, что и телефон: `shared/reader/` используется обеими, разъехаться они не могут.

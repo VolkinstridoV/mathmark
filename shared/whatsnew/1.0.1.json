@@ -1,0 +1,14 @@
+{
+  "en": [
+    "Desktop application id changed to io.github.volkinstridov.MathMark, the form Flathub requires",
+    "The Android package id and the terminal query are unchanged"
+  ],
+  "ru": [
+    "Опознаватель настольной версии сменён на io.github.volkinstridov.MathMark — этого требует Flathub",
+    "Опознаватель приложения на телефоне и запрос из терминала не изменились"
+  ],
+  "es": [
+    "El identificador de escritorio cambió a io.github.volkinstridov.MathMark, la forma que exige Flathub",
+    "El identificador de Android y la consulta desde la terminal no cambian"
+  ]
+}
