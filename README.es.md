@@ -32,7 +32,8 @@ MathMark hace dos cosas y se niega a hacer más: **mostrar las matemáticas como
 | | |
 |---|---|
 | **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
-| **Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, o ejecutar desde el código |
+| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
+| **Otros Linux** | ejecutar desde el código, ver [Escritorio](#escritorio) |
 
 Sin cuenta, sin red, sin telemetría. El motor de fórmulas viaja dentro de la aplicación.
 
@@ -122,6 +123,14 @@ En el escritorio ese mismo texto está bajo un botón en los ajustes. Explica lo
 La versión de escritorio es el mismo programa y dibuja **con la misma página** que el móvil: `shared/reader/` lo usan las dos, así que no pueden separarse.
 
 Lo que añade la pantalla grande: dos paneles, búsqueda en todos los archivos, teclado (`j`/`k` o flechas para moverse, espacio para marcar), impresión y guardado de una chuleta en PDF, y vigilancia de la carpeta — editas un archivo en tu editor y la ventana se actualiza sola. La columna de texto mantiene un ancho legible: al ensanchar la ventana crecen los márgenes, no la línea.
+
+En Arch basta un comando:
+
+```bash
+yay -S mathmark
+```
+
+En cualquier otro sistema, directamente desde el código:
 
 ```bash
 ./desktop/install.sh     # lanzador en ~/.local/bin, icono y entrada de menú

@@ -32,7 +32,8 @@ MathMark does two things and refuses to do more: **show the maths properly, and 
 | | |
 |---|---|
 | **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
-| **Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, or run from source |
+| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
+| **Other Linux** | run from source, see [Desktop](#desktop) below |
 
 No account, no network, no telemetry. The formula engine ships inside the app.
 
@@ -122,6 +123,14 @@ On the desktop the same text sits under a button in the settings. It explains th
 The desktop build is the same program, and it draws through the very same page as the phone: `shared/reader/` is used by both, so the two cannot drift apart.
 
 What the bigger screen adds: two panes, search across all files, keyboard navigation (`j`/`k` or arrows to move, space to mark), printing and saving a cheat sheet as PDF, and a folder watcher — edit a file in your editor and the window updates on its own. The text column keeps a readable width: widen the window and the margins grow, not the line.
+
+On Arch it is one command:
+
+```bash
+yay -S mathmark
+```
+
+Anywhere else, straight from the source tree:
 
 ```bash
 ./desktop/install.sh     # a launcher in ~/.local/bin, plus icon and menu entry
