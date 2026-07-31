@@ -11,8 +11,8 @@ android {
         applicationId = "dev.yury.mathmark"
         minSdk = 30
         targetSdk = 37
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.0.2"
     }
 
     buildTypes {
@@ -42,6 +42,8 @@ android {
         "../../shared/reader",
         "../../shared/prompt",
         "../../shared/i18n",
+        "../../shared/whatsnew",
+        "../../shared/meta",
     )
 
     packaging {

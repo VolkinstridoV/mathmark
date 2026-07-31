@@ -72,11 +72,12 @@ You never declare what a file is. The app counts the lines and picks the icon it
 ## What it does
 
 <div align="center">
-<img src="shots/phone-04-hidden.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-07-sheet.png" width="195">
+<img src="shots/phone-04-hidden.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-11-editor.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-07-sheet.png" width="195">
 </div>
 
 - **Formulas, properly.** Fractions, roots of any degree, multiple and contour integrals, sums and products with limits, matrices and determinants, systems, aligned derivations, Greek letters, set and logic symbols, tensor indices, continued fractions, braces under a group of terms. Rendered by [KaTeX](https://katex.org) in Computer Modern — the typeface your textbooks are set in.
 - **Hidden text.** Wrap anything in `||double bars||` and it becomes a plate you tap to reveal. Answers, hints, definitions — whatever you want to recall before you peek.
+- **Editing inside the app.** A pencil button turns the page into plain text with colours: headings, marks, formulas, hidden parts and drawings each get their own. Broken formulas are underlined **while you type** — the check asks the formula engine itself, so it is exact. Insert buttons and slash commands (`/int`, `/matrix`, `/sigma` — forty of them) put in LaTeX you cannot type on a keyboard. What you typed is saved byte for byte; nothing is reformatted.
 - **Search across every file**, by name and by content, showing the line that matched.
 - **Table of contents** built from `##` headings — how you navigate a long cheat sheet.
 - **Progress.** What you closed today, this week, this month, how many days in a row, and a thirty-day chart. Counted from a journal of marks, so it records *when you solved it*, not when you happened to sync.
@@ -171,6 +172,11 @@ shared/          used by both builds
 android/         Kotlin, Jetpack Compose
 desktop/         Python, GTK4, libadwaita
 ```
+
+## Feedback
+
+Something broken, something missing — [open an issue](https://github.com/VolkinstridoV/mathmark/issues).
+If it is easier to just write, the author is on Telegram: [@Volkinstridoff](https://t.me/Volkinstridoff).
 
 ## License
 

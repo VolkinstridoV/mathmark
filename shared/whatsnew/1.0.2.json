@@ -1,0 +1,20 @@
+{
+  "en": [
+    "Edit files right in the app: plain text with colours, live checking, insert buttons and slash commands",
+    "Broken formulas are underlined while you type — the counter at the bottom jumps to the first one",
+    "Create a new file without leaving the app",
+    "Feedback link in the settings"
+  ],
+  "ru": [
+    "Правка файла прямо в приложении: голый текст с цветами, проверка на лету, кнопки вставки и слэш-команды",
+    "Сломанные формулы подчёркиваются, пока печатаешь — счётчик внизу ведёт к первой",
+    "Создание файла, не выходя из приложения",
+    "Ссылка для обратной связи в настройках"
+  ],
+  "es": [
+    "Edición del archivo dentro de la aplicación: texto plano con colores, comprobación al vuelo, botones e instrucciones con barra",
+    "Las fórmulas rotas se subrayan mientras escribes; el contador de abajo lleva a la primera",
+    "Crear un archivo sin salir de la aplicación",
+    "Enlace de contacto en los ajustes"
+  ]
+}

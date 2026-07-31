@@ -29,6 +29,9 @@ class Settings(ctx: Context) {
     var syncRepo: String = ""
     var syncToken: String = ""
 
+    /** Какую версию человек уже видел: чтобы «что нового» показать один раз. */
+    var seen: String = ""
+
     init {
         load()
     }
@@ -49,6 +52,7 @@ class Settings(ctx: Context) {
                     "sync" -> syncOn = v == "1" || v == "true"
                     "repo" -> syncRepo = v
                     "token" -> syncToken = v
+                    "seen" -> seen = v
                 }
             }
         }
@@ -65,6 +69,7 @@ class Settings(ctx: Context) {
                     appendLine("sync=${if (syncOn) 1 else 0}")
                     appendLine("repo=$syncRepo")
                     appendLine("token=$syncToken")
+                    appendLine("seen=$seen")
                 },
                 Charsets.UTF_8,
             )

@@ -72,11 +72,12 @@ Nunca declaras qué es un archivo. La aplicación cuenta las líneas y elige el 
 ## Qué hace
 
 <div align="center">
-<img src="shots/phone-04-hidden.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-07-sheet.png" width="195">
+<img src="shots/phone-04-hidden.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-11-editor.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-07-sheet.png" width="195">
 </div>
 
 - **Fórmulas de verdad.** Fracciones, raíces de cualquier índice, integrales múltiples y de contorno, sumas y productos con límites, matrices y determinantes, sistemas, desarrollos alineados, letras griegas, símbolos de conjuntos y lógica, índices tensoriales, fracciones continuas, llaves bajo un grupo de términos. Las dibuja [KaTeX](https://katex.org) en Computer Modern — la tipografía de los libros de matemáticas.
 - **Texto oculto.** Envuelve lo que quieras en `||barras dobles||` y se convierte en una placa que se abre al tocarla. Respuestas, pistas, definiciones — lo que quieras recordar antes de mirar.
+- **Edición dentro de la aplicación.** Un botón con lápiz convierte la página en texto plano con colores: títulos, marcas, fórmulas, texto oculto y dibujos, cada uno con el suyo. Las fórmulas rotas se subrayan **mientras escribes**, y la comprobación la hace el propio motor de fórmulas, así que es exacta. Botones e instrucciones con barra (`/int`, `/matrix`, `/sigma`, cuarenta en total) insertan LaTeX que no se puede teclear. Se guarda exactamente lo que escribiste, byte a byte.
 - **Búsqueda en todos los archivos**, por nombre y por contenido, mostrando la línea que coincide.
 - **Índice** a partir de los títulos `##` — así se recorre una chuleta larga.
 - **Progreso.** Cuánto cerraste hoy, esta semana, este mes, cuántos días seguidos, y un gráfico de treinta días. Se cuenta desde un diario de marcas, así que registra **cuándo lo resolviste**, no cuándo sincronizaste.
@@ -171,6 +172,11 @@ shared/          común a las dos versiones
 android/         Kotlin, Jetpack Compose
 desktop/         Python, GTK4, libadwaita
 ```
+
+## Contacto
+
+Si algo se rompe o falta algo — [abre una incidencia](https://github.com/VolkinstridoV/mathmark/issues).
+Si prefieres escribir directamente, el autor está en Telegram: [@Volkinstridoff](https://t.me/Volkinstridoff).
 
 ## Licencia
 

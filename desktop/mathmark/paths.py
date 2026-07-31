@@ -35,6 +35,25 @@ def reader_html() -> Path:
     return share_dir() / "reader" / "reader.html"
 
 
+def links() -> dict:
+    """Ссылки наружу — общий файл на обе версии."""
+    import json
+    try:
+        return json.loads((share_dir() / "meta" / "links.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def whats_new(version: str, lang: str) -> list:
+    """Список новинок этой версии на нужном языке. Нет файла — пусто."""
+    import json
+    try:
+        table = json.loads((share_dir() / "whatsnew" / f"{version}.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return table.get(lang) or table.get("en") or []
+
+
 def prompt_text() -> str:
     p = share_dir() / "prompt" / "prompt.md"
     try:

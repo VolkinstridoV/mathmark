@@ -59,6 +59,41 @@ class MathMarkApp(Adw.Application):
             self.win = MathMarkWindow(self, self.st)
             self._actions(self.win)
         self.win.present()
+        self._whats_new(self.win)
+
+    def _whats_new(self, win) -> None:
+        """Один раз после обновления — короткий список, что появилось."""
+        from . import __version__
+        from .paths import whats_new
+
+        if self.st.seen == __version__:
+            return
+        items = whats_new(__version__, i18n.current())
+        if not items:
+            self.st.seen = __version__
+            self.st.save()
+            return
+
+        dlg = Adw.AlertDialog(heading=t("new.title"))
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        for line in items:
+            row = Gtk.Box(spacing=8)
+            dot = Gtk.Label(label="•", valign=Gtk.Align.START)
+            dot.add_css_class("accent")
+            text = Gtk.Label(label=line, wrap=True, xalign=0, max_width_chars=46)
+            row.append(dot)
+            row.append(text)
+            box.append(row)
+        dlg.set_extra_child(box)
+        dlg.add_response("ok", t("new.ok"))
+        dlg.set_default_response("ok")
+
+        def done(_d, _r):
+            self.st.seen = __version__
+            self.st.save()
+
+        dlg.connect("response", done)
+        dlg.present(win)
 
     def do_open(self, files, n_files, hint) -> None:
         """Открыть переданный файл: `mathmark шпора.md`."""
@@ -254,6 +289,23 @@ class MathMarkApp(Adw.Application):
         prompt_row.add_suffix(btn)
         ai.add(prompt_row)
         page.add(ai)
+
+        from .paths import links as outside_links
+        urls = outside_links()
+
+        talk = Adw.PreferencesGroup(title=t("settings.feedback"))
+        for key, title_key, hint_key in (
+            ("telegram", "settings.feedback", "settings.feedbackHint"),
+            ("issues", "settings.issues", "settings.issuesHint"),
+        ):
+            if not urls.get(key):
+                continue
+            row = Adw.ActionRow(title=t(title_key), subtitle=t(hint_key))
+            btn = Gtk.LinkButton(uri=urls[key], label="→", valign=Gtk.Align.CENTER)
+            row.add_suffix(btn)
+            row.set_activatable_widget(btn)
+            talk.add(row)
+        page.add(talk)
 
         about = Adw.PreferencesGroup(title=t("settings.about"))
         about.add(Adw.ActionRow(

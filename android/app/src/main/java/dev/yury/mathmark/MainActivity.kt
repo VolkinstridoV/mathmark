@@ -63,6 +63,18 @@ private fun App() {
     // надписи берутся из общей папки переводов — та же, что у настольной версии
     L.load(ctx, lang)
 
+    val version = remember {
+        runCatching { ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName }
+            .getOrNull().orEmpty()
+    }
+    var news by remember { mutableStateOf<List<String>>(emptyList()) }
+    LaunchedEffect(version, lang) {
+        if (version.isNotBlank() && settings.seen != version) {
+            news = WhatsNew.items(ctx, version)
+            if (news.isEmpty()) { settings.seen = version; settings.save() }
+        }
+    }
+
     // будильники надо ставить заново при каждом запуске: система их не хранит
     val notifyAsk = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -118,6 +130,30 @@ private fun App() {
             }
             owner.lifecycle.addObserver(obs)
             onDispose { owner.lifecycle.removeObserver(obs) }
+        }
+
+        if (news.isNotEmpty()) {
+            AlertDialog(
+                onDismissRequest = { },
+                containerColor = colors.sheet,
+                title = { Text(L["new.title"], color = colors.text) },
+                text = {
+                    Column {
+                        news.forEach { line ->
+                            Row(Modifier.padding(bottom = 10.dp)) {
+                                Text("•  ", color = colors.accent)
+                                Text(line, color = colors.dim,
+                                     style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        settings.seen = version; settings.save(); news = emptyList()
+                    }) { Text(L["new.ok"], color = colors.accent) }
+                },
+            )
         }
 
         Surface(Modifier.fillMaxSize(), color = colors.bg) {

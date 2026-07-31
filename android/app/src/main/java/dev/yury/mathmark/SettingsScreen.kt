@@ -194,6 +194,14 @@ fun SettingsScreen(
                 Toast.makeText(ctx, L["toast.commandCopied"], Toast.LENGTH_SHORT).show()
             }
 
+            Group(L["settings.feedback"], colors)
+            Item(L["settings.feedback"], L["settings.feedbackHint"], colors) {
+                Links.open(ctx, "telegram")
+            }
+            Item(L["settings.issues"], L["settings.issuesHint"], colors) {
+                Links.open(ctx, "issues")
+            }
+
             Group(L["settings.about"], colors)
             Row(
                 Modifier.fillMaxWidth().padding(18.dp),

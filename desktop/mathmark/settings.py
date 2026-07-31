@@ -34,6 +34,8 @@ class Settings:
         self.sync_on = False
         self.sync_repo = ""
         self.sync_token = ""
+        # какую версию человек уже видел: «что нового» показывается один раз
+        self.seen = ""
         self.width = 1180
         self.height = 820
         self.sidebar = True
@@ -64,6 +66,8 @@ class Settings:
                     self.sync_repo = v
                 elif k == "token":
                     self.sync_token = v
+                elif k == "seen":
+                    self.seen = v
                 elif k == "width":
                     self.width = max(480, int(v))
                 elif k == "height":
@@ -89,6 +93,7 @@ class Settings:
                 f"sync={1 if self.sync_on else 0}\n"
                 f"repo={self.sync_repo}\n"
                 f"token={self.sync_token}\n"
+                f"seen={self.seen}\n"
                 f"width={self.width}\n"
                 f"height={self.height}\n"
                 f"sidebar={1 if self.sidebar else 0}\n",
