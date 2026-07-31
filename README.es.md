@@ -154,7 +154,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 La aplicación lee una carpeta corriente del almacenamiento compartido, así que pide una vez acceso a todos los archivos. Con root se le puede conceder en silencio:
 
 ```bash
-adb shell 'su -c "appops set dev.yury.mathmark MANAGE_EXTERNAL_STORAGE allow"'
+adb shell 'su -c "appops set io.github.volkinstridov.MathMark MANAGE_EXTERNAL_STORAGE allow"'
 ```
 
 **Escritorio** — `python3 -m pytest desktop/tests`

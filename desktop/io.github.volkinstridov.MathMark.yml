@@ -1,0 +1,43 @@
+# Сборка пакета Flatpak.
+#
+# Себе:
+#   flatpak run org.flatpak.Builder --force-clean --user --repo=repo build \
+#       desktop/io.github.volkinstridov.MathMark.yml
+#
+# Тот же файл подаётся на Flathub, поэтому исходники берутся не из папки
+# рядом, а архивом с GitHub по метке — иначе их серверы не смогут собрать.
+
+app-id: io.github.volkinstridov.MathMark
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+command: mathmark
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+  # папка с математикой выбирается человеком и может лежать где угодно
+  - --filesystem=home
+  # печать шпоры
+  - --socket=cups
+
+modules:
+  - name: mathmark
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 desktop/mathmark-launcher /app/bin/mathmark
+      - mkdir -p /app/lib/mathmark /app/share/mathmark
+      - cp -r desktop/mathmark/. /app/lib/mathmark/
+      - cp -r shared/reader shared/prompt shared/i18n /app/share/mathmark/
+      - install -Dm644 desktop/io.github.volkinstridov.MathMark.desktop
+        /app/share/applications/io.github.volkinstridov.MathMark.desktop
+      - install -Dm644 desktop/data/io.github.volkinstridov.MathMark.svg
+        /app/share/icons/hicolor/scalable/apps/io.github.volkinstridov.MathMark.svg
+      - install -Dm644 desktop/data/io.github.volkinstridov.MathMark.metainfo.xml
+        /app/share/metainfo/io.github.volkinstridov.MathMark.metainfo.xml
+    sources:
+      - type: archive
+        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.0.tar.gz
+        sha256: b764f6288a204dcf7eaa13db984be0ff1a9c2292e4a944a74ddfbf5fede59393

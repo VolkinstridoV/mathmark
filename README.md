@@ -154,7 +154,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 The app reads an ordinary folder in shared storage, so it asks for all-files access once. With root you can grant it silently:
 
 ```bash
-adb shell 'su -c "appops set dev.yury.mathmark MANAGE_EXTERNAL_STORAGE allow"'
+adb shell 'su -c "appops set io.github.volkinstridov.MathMark MANAGE_EXTERNAL_STORAGE allow"'
 ```
 
 **Desktop** — `python3 -m pytest desktop/tests`

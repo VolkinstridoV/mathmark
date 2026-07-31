@@ -25,12 +25,12 @@ package() {
     cp -r shared/reader shared/prompt shared/i18n "$pkgdir/usr/share/mathmark/"
 
     install -Dm755 desktop/mathmark-launcher "$pkgdir/usr/bin/mathmark"
-    install -Dm644 desktop/dev.yury.mathmark.desktop \
-        "$pkgdir/usr/share/applications/dev.yury.mathmark.desktop"
-    install -Dm644 desktop/data/dev.yury.mathmark.svg \
-        "$pkgdir/usr/share/icons/hicolor/scalable/apps/dev.yury.mathmark.svg"
-    install -Dm644 desktop/data/dev.yury.mathmark.metainfo.xml \
-        "$pkgdir/usr/share/metainfo/dev.yury.mathmark.metainfo.xml"
+    install -Dm644 desktop/io.github.volkinstridov.MathMark.desktop \
+        "$pkgdir/usr/share/applications/io.github.volkinstridov.MathMark.desktop"
+    install -Dm644 desktop/data/io.github.volkinstridov.MathMark.svg \
+        "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.volkinstridov.MathMark.svg"
+    install -Dm644 desktop/data/io.github.volkinstridov.MathMark.metainfo.xml \
+        "$pkgdir/usr/share/metainfo/io.github.volkinstridov.MathMark.metainfo.xml"
     install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
     install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }

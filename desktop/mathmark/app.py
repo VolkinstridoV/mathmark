@@ -20,7 +20,7 @@ from .i18n import t  # noqa: E402
 from .settings import Settings  # noqa: E402
 from .window import CSS, MathMarkWindow  # noqa: E402
 
-APP_ID = "dev.yury.mathmark"
+APP_ID = "io.github.volkinstridov.MathMark"
 
 SHORTCUTS = [
     ("Ctrl + F", "keys.search"),

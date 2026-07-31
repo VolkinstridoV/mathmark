@@ -19,9 +19,9 @@ exec python3 "$REPO/desktop/run.py" "\$@"
 EOF
 chmod +x "$BIN/mathmark"
 
-sed "s|^Exec=mathmark|Exec=$BIN/mathmark|" "$REPO/desktop/dev.yury.mathmark.desktop" \
-    > "$SHARE/applications/dev.yury.mathmark.desktop"
-cp "$REPO/desktop/data/dev.yury.mathmark.svg" "$SHARE/icons/hicolor/scalable/apps/"
+sed "s|^Exec=mathmark|Exec=$BIN/mathmark|" "$REPO/desktop/io.github.volkinstridov.MathMark.desktop" \
+    > "$SHARE/applications/io.github.volkinstridov.MathMark.desktop"
+cp "$REPO/desktop/data/io.github.volkinstridov.MathMark.svg" "$SHARE/icons/hicolor/scalable/apps/"
 
 update-desktop-database "$SHARE/applications" 2>/dev/null || true
 gtk4-update-icon-cache -q -t "$SHARE/icons/hicolor" 2>/dev/null || true

@@ -154,7 +154,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 Приложение читает обычную папку в общей памяти, поэтому один раз просит доступ ко всем файлам. С рутом его можно выдать молча:
 
 ```bash
-adb shell 'su -c "appops set dev.yury.mathmark MANAGE_EXTERNAL_STORAGE allow"'
+adb shell 'su -c "appops set io.github.volkinstridov.MathMark MANAGE_EXTERNAL_STORAGE allow"'
 ```
 
 **Компьютер** — `python3 -m pytest desktop/tests`

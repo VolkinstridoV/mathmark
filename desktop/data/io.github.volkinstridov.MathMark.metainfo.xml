@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>dev.yury.mathmark</id>
+  <id>io.github.volkinstridov.MathMark</id>
   <name>MathMark</name>
 
   <summary>Reader for maths written in Markdown</summary>
@@ -35,7 +35,7 @@
     </p>
   </description>
 
-  <launchable type="desktop-id">dev.yury.mathmark.desktop</launchable>
+  <launchable type="desktop-id">io.github.volkinstridov.MathMark.desktop</launchable>
   <url type="homepage">https://github.com/VolkinstridoV/mathmark</url>
   <url type="bugtracker">https://github.com/VolkinstridoV/mathmark/issues</url>
 
@@ -57,7 +57,7 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
-    <release version="1.0" date="2026-07-31">
+    <release version="1.0.1" date="2026-07-31">
       <description><p>First release.</p></description>
     </release>
   </releases>
