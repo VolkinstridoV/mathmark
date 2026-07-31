@@ -57,6 +57,12 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="1.0.2" date="2026-07-31">
+      <description>
+        <p>Editing inside the app: plain text with colours, live checking of formulas,
+           insert buttons and slash commands. Creating a file without leaving the app.</p>
+      </description>
+    </release>
     <release version="1.0.1" date="2026-07-31">
       <description><p>First release.</p></description>
     </release>
