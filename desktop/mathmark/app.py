@@ -89,6 +89,7 @@ class MathMarkApp(Adw.Application):
         add("new-folder", lambda: win._ask_name(
             t("list.newFolder"), "", lambda n: (win.repo.create_folder(n), win.refresh())))
         add("settings", lambda: self._settings_dialog(win))
+        add("stats", lambda: self._stats_dialog(win))
         add("shortcuts", lambda: self._shortcuts_dialog(win))
 
     # ——— окна ———
@@ -249,6 +250,77 @@ class MathMarkApp(Adw.Application):
         page.add(about)
 
         dlg = Adw.PreferencesDialog(title=t("settings.title"))
+        dlg.add(page)
+        dlg.present(win)
+
+    def _stats_dialog(self, win: MathMarkWindow) -> None:
+        """Сколько сделано. Считается по журналу отметок, не по файлам."""
+        from .stats import parse, summarise
+
+        try:
+            text = (win.st.file.parent / "journal.log").read_text(encoding="utf-8")
+        except OSError:
+            text = ""
+        st = summarise(parse(text))
+
+        page = Adw.PreferencesPage()
+        group = Adw.PreferencesGroup(title=t("stats.title"))
+
+        if st.month_tasks == 0 and st.month_topics == 0 and st.streak == 0:
+            group.add(Adw.ActionRow(title=t("stats.empty")))
+        else:
+            for title, tasks, topics in (
+                (t("stats.today"), st.today_tasks, st.today_topics),
+                (t("stats.week"), st.week_tasks, st.week_topics),
+                (t("stats.month"), st.month_tasks, st.month_topics),
+            ):
+                row = Adw.ActionRow(
+                    title=title,
+                    subtitle=f"{t('stats.tasks', tasks)} · {t('stats.topics', topics)}",
+                )
+                big = Gtk.Label(label=str(tasks + topics), valign=Gtk.Align.CENTER)
+                big.add_css_class("title-2")
+                row.add_suffix(big)
+                group.add(row)
+
+            from .md_items import plural_form
+            streak_row = Adw.ActionRow(
+                title=t("stats.streak"),
+                subtitle=t("days." + plural_form(st.streak, i18n.current()), st.streak),
+            )
+            big = Gtk.Label(label=str(st.streak), valign=Gtk.Align.CENTER)
+            big.add_css_class("title-2")
+            streak_row.add_suffix(big)
+            group.add(streak_row)
+        page.add(group)
+
+        if st.per_day:
+            chart = Adw.PreferencesGroup(title=t("stats.last30"))
+            area = Gtk.DrawingArea(content_height=90)
+            top = max((n for _, n in st.per_day), default=0) or 1
+
+            def draw(_a, cr, w, h, *_):
+                gap = 3
+                bw = max(2.0, (w - gap * (len(st.per_day) - 1)) / len(st.per_day))
+                for i, (_, n) in enumerate(st.per_day):
+                    frac = 0.04 if n == 0 else max(0.12, n / top)
+                    bh = h * frac
+                    x = i * (bw + gap)
+                    if n == 0:
+                        cr.set_source_rgba(0.6, 0.6, 0.6, 0.25)
+                    else:
+                        cr.set_source_rgb(0.486, 0.227, 0.929)
+                    cr.rectangle(x, h - bh, bw, bh)
+                    cr.fill()
+
+            area.set_draw_func(draw)
+            box = Gtk.Box()
+            box.append(area)
+            area.set_hexpand(True)
+            chart.add(box)
+            page.add(chart)
+
+        dlg = Adw.PreferencesDialog(title=t("stats.title"))
         dlg.add(page)
         dlg.present(win)
 

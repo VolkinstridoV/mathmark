@@ -24,6 +24,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
 from . import md_items as md  # noqa: E402
 from .files import Entry, FilesRepo  # noqa: E402
 from .i18n import subtitle, sync_message, t  # noqa: E402
+from .stats import record  # noqa: E402
 from .sync import GitHub, Sync  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
 from .settings import Settings  # noqa: E402
@@ -190,6 +191,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         menu.append(t("list.newFolder"), "win.new-folder")
         menu.append(t("desk.refresh"), "win.refresh")
         menu.append(t("settings.copyPrompt"), "win.copy-prompt")
+        menu.append(t("stats.title"), "win.stats")
         menu.append(t("settings.title"), "win.settings")
         menu.append(t("desk.shortcuts"), "win.shortcuts")
         btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu)
@@ -477,8 +479,13 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self._writing.add(str(self.current))
         if self.repo.write(self.current, updated):
             self.text = updated
-            mark = md.Mark.of(updated[offset]).name.lower()
-            self._js(f"MathMark.setMark({offset},'{mark}');")
+            new_mark = md.Mark.of(updated[offset])
+            self._js(f"MathMark.setMark({offset},'{new_mark.name.lower()}');")
+            # журнал помнит, КОГДА отмечено — в самом файле этого нет
+            item = next((i for i in md.items(updated) if i.box_offset == offset), None)
+            if item is not None:
+                record(self.st.file.parent / "journal.log",
+                       self.current.name, item.kind, new_mark)
             c = md.counts(self.text)
             self.doc_title.set_subtitle(subtitle(c))
             self.refresh()

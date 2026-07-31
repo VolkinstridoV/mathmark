@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private enum class Screen { LIST, DOC, SET }
+private enum class Screen { LIST, DOC, SET, STATS }
 
 @Composable
 private fun App() {
@@ -146,6 +146,12 @@ private fun App() {
                     onLang = { lang = it; settings.lang = it; settings.save(); L.load(ctx, it) },
                     onSync = { doSync() },
                     onBack = { screen = Screen.LIST; reload++ },
+                    onStats = { screen = Screen.STATS },
+                )
+
+                Screen.STATS -> StatsScreen(
+                    colors = colors,
+                    onBack = { screen = Screen.SET },
                 )
             }
         }

@@ -30,6 +30,7 @@ fun SettingsScreen(
     lang: String,
     onLang: (String) -> Unit,
     onSync: () -> Unit,
+    onStats: () -> Unit,
     onTheme: (String) -> Unit,
     onScale: (Float) -> Unit,
     onFolder: (String) -> Unit,
@@ -127,6 +128,8 @@ fun SettingsScreen(
                 }
             }
             HorizontalDivider(color = colors.divider)
+
+            Item(L["stats.title"], L["stats.last30"], colors) { onStats() }
 
             Group(L["sync.title"], colors)
             Row(

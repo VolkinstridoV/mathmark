@@ -60,6 +60,7 @@ fun DocScreen(
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { ctx ->
+                @Suppress("NAME_SHADOWING")
                 WebView(ctx).apply {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = false
@@ -85,8 +86,18 @@ fun DocScreen(
                                         ?: return@post
                                     if (repo.write(file, updated)) {
                                         text = updated
-                                        val mark = Mark.of(updated[off]).name.lowercase()
-                                        evaluateJavascript("MathMark.setMark($off,'$mark')", null)
+                                        val newMark = Mark.of(updated[off])
+                                        evaluateJavascript(
+                                            "MathMark.setMark($off,'${newMark.name.lowercase()}')", null)
+                                        // журнал помнит, КОГДА отмечено —
+                                        // в самом файле этого нет
+                                        MdItems.items(updated).firstOrNull { it.boxOffset == off }
+                                            ?.let { item ->
+                                                Journal.record(
+                                                    File(ctx.filesDir, "journal.log"),
+                                                    file.name, item.kind, newMark,
+                                                )
+                                            }
                                     }
                                 }
                             },
