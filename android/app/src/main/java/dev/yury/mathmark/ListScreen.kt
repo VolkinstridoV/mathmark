@@ -51,6 +51,7 @@ fun ListScreen(
     var deleting by remember { mutableStateOf<Entry?>(null) }
     var moving by remember { mutableStateOf<Entry.Doc?>(null) }
     var newFolder by remember { mutableStateOf(false) }
+    var remindFor by remember { mutableStateOf<Entry.Doc?>(null) }
 
     var searching by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
@@ -187,9 +188,45 @@ fun ListScreen(
             if (e is Entry.Doc) {
                 SheetItem(L["list.move"], colors) { sheetFor = null; moving = e }
             }
+            if (e is Entry.Doc) {
+                val has = Reminders.load(Notify.remindersFile(ctx))
+                    .any { it.path == e.file.name }
+                SheetItem(L["rem.add"], colors) { sheetFor = null; remindFor = e }
+                if (has) {
+                    SheetItem(L["rem.remove"], colors) {
+                        sheetFor = null
+                        val rest = Reminders.load(Notify.remindersFile(ctx))
+                            .filterNot { it.path == e.file.name }
+                        Reminders.save(Notify.remindersFile(ctx), rest)
+                        Notify.scheduleAll(ctx)
+                    }
+                }
+            }
             SheetItem(L["common.delete"], colors, danger = true) { sheetFor = null; deleting = e }
             Spacer(Modifier.height(18.dp))
         }
+    }
+
+    // ——— напоминание ———
+    remindFor?.let { d ->
+        val file = Notify.remindersFile(ctx)
+        ReminderDialog(
+            fileName = d.file.name,
+            existing = Reminders.load(file).firstOrNull { it.path == d.file.name },
+            colors = colors,
+            onCancel = { remindFor = null },
+            onSave = { r ->
+                val rest = Reminders.load(file).filterNot { it.path == r.path }
+                Reminders.save(file, rest + r)
+                Notify.scheduleAll(ctx)
+                remindFor = null
+                android.widget.Toast.makeText(
+                    ctx,
+                    L["rem.saved"] + " · " + Reminders.describe(r),
+                    android.widget.Toast.LENGTH_LONG,
+                ).show()
+            },
+        )
     }
 
     // ——— переименование и создание папки ———

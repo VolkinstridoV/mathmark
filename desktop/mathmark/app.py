@@ -11,7 +11,9 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
-from gi.repository import Adw, Gdk, Gio, Gtk  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 
 from . import i18n  # noqa: E402
 from .i18n import t  # noqa: E402
@@ -90,6 +92,12 @@ class MathMarkApp(Adw.Application):
             t("list.newFolder"), "", lambda n: (win.repo.create_folder(n), win.refresh())))
         add("settings", lambda: self._settings_dialog(win))
         add("stats", lambda: self._stats_dialog(win))
+        add("today", lambda: self._today_dialog(win))
+
+        # переход из уведомления: открыть тот файл, о котором напомнили
+        open_file = Gio.SimpleAction.new("open-file", GLib.VariantType.new("s"))
+        open_file.connect("activate", lambda _a, v: win.open_doc(Path(v.get_string())))
+        self.add_action(open_file)
         add("shortcuts", lambda: self._shortcuts_dialog(win))
 
     # ——— окна ———
@@ -251,6 +259,98 @@ class MathMarkApp(Adw.Application):
 
         dlg = Adw.PreferencesDialog(title=t("settings.title"))
         dlg.add(page)
+        dlg.present(win)
+
+    def _today_dialog(self, win: MathMarkWindow) -> None:
+        """Что напомнит сегодня. Список, а не всплывающие окна."""
+        from datetime import date
+
+        from . import reminders as rem
+
+        items = rem.for_day(rem.load(win.reminders_file), date.today())
+        page = Adw.PreferencesPage()
+        group = Adw.PreferencesGroup(title=t("rem.today"))
+        if not items:
+            group.add(Adw.ActionRow(title=t("rem.none")))
+        for r in items:
+            row = Adw.ActionRow(
+                title=r.text or r.path.removesuffix(".md"),
+                subtitle=f"{r.at:%H:%M} · {r.path.removesuffix('.md')}",
+            )
+            drop = Gtk.Button(label=t("rem.remove"), valign=Gtk.Align.CENTER)
+
+            def remove(_b, victim=r):
+                rest = [x for x in rem.load(win.reminders_file) if x != victim]
+                rem.save(win.reminders_file, rest)
+                dlg.close()
+                self._today_dialog(win)
+
+            drop.connect("clicked", remove)
+            row.add_suffix(drop)
+            group.add(row)
+        page.add(group)
+        dlg = Adw.PreferencesDialog(title=t("rem.today"))
+        dlg.add(page)
+        dlg.present(win)
+
+    def reminder_dialog(self, win: MathMarkWindow, path: str) -> None:
+        """Навесить напоминание на файл. Внутрь .md ничего не пишется."""
+        from datetime import date, datetime, time as dtime, timedelta
+
+        from . import reminders as rem
+
+        existing = next((x for x in rem.load(win.reminders_file) if x.path == path), None)
+        start = existing.at if existing else dtime(19, 0)
+
+        dlg = Adw.AlertDialog(heading=t("rem.title"), body=path.removesuffix(".md"))
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+
+        text = Gtk.Entry(placeholder_text=t("rem.text"),
+                         text=existing.text if existing else "")
+        box.append(text)
+
+        repeat = Gtk.DropDown.new_from_strings([t("rem.daily"), t("rem.weekly"), t("rem.once")])
+        repeat.set_selected({rem.DAILY: 0, rem.WEEKLY: 1, rem.ONCE: 2}[existing.repeat] if existing else 0)
+        box.append(repeat)
+
+        days = Gtk.DropDown.new_from_strings([t(f"rem.day{i}") for i in range(1, 8)])
+        days.set_selected((existing.weekday - 1) if existing and existing.weekday else 0)
+        box.append(days)
+
+        row = Gtk.Box(spacing=6, halign=Gtk.Align.CENTER)
+        hh = Gtk.SpinButton.new_with_range(0, 23, 1)
+        mm = Gtk.SpinButton.new_with_range(0, 59, 1)
+        hh.set_value(start.hour)
+        mm.set_value(start.minute)
+        for w in (hh, mm):
+            w.set_orientation(Gtk.Orientation.VERTICAL)
+        row.append(hh)
+        row.append(Gtk.Label(label=":"))
+        row.append(mm)
+        box.append(row)
+
+        dlg.set_extra_child(box)
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("common.done"))
+        dlg.set_default_response("ok")
+
+        def resp(_d, answer):
+            if answer != "ok":
+                return
+            at = dtime(int(hh.get_value()), int(mm.get_value()))
+            kind = [rem.DAILY, rem.WEEKLY, rem.ONCE][repeat.get_selected()]
+            on = None
+            if kind == rem.ONCE:
+                today = date.today()
+                on = today if datetime.combine(today, at) > datetime.now() else today + timedelta(days=1)
+            item = rem.Reminder(path, kind, at, text.get_text().strip(),
+                                weekday=days.get_selected() + 1 if kind == rem.WEEKLY else 0,
+                                on=on)
+            rest = [x for x in rem.load(win.reminders_file) if x.path != path]
+            rem.save(win.reminders_file, rest + [item])
+            win.toast(t("rem.saved"))
+
+        dlg.connect("response", resp)
         dlg.present(win)
 
     def _stats_dialog(self, win: MathMarkWindow) -> None:

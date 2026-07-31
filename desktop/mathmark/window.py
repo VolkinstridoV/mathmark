@@ -24,6 +24,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
 from . import md_items as md  # noqa: E402
 from .files import Entry, FilesRepo  # noqa: E402
 from .i18n import subtitle, sync_message, t  # noqa: E402
+from . import reminders as rem  # noqa: E402
 from .stats import record  # noqa: E402
 from .sync import GitHub, Sync  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
@@ -150,9 +151,15 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.set_size_request(480, 420)
         self.connect("close-request", self._on_close)
 
+        self._fired: set[str] = set()
         self._build()
         self._apply_theme()
         self.refresh()
+
+        # напоминания проверяются раз в минуту, пока окно открыто.
+        # Закрытая программа ничего не покажет — на компьютере это честнее,
+        # чем держать службу ради двух строк.
+        GLib.timeout_add_seconds(60, self._reminder_tick)
 
     # ——— сборка окна ———
 
@@ -191,6 +198,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         menu.append(t("list.newFolder"), "win.new-folder")
         menu.append(t("desk.refresh"), "win.refresh")
         menu.append(t("settings.copyPrompt"), "win.copy-prompt")
+        menu.append(t("rem.today"), "win.today")
         menu.append(t("stats.title"), "win.stats")
         menu.append(t("settings.title"), "win.settings")
         menu.append(t("desk.shortcuts"), "win.shortcuts")
@@ -362,6 +370,9 @@ class MathMarkWindow(Adw.ApplicationWindow):
             lambda n: (self.repo.rename(entry, n), self.refresh())))
         if not entry.is_folder:
             item(t("list.move"), lambda: self._ask_move(entry))
+        if not entry.is_folder:
+            item(t("rem.add"), lambda: self.get_application().reminder_dialog(
+                self, str(entry.path.relative_to(self.repo.root))))
         item(t("desk.showInFiles"), lambda: Gio.AppInfo.launch_default_for_uri(
             entry.path.parent.as_uri(), None))
         item(t("common.delete"), lambda: self._ask_delete(entry), danger=True)
@@ -532,6 +543,33 @@ class MathMarkWindow(Adw.ApplicationWindow):
         GLib.timeout_add(120, lambda: (self.refresh(), False)[1])
 
     # ——— прочее ———
+
+    @property
+    def reminders_file(self) -> Path:
+        return self.st.file.parent / "reminders.conf"
+
+    def _reminder_tick(self) -> bool:
+        from datetime import datetime
+
+        now = datetime.now()
+        for r in rem.for_day(rem.load(self.reminders_file), now.date()):
+            key = f"{r.path}|{now.date()}|{r.at:%H:%M}"
+            if key in self._fired:
+                continue
+            if (now.hour, now.minute) >= (r.at.hour, r.at.minute):
+                self._fired.add(key)
+                self._notify(r)
+        return True                      # продолжать проверять
+
+    def _notify(self, r) -> None:
+        note = Gio.Notification.new(r.text or t("rem.title"))
+        note.set_body(r.path.removesuffix(".md"))
+        note.set_default_action_and_target_value(
+            "app.open-file", GLib.Variant.new_string(str(self.repo.root / r.path))
+        )
+        app = self.get_application()
+        if app is not None:
+            app.send_notification(f"rem-{r.path}", note)
 
     def do_sync(self) -> None:
         """

@@ -63,6 +63,17 @@ private fun App() {
     // надписи берутся из общей папки переводов — та же, что у настольной версии
     L.load(ctx, lang)
 
+    // будильники надо ставить заново при каждом запуске: система их не хранит
+    val notifyAsk = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+    LaunchedEffect(Unit) {
+        Notify.scheduleAll(ctx)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notifyAsk.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     MathMarkTheme(theme) {
         val colors = LocalMathMark.current
         val repo = remember(folder) { FilesRepo(File(folder)) }
