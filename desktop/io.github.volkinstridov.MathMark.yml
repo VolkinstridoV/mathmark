@@ -39,5 +39,5 @@ modules:
         /app/share/metainfo/io.github.volkinstridov.MathMark.metainfo.xml
     sources:
       - type: archive
-        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.0.tar.gz
-        sha256: b764f6288a204dcf7eaa13db984be0ff1a9c2292e4a944a74ddfbf5fede59393
+        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.0.1.tar.gz
+        sha256: 092b074530cf22006b2d0404035ffb88a87c42e1ddd257719ec57b814496a673
