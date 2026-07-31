@@ -13,6 +13,13 @@ SHARE="$HOME/.local/share"
 
 mkdir -p "$BIN" "$SHARE/applications" "$SHARE/icons/hicolor/scalable/apps"
 
+# старые ярлыки прежних имён: оставшись, они ведут в никуда и путают запускалку
+rm -f "$SHARE/applications/dev.yury.mathmark.desktop" \
+      "$SHARE/applications/dev.yury.koren.desktop" \
+      "$SHARE/icons/hicolor/scalable/apps/dev.yury.mathmark.svg" \
+      "$SHARE/icons/hicolor/scalable/apps/dev.yury.koren.svg" \
+      "$BIN/koren"
+
 cat > "$BIN/mathmark" <<EOF
 #!/bin/sh
 exec python3 "$REPO/desktop/run.py" "\$@"
