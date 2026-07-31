@@ -22,6 +22,7 @@ class Settings(ctx: Context) {
     var folder: String = DEFAULT_FOLDER
     var scale: Float = 1.0f
     var theme: String = "auto"   // auto | light | dark
+    var lang: String = "auto"    // auto | en | ru | es
 
     init {
         load()
@@ -39,6 +40,7 @@ class Settings(ctx: Context) {
                     "folder" -> if (v.isNotEmpty()) folder = v
                     "scale" -> v.toFloatOrNull()?.let { scale = it.coerceIn(0.8f, 1.6f) }
                     "theme" -> if (v in setOf("auto", "light", "dark")) theme = v
+                    "lang" -> if (v in setOf("auto", "en", "ru", "es")) lang = v
                 }
             }
         }
@@ -51,6 +53,7 @@ class Settings(ctx: Context) {
                     appendLine("folder=$folder")
                     appendLine("scale=$scale")
                     appendLine("theme=$theme")
+                    appendLine("lang=$lang")
                 },
                 Charsets.UTF_8,
             )

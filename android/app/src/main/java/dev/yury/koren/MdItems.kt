@@ -158,23 +158,20 @@ object MdItems {
         )
     }
 
-    /** Подпись под именем файла в списке. */
-    fun subtitle(c: Counts): String = when (c.kind) {
-        FileKind.TASKS -> "${c.tasksDone} из ${c.tasksTotal} задач"
-        FileKind.TOPICS -> "пройдено ${c.topicsDone} из ${c.topicsTotal} тем"
-        FileKind.BOTH ->
-            "${c.tasksDone} из ${c.tasksTotal} задач · ${c.topicsDone} из ${c.topicsTotal} тем"
-        FileKind.PLAIN ->
-            if (c.sections > 0) "${c.sections} ${razdelov(c.sections)}" else "справочник"
-    }
-
-    private fun razdelov(n: Int): String {
-        val h = n % 100
-        if (h in 11..14) return "разделов"
-        return when (n % 10) {
-            1 -> "раздел"
-            2, 3, 4 -> "раздела"
-            else -> "разделов"
+    /**
+     * Какая форма слова нужна для числа: у русского три, у английского
+     * и испанского две. Правило чистое, без Android, поэтому проверяется тестом.
+     */
+    fun pluralForm(n: Int, lang: String): String = when (lang) {
+        "ru" -> {
+            val h = n % 100
+            when {
+                h in 11..14 -> "many"
+                n % 10 == 1 -> "one"
+                n % 10 in 2..4 -> "few"
+                else -> "many"
+            }
         }
+        else -> if (n == 1) "one" else "few"
     }
 }

@@ -55,6 +55,10 @@ private fun App() {
     var theme by remember { mutableStateOf(settings.theme) }
     var scale by remember { mutableFloatStateOf(settings.scale) }
     var folder by remember { mutableStateOf(settings.folder) }
+    var lang by remember { mutableStateOf(settings.lang) }
+
+    // надписи берутся из общей папки переводов — та же, что у настольной версии
+    L.load(ctx, lang)
 
     KorenTheme(theme) {
         val colors = LocalKoren.current
@@ -105,6 +109,8 @@ private fun App() {
                     onTheme = { theme = it; settings.theme = it; settings.save() },
                     onScale = { scale = it; settings.scale = it; settings.save() },
                     onFolder = { folder = it; settings.folder = it; settings.save() },
+                    lang = lang,
+                    onLang = { lang = it; settings.lang = it; settings.save(); L.load(ctx, it) },
                     onBack = { screen = Screen.LIST; reload++ },
                 )
             }
@@ -216,24 +222,23 @@ fun EmptyFolder(colors: KorenColors, folder: String, canRead: Boolean, onGrant: 
         Spacer(Modifier.height(20.dp))
         if (!canRead) {
             Text(
-                "Нет доступа к файлам",
+                L["access.title"],
                 color = colors.text,
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                "Приложение читает обычную папку в памяти телефона. " +
-                    "Разреши доступ ко всем файлам — иначе список будет пустым.",
+                L["access.body"],
                 color = colors.dim,
                 style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(Modifier.height(16.dp))
-            Button(onClick = onGrant) { Text("Разрешить") }
+            Button(onClick = onGrant) { Text(L["access.grant"]) }
         } else {
-            Text("В папке пусто", color = colors.text, style = MaterialTheme.typography.titleMedium)
+            Text(L["empty.title"], color = colors.text, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             Text(
-                "Положи файлы .md в $folder — они появятся здесь сами.",
+                L.f("empty.hint", folder),
                 color = colors.dim,
                 style = MaterialTheme.typography.bodyMedium,
             )

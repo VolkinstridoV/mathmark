@@ -29,6 +29,7 @@ class Settings:
         self.folder = DEFAULT_FOLDER
         self.scale = 1.0
         self.theme = "auto"          # auto | light | dark
+        self.lang = "auto"           # auto | en | ru | es
         self.width = 1180
         self.height = 820
         self.sidebar = True
@@ -51,6 +52,8 @@ class Settings:
                     self.scale = min(1.6, max(0.8, float(v)))
                 elif k == "theme" and v in ("auto", "light", "dark"):
                     self.theme = v
+                elif k == "lang" and v in ("auto", "en", "ru", "es"):
+                    self.lang = v
                 elif k == "width":
                     self.width = max(480, int(v))
                 elif k == "height":
@@ -67,6 +70,7 @@ class Settings:
                 f"folder={self.folder}\n"
                 f"scale={self.scale:g}\n"
                 f"theme={self.theme}\n"
+                f"lang={self.lang}\n"
                 f"width={self.width}\n"
                 f"height={self.height}\n"
                 f"sidebar={1 if self.sidebar else 0}\n",

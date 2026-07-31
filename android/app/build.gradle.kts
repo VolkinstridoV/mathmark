@@ -41,6 +41,7 @@ android {
         "src/main/assets",
         "../../shared/reader",
         "../../shared/prompt",
+        "../../shared/i18n",
     )
 
     packaging {

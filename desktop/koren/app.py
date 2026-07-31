@@ -13,21 +13,23 @@ gi.require_version("Adw", "1")
 
 from gi.repository import Adw, Gdk, Gio, Gtk  # noqa: E402
 
+from . import i18n  # noqa: E402
+from .i18n import t  # noqa: E402
 from .settings import Settings  # noqa: E402
 from .window import CSS, KorenWindow  # noqa: E402
 
 APP_ID = "dev.yury.koren"
 
 SHORTCUTS = [
-    ("Ctrl + F", "поиск по всем файлам"),
-    ("Escape", "снять поиск"),
-    ("Ctrl + P", "печать или сохранение в PDF"),
-    ("Ctrl + плюс / минус", "размер текста"),
-    ("Ctrl + 0", "обычный размер"),
-    ("Ctrl + B", "показать или скрыть список файлов"),
-    ("Ctrl + R", "перечитать папку"),
-    ("F11", "во весь экран"),
-    ("Ctrl + Q", "выход"),
+    ("Ctrl + F", "keys.search"),
+    ("Escape", "keys.clearSearch"),
+    ("Ctrl + P", "keys.print"),
+    ("Ctrl + +/−", "keys.zoom"),
+    ("Ctrl + 0", "keys.zoomReset"),
+    ("Ctrl + B", "keys.sidebar"),
+    ("Ctrl + R", "keys.refresh"),
+    ("F11", "keys.fullscreen"),
+    ("Ctrl + Q", "keys.quit"),
 ]
 
 
@@ -35,6 +37,8 @@ class KorenApp(Adw.Application):
     def __init__(self) -> None:
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_OPEN)
         self.st = Settings()
+        # надписи берутся из общей папки переводов — той же, что у телефона
+        i18n.use(self.st.lang)
         self.win: KorenWindow | None = None
 
     def do_startup(self) -> None:
@@ -81,7 +85,7 @@ class KorenApp(Adw.Application):
         add("quit", lambda: (win.close(), self.quit()), "<Ctrl>q")
         add("copy-prompt", win.copy_prompt)
         add("new-folder", lambda: win._ask_name(
-            "Новая папка", "", lambda n: (win.repo.create_folder(n), win.refresh())))
+            t("list.newFolder"), "", lambda n: (win.repo.create_folder(n), win.refresh())))
         add("settings", lambda: self._settings_dialog(win))
         add("shortcuts", lambda: self._shortcuts_dialog(win))
 
@@ -90,12 +94,12 @@ class KorenApp(Adw.Application):
     def _settings_dialog(self, win: KorenWindow) -> None:
         page = Adw.PreferencesPage()
 
-        files = Adw.PreferencesGroup(title="Файлы")
-        folder_row = Adw.ActionRow(title="Папка с математикой", subtitle=win.st.folder)
-        pick = Gtk.Button(label="Выбрать", valign=Gtk.Align.CENTER)
+        files = Adw.PreferencesGroup(title=t("settings.files"))
+        folder_row = Adw.ActionRow(title=t("desk.folderTitle"), subtitle=win.st.folder)
+        pick = Gtk.Button(label=t("desk.pickFolder"), valign=Gtk.Align.CENTER)
 
         def choose(*_):
-            dlg = Gtk.FileDialog(title="Папка с математикой")
+            dlg = Gtk.FileDialog(title=t("desk.folderTitle"))
             dlg.select_folder(win, None, done)
 
         def done(dlg, res):
@@ -112,14 +116,14 @@ class KorenApp(Adw.Application):
         folder_row.add_suffix(pick)
         files.add(folder_row)
         files.add(Adw.ActionRow(
-            title="Что показывается",
-            subtitle="только файлы .md и вложенные папки",
+            title=t("settings.shows"),
+            subtitle=t("settings.showsHint"),
         ))
         page.add(files)
 
-        look = Adw.PreferencesGroup(title="Вид")
-        scale_row = Adw.ActionRow(title="Размер текста",
-                                  subtitle="формулы тянутся вместе с текстом")
+        look = Adw.PreferencesGroup(title=t("settings.view"))
+        scale_row = Adw.ActionRow(title=t("settings.textSize"),
+                                  subtitle=t("settings.textSizeHint"))
         adj = Gtk.Adjustment(value=win.st.scale, lower=0.8, upper=1.6, step_increment=0.05)
         slider = Gtk.Scale(adjustment=adj, hexpand=True, draw_value=False,
                            valign=Gtk.Align.CENTER, width_request=200)
@@ -128,8 +132,10 @@ class KorenApp(Adw.Application):
         look.add(scale_row)
 
         theme_row = Adw.ComboRow(
-            title="Тема",
-            model=Gtk.StringList.new(["как в системе", "светлая", "тёмная"]),
+            title=t("settings.theme"),
+            model=Gtk.StringList.new([
+                t("settings.themeAuto"), t("settings.themeLight"), t("settings.themeDark"),
+            ]),
             selected={"auto": 0, "light": 1, "dark": 2}[win.st.theme],
         )
 
@@ -141,24 +147,45 @@ class KorenApp(Adw.Application):
 
         theme_row.connect("notify::selected", theme_changed)
         look.add(theme_row)
+
+        # язык: флажок и родное название, чтобы не гадать по коду страны
+        codes = ["auto"] + list(i18n.LANGUAGES)
+        lang_row = Adw.ComboRow(
+            title=t("settings.language"),
+            model=Gtk.StringList.new(
+                [t("settings.languageAuto")]
+                + [f"{i18n.FLAGS[c]}  {i18n.NATIVE[c]}" for c in i18n.LANGUAGES]
+            ),
+            selected=codes.index(win.st.lang) if win.st.lang in codes else 0,
+        )
+
+        def lang_changed(row, *_):
+            win.st.lang = codes[row.get_selected()]
+            win.st.save()
+            i18n.use(win.st.lang)
+            win.relabel()
+            dlg.close()
+            self._settings_dialog(win)      # окно настроек тоже на новом языке
+
+        lang_row.connect("notify::selected", lang_changed)
+        look.add(lang_row)
         page.add(look)
 
         ai = Adw.PreferencesGroup(
-            title="Для нейросети",
-            description="Инструкция, как писать файлы для этой программы. "
-                        "Тот же текст лежит внутри версии для телефона.",
+            title=t("settings.ai"),
+            description=t("settings.copyPromptHint"),
         )
-        prompt_row = Adw.ActionRow(title="Скопировать промпт")
-        btn = Gtk.Button(label="Скопировать", valign=Gtk.Align.CENTER)
+        prompt_row = Adw.ActionRow(title=t("settings.copyPrompt"))
+        btn = Gtk.Button(label=t("settings.copyPrompt"), valign=Gtk.Align.CENTER)
         btn.connect("clicked", lambda *_: win.copy_prompt())
         prompt_row.add_suffix(btn)
         ai.add(prompt_row)
         page.add(ai)
 
-        about = Adw.PreferencesGroup(title="О программе")
+        about = Adw.PreferencesGroup(title=t("settings.about"))
         about.add(Adw.ActionRow(
-            title="Корень 1.0",
-            subtitle="формулы рисует KaTeX, интернет не нужен · настройки в ~/.config/koren/koren.conf",
+            title=t("settings.version"),
+            subtitle=t("settings.versionHint") + " · ~/.config/koren/koren.conf",
         ))
         page.add(about)
 
@@ -168,9 +195,9 @@ class KorenApp(Adw.Application):
 
     def _shortcuts_dialog(self, win: KorenWindow) -> None:
         page = Adw.PreferencesPage()
-        group = Adw.PreferencesGroup(title="Горячие клавиши")
+        group = Adw.PreferencesGroup(title=t("desk.shortcuts"))
         for keys, what in SHORTCUTS:
-            row = Adw.ActionRow(title=what)
+            row = Adw.ActionRow(title=t(what))
             label = Gtk.Label(label=keys, valign=Gtk.Align.CENTER)
             label.add_css_class("dim-label")
             label.add_css_class("monospace")

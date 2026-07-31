@@ -13,6 +13,8 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+from .i18n import t
+
 
 @dataclass(frozen=True)
 class Entry:
@@ -219,7 +221,7 @@ class FilesRepo:
         by_text: list[tuple[Path, str]] = []
         for f in self.all_docs():
             if q in f.name.lower():
-                by_name.append((f, "совпадает имя файла"))
+                by_name.append((f, t("search.nameMatch")))
                 continue
             for line in self.read(f).split("\n"):
                 if q in line.lower():

@@ -125,11 +125,18 @@ class MdItemsTest {
     }
 
     @Test
-    fun `подпись склоняет разделы по-русски`() {
-        assertEquals("1 раздел", MdItems.subtitle(MdItems.counts("## а")))
-        assertEquals("2 раздела", MdItems.subtitle(MdItems.counts("## а\n## б")))
-        assertEquals("5 разделов", MdItems.subtitle(MdItems.counts("## а\n".repeat(5))))
-        assertEquals("11 разделов", MdItems.subtitle(MdItems.counts("## а\n".repeat(11))))
+    fun `формы слова считаются по правилам языка`() {
+        assertEquals("one", MdItems.pluralForm(1, "ru"))
+        assertEquals("few", MdItems.pluralForm(2, "ru"))
+        assertEquals("few", MdItems.pluralForm(4, "ru"))
+        assertEquals("many", MdItems.pluralForm(5, "ru"))
+        assertEquals("many", MdItems.pluralForm(11, "ru"))
+        assertEquals("many", MdItems.pluralForm(14, "ru"))
+        assertEquals("one", MdItems.pluralForm(21, "ru"))
+
+        assertEquals("one", MdItems.pluralForm(1, "en"))
+        assertEquals("few", MdItems.pluralForm(2, "en"))
+        assertEquals("few", MdItems.pluralForm(21, "es"))
     }
 
     @Test

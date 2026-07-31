@@ -22,6 +22,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
 
 from . import md_items as md  # noqa: E402
 from .files import Entry, FilesRepo  # noqa: E402
+from .i18n import subtitle, t  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
 from .settings import Settings  # noqa: E402
 
@@ -130,7 +131,7 @@ def glyph_widget(kind: str, size: int = 34) -> Gtk.DrawingArea:
 
 class KorenWindow(Adw.ApplicationWindow):
     def __init__(self, app: Adw.Application, settings: Settings):
-        super().__init__(application=app, title="Корень")
+        super().__init__(application=app, title=t("app.name"))
         self.st = settings
         self.repo = FilesRepo(self.st.folder)
         self.repo.create_root()
@@ -174,25 +175,25 @@ class KorenWindow(Adw.ApplicationWindow):
         view = Adw.ToolbarView()
 
         head = Adw.HeaderBar(show_end_title_buttons=False)
-        self.title_widget = Adw.WindowTitle(title="Корень", subtitle=str(self.repo.root))
+        self.title_widget = Adw.WindowTitle(title=t("app.name"), subtitle=str(self.repo.root))
         head.set_title_widget(self.title_widget)
 
-        self.up_btn = Gtk.Button(icon_name="go-previous-symbolic", tooltip_text="На уровень выше")
+        self.up_btn = Gtk.Button(icon_name="go-previous-symbolic", tooltip_text=t("desk.upOneLevel"))
         self.up_btn.connect("clicked", lambda *_: (self.repo.up(), self.refresh()))
         self.up_btn.set_visible(False)
         head.pack_start(self.up_btn)
 
         menu = Gio.Menu()
-        menu.append("Новая папка", "win.new-folder")
-        menu.append("Обновить", "win.refresh")
-        menu.append("Скопировать промпт", "win.copy-prompt")
-        menu.append("Настройки", "win.settings")
-        menu.append("Горячие клавиши", "win.shortcuts")
+        menu.append(t("list.newFolder"), "win.new-folder")
+        menu.append(t("desk.refresh"), "win.refresh")
+        menu.append(t("settings.copyPrompt"), "win.copy-prompt")
+        menu.append(t("settings.title"), "win.settings")
+        menu.append(t("desk.shortcuts"), "win.shortcuts")
         btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu)
         head.pack_end(btn)
         view.add_top_bar(head)
 
-        self.search = Gtk.SearchEntry(placeholder_text="Поиск по всем файлам")
+        self.search = Gtk.SearchEntry(placeholder_text=t("list.searchHint"))
         self.search.set_margin_start(8)
         self.search.set_margin_end(8)
         self.search.set_margin_bottom(6)
@@ -214,21 +215,21 @@ class KorenWindow(Adw.ApplicationWindow):
         view = Adw.ToolbarView()
         head = Adw.HeaderBar()
 
-        self.toggle = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", tooltip_text="Список файлов")
+        self.toggle = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", tooltip_text=t("desk.fileList"))
         self.toggle.set_active(self.st.sidebar)
         self.toggle.connect("toggled", lambda b: self.split.set_show_sidebar(b.get_active()))
         head.pack_start(self.toggle)
 
-        self.doc_title = Adw.WindowTitle(title="Корень", subtitle="выбери файл слева")
+        self.doc_title = Adw.WindowTitle(title=t("app.name"), subtitle=t("desk.chooseFile"))
         head.set_title_widget(self.doc_title)
 
-        self.toc_btn = Gtk.MenuButton(icon_name="view-list-symbolic", tooltip_text="Разделы")
+        self.toc_btn = Gtk.MenuButton(icon_name="view-list-symbolic", tooltip_text=t("doc.sections"))
         self.toc_pop = Gtk.Popover()
         self.toc_btn.set_popover(self.toc_pop)
         self.toc_btn.set_sensitive(False)
         head.pack_end(self.toc_btn)
 
-        prn = Gtk.Button(icon_name="printer-symbolic", tooltip_text="Печать (Ctrl+P)")
+        prn = Gtk.Button(icon_name="printer-symbolic", tooltip_text=t("desk.print"))
         prn.connect("clicked", lambda *_: self.do_print())
         head.pack_end(prn)
 
@@ -253,7 +254,7 @@ class KorenWindow(Adw.ApplicationWindow):
 
         self.up_btn.set_visible(not self.repo.at_root and not query)
         crumbs = self.repo.crumbs()
-        self.title_widget.set_title("Корень" if self.repo.at_root else self.repo.cwd.name)
+        self.title_widget.set_title(t("app.name") if self.repo.at_root else self.repo.cwd.name)
         self.title_widget.set_subtitle(
             str(self.repo.root) if self.repo.at_root
             else " / ".join(c.name for c in crumbs)
@@ -287,10 +288,10 @@ class KorenWindow(Adw.ApplicationWindow):
 
     def _entry_row(self, entry: Entry) -> Gtk.ListBoxRow:
         if entry.is_folder:
-            row, _ = self._row_shell("folder", entry.name, f"{entry.inside} внутри")
+            row, _ = self._row_shell("folder", entry.name, t("list.inside", entry.inside))
         else:
             c = md.counts(self.repo.read(entry.path))
-            row, col = self._row_shell(c.kind.value, entry.title, md.subtitle(c))
+            row, col = self._row_shell(c.kind.value, entry.title, subtitle(c))
             if c.kind is not md.FileKind.PLAIN:
                 bar = Gtk.ProgressBar(fraction=c.progress)
                 bar.add_css_class("koren-progress")
@@ -304,7 +305,7 @@ class KorenWindow(Adw.ApplicationWindow):
         c = md.counts(self.repo.read(path))
         rel = path.relative_to(self.repo.root).parent
         where = f"{rel} · " if str(rel) != "." else ""
-        row, col = self._row_shell(c.kind.value, path.stem, where + md.subtitle(c))
+        row, col = self._row_shell(c.kind.value, path.stem, where + subtitle(c))
         lbl = Gtk.Label(label=hit, xalign=0, ellipsize=3)
         lbl.add_css_class("koren-hit")
         col.append(lbl)
@@ -345,14 +346,15 @@ class KorenWindow(Adw.ApplicationWindow):
             b.connect("clicked", lambda *_: (pop.popdown(), fn()))
             box.append(b)
 
-        item("Открыть", lambda: self._on_row(None, row))
-        item("Переименовать", lambda: self._ask_name(
-            "Новое имя", entry.title, lambda n: (self.repo.rename(entry, n), self.refresh())))
+        item(t("list.open"), lambda: self._on_row(None, row))
+        item(t("list.rename"), lambda: self._ask_name(
+            t("list.renameTitle"), entry.title,
+            lambda n: (self.repo.rename(entry, n), self.refresh())))
         if not entry.is_folder:
-            item("Переместить в папку", lambda: self._ask_move(entry))
-        item("Показать в проводнике", lambda: Gio.AppInfo.launch_default_for_uri(
+            item(t("list.move"), lambda: self._ask_move(entry))
+        item(t("desk.showInFiles"), lambda: Gio.AppInfo.launch_default_for_uri(
             entry.path.parent.as_uri(), None))
-        item("Удалить", lambda: self._ask_delete(entry), danger=True)
+        item(t("common.delete"), lambda: self._ask_delete(entry), danger=True)
 
         pop.set_child(box)
         pop.set_parent(row)
@@ -362,19 +364,19 @@ class KorenWindow(Adw.ApplicationWindow):
         dlg = Adw.AlertDialog(heading=title)
         entry = Gtk.Entry(text=initial)
         dlg.set_extra_child(entry)
-        dlg.add_response("cancel", "Отмена")
-        dlg.add_response("ok", "Готово")
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("common.done"))
         dlg.set_default_response("ok")
         dlg.set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED)
         dlg.connect("response", lambda _d, r: r == "ok" and done(entry.get_text()))
         dlg.present(self)
 
     def _ask_delete(self, entry: Entry) -> None:
-        what = (f"Папка «{entry.name}» удалится вместе со всем, что внутри."
-                if entry.is_folder else f"Файл «{entry.name}» удалится с диска.")
-        dlg = Adw.AlertDialog(heading="Удалить?", body=what)
-        dlg.add_response("cancel", "Отмена")
-        dlg.add_response("del", "Удалить")
+        what = (t("list.deleteFolder", entry.name) if entry.is_folder
+                else t("list.deleteFile", entry.name))
+        dlg = Adw.AlertDialog(heading=t("list.deleteQ"), body=what)
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("del", t("common.delete"))
         dlg.set_response_appearance("del", Adw.ResponseAppearance.DESTRUCTIVE)
 
         def resp(_d, r):
@@ -391,18 +393,19 @@ class KorenWindow(Adw.ApplicationWindow):
 
     def _ask_move(self, entry: Entry) -> None:
         targets = [self.repo.root] + self.repo.all_folders()
-        dlg = Adw.AlertDialog(heading=f"Куда переместить «{entry.title}»")
+        dlg = Adw.AlertDialog(heading=t("list.moveTo", entry.title))
         lst = Gtk.ListBox(selection_mode=Gtk.SelectionMode.SINGLE)
-        for t in targets:
-            rel = "Корень папки" if t == self.repo.root else str(t.relative_to(self.repo.root))
+        for target in targets:
+            rel = (t("list.moveRoot") if target == self.repo.root
+                   else str(target.relative_to(self.repo.root)))
             r = Gtk.ListBoxRow(child=Gtk.Label(label=rel, xalign=0, margin_top=6, margin_bottom=6,
                                                margin_start=8, margin_end=8))
-            r.target = t
+            r.target = target
             lst.append(r)
         scroll = Gtk.ScrolledWindow(child=lst, min_content_height=220, propagate_natural_height=True)
         dlg.set_extra_child(scroll)
-        dlg.add_response("cancel", "Отмена")
-        dlg.add_response("ok", "Переместить")
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("desk.move"))
         dlg.set_default_response("ok")
 
         def resp(_d, r):
@@ -421,7 +424,7 @@ class KorenWindow(Adw.ApplicationWindow):
         self.text = self.repo.read(self.current)
         c = md.counts(self.text)
         self.doc_title.set_title(self.current.stem)
-        self.doc_title.set_subtitle(md.subtitle(c))
+        self.doc_title.set_subtitle(subtitle(c))
         self._render()
         if self.split.get_collapsed():
             self.split.set_show_sidebar(False)
@@ -435,7 +438,10 @@ class KorenWindow(Adw.ApplicationWindow):
 
     def _render(self) -> None:
         dark = Adw.StyleManager.get_default().get_dark()
-        self._js(f"Koren.setTheme({str(dark).lower()});Koren.setScale({self.st.scale:g});")
+        self._js(
+            f"Koren.setLabels({json.dumps({'empty': t('doc.empty')})});"
+            f"Koren.setTheme({str(dark).lower()});Koren.setScale({self.st.scale:g});"
+        )
         if self.current is None:
             self._js("Koren.render('');")
             self.toc_btn.set_sensitive(False)
@@ -466,7 +472,7 @@ class KorenWindow(Adw.ApplicationWindow):
             mark = md.Mark.of(updated[offset]).name.lower()
             self._js(f"Koren.setMark({offset},'{mark}');")
             c = md.counts(self.text)
-            self.doc_title.set_subtitle(md.subtitle(c))
+            self.doc_title.set_subtitle(subtitle(c))
             self.refresh()
         GLib.timeout_add(700, lambda: self._writing.discard(str(self.current)) or False)
 
@@ -536,9 +542,19 @@ class KorenWindow(Adw.ApplicationWindow):
         self.repo.create_root()
         self.current = None
         self.text = ""
-        self.doc_title.set_title("Корень")
-        self.doc_title.set_subtitle("выбери файл слева")
+        self.doc_title.set_title(t("app.name"))
+        self.doc_title.set_subtitle(t("desk.chooseFile"))
         self._render()
+        self.refresh()
+
+    def relabel(self) -> None:
+        """Переписать надписи после смены языка, не перезапуская программу."""
+        self.search.set_placeholder_text(t("list.searchHint"))
+        if self.current is None:
+            self.doc_title.set_title(t("app.name"))
+            self.doc_title.set_subtitle(t("desk.chooseFile"))
+        else:
+            self.doc_title.set_subtitle(subtitle(md.counts(self.text)))
         self.refresh()
 
     def toast(self, message: str) -> None:
@@ -546,7 +562,7 @@ class KorenWindow(Adw.ApplicationWindow):
 
     def copy_prompt(self) -> None:
         Gdk.Display.get_default().get_clipboard().set(prompt_text())
-        self.toast("Промпт в буфере обмена")
+        self.toast(t("toast.promptCopied"))
 
     def _on_close(self, *_):
         w, h = self.get_default_size()

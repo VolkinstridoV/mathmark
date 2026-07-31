@@ -52,7 +52,7 @@ fun DocScreen(
         Bar(
             colors = colors,
             title = file.name.removeSuffix(".md").removeSuffix(".MD"),
-            subtitle = MdItems.subtitle(counts),
+            subtitle = subtitleOf(counts),
             left = { IconBtn("‹") { onBack() } },
             right = { if (toc.isNotEmpty()) IconBtn("≡") { tocOpen = true } },
         )
@@ -96,6 +96,8 @@ fun DocScreen(
                     webViewClient = object : android.webkit.WebViewClient() {
                         override fun onPageFinished(view: WebView, url: String) {
                             view.evaluateJavascript(
+                                "Koren.setLabels({empty:" +
+                                    JSONObject.quote(L["doc.empty"]) + "});" +
                                 "Koren.setTheme($dark);" +
                                     "Koren.setScale($scale);" +
                                     "Koren.render(${JSONObject.quote(text)});",
@@ -116,7 +118,7 @@ fun DocScreen(
     if (tocOpen) {
         ModalBottomSheet(onDismissRequest = { tocOpen = false }, containerColor = colors.sheet) {
             Text(
-                "Разделы",
+                L["doc.sections"],
                 Modifier.padding(start = 22.dp, end = 22.dp, bottom = 10.dp),
                 color = colors.dim,
                 style = MaterialTheme.typography.labelLarge,

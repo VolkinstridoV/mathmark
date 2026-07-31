@@ -1,6 +1,8 @@
 package dev.yury.koren
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,6 +19,7 @@ import android.widget.Toast
  * Настройки. Всё, что здесь меняется, ложится в `koren.conf` обычным текстом —
  * то же самое можно сделать правкой файла из терминала.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     settings: Settings,
@@ -24,6 +27,8 @@ fun SettingsScreen(
     theme: String,
     scale: Float,
     folder: String,
+    lang: String,
+    onLang: (String) -> Unit,
     onTheme: (String) -> Unit,
     onScale: (Float) -> Unit,
     onFolder: (String) -> Unit,
@@ -39,35 +44,35 @@ fun SettingsScreen(
         if (path != null) onFolder(path)
         else Toast.makeText(
             ctx,
-            "Такую папку не получилось развернуть в путь — впиши вручную",
+            L["toast.folderNotResolved"],
             Toast.LENGTH_LONG,
         ).show()
     }
 
     Column(Modifier.fillMaxSize()) {
-        Bar(colors, "Настройки", left = { IconBtn("‹") { onBack() } })
+        Bar(colors, L["settings.title"], left = { IconBtn("‹") { onBack() } })
 
         Column(Modifier.verticalScroll(rememberScrollState()).padding(bottom = 40.dp)) {
 
-            Group("Файлы", colors)
-            Item("Папка", folder, colors) { picker.launch(folderPickIntent()) }
+            Group(L["settings.files"], colors)
+            Item(L["settings.folder"], folder, colors) { picker.launch(folderPickIntent()) }
             Item(
-                "Вписать путь вручную",
-                "если папка на карте памяти",
+                L["settings.manualPath"],
+                L["settings.manualPathHint"],
                 colors,
             ) { typing = true }
             Item(
-                "Что показывается",
-                "только файлы .md и вложенные папки",
+                L["settings.shows"],
+                L["settings.showsHint"],
                 colors,
                 clickable = false,
             )
 
-            Group("Вид", colors)
+            Group(L["settings.view"], colors)
             Column(Modifier.padding(horizontal = 18.dp, vertical = 12.dp)) {
-                Text("Размер текста", color = colors.text, style = MaterialTheme.typography.titleSmall)
+                Text(L["settings.textSize"], color = colors.text, style = MaterialTheme.typography.titleSmall)
                 Text(
-                    "формулы тянутся вместе с текстом",
+                    L["settings.textSizeHint"],
                     color = colors.dim,
                     style = MaterialTheme.typography.bodySmall,
                 )
@@ -87,39 +92,60 @@ fun SettingsScreen(
             HorizontalDivider(color = colors.divider)
 
             Column(Modifier.padding(horizontal = 18.dp, vertical = 14.dp)) {
-                Text("Тема", color = colors.text, style = MaterialTheme.typography.titleSmall)
+                Text(L["settings.theme"], color = colors.text, style = MaterialTheme.typography.titleSmall)
                 Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Choice("как в системе", theme == "auto", colors) { onTheme("auto") }
-                    Choice("светлая", theme == "light", colors) { onTheme("light") }
-                    Choice("тёмная", theme == "dark", colors) { onTheme("dark") }
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Choice(L["settings.themeAuto"], theme == "auto", colors) { onTheme("auto") }
+                    Choice(L["settings.themeLight"], theme == "light", colors) { onTheme("light") }
+                    Choice(L["settings.themeDark"], theme == "dark", colors) { onTheme("dark") }
                 }
             }
             HorizontalDivider(color = colors.divider)
 
-            Group("Для нейросети", colors)
+            Column(Modifier.padding(horizontal = 18.dp, vertical = 14.dp)) {
+                Text(L["settings.language"], color = colors.text, style = MaterialTheme.typography.titleSmall)
+                Spacer(Modifier.height(10.dp))
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Choice(L["settings.languageAuto"], lang == "auto", colors) { onLang("auto") }
+                    L.LANGUAGES.forEach { code ->
+                        Choice(
+                            "${L.FLAGS[code]}  ${L.NATIVE[code]}",
+                            lang == code, colors,
+                        ) { onLang(code) }
+                    }
+                }
+            }
+            HorizontalDivider(color = colors.divider)
+
+            Group(L["settings.ai"], colors)
             Item(
-                "Скопировать промпт",
-                "инструкция, как писать файлы для этого приложения",
+                L["settings.copyPrompt"],
+                L["settings.copyPromptHint"],
                 colors,
             ) {
-                copyToClipboard(ctx, "Промпт «Корень»", Prompt.text(ctx))
-                Toast.makeText(ctx, "Промпт в буфере обмена", Toast.LENGTH_SHORT).show()
+                copyToClipboard(ctx, L["settings.copyPrompt"], Prompt.text(ctx))
+                Toast.makeText(ctx, L["toast.promptCopied"], Toast.LENGTH_SHORT).show()
             }
             Item(
-                "Запрос из терминала",
+                L["settings.termQuery"],
                 "content query --uri content://dev.yury.koren/prompt",
                 colors,
             ) {
                 copyToClipboard(
                     ctx,
-                    "Запрос",
+                    L["settings.termQuery"],
                     "content query --uri content://dev.yury.koren/prompt",
                 )
-                Toast.makeText(ctx, "Команда в буфере обмена", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, L["toast.commandCopied"], Toast.LENGTH_SHORT).show()
             }
 
-            Group("О программе", colors)
+            Group(L["settings.about"], colors)
             Row(
                 Modifier.fillMaxWidth().padding(18.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -127,9 +153,9 @@ fun SettingsScreen(
                 RootMark(colors, 54.dp)
                 Spacer(Modifier.width(14.dp))
                 Column {
-                    Text("Корень 1.0", color = colors.text, style = MaterialTheme.typography.titleMedium)
+                    Text(L["settings.version"], color = colors.text, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "формулы рисует KaTeX, интернет не нужен",
+                        L["settings.versionHint"],
                         color = colors.dim,
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -140,7 +166,7 @@ fun SettingsScreen(
 
     if (typing) {
         NameDialog(
-            title = "Путь к папке",
+            title = L["list.pathTitle"],
             initial = folder,
             colors = colors,
             onCancel = { typing = false },
@@ -182,15 +208,18 @@ private fun Item(
 
 @Composable
 private fun Choice(label: String, on: Boolean, colors: KorenColors, onClick: () -> Unit) {
+    val text: @Composable () -> Unit = { Text(label, maxLines = 1) }
     if (on) {
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(containerColor = colors.accent),
-        ) { Text(label) }
+            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+        ) { text() }
     } else {
         OutlinedButton(
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.text),
-        ) { Text(label) }
+            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
+        ) { text() }
     }
 }

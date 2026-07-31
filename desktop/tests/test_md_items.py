@@ -106,11 +106,18 @@ def test_половинка_считается_за_половину():
     assert abs(c.progress - 1.5 / 4) < 1e-6
 
 
-def test_подпись_склоняет_разделы_по_русски():
-    assert md.subtitle(md.counts("## а")) == "1 раздел"
-    assert md.subtitle(md.counts("## а\n## б")) == "2 раздела"
-    assert md.subtitle(md.counts("## а\n" * 5)) == "5 разделов"
-    assert md.subtitle(md.counts("## а\n" * 11)) == "11 разделов"
+def test_формы_слова_считаются_по_правилам_языка():
+    assert md.plural_form(1, "ru") == "one"
+    assert md.plural_form(2, "ru") == "few"
+    assert md.plural_form(4, "ru") == "few"
+    assert md.plural_form(5, "ru") == "many"
+    assert md.plural_form(11, "ru") == "many"
+    assert md.plural_form(14, "ru") == "many"
+    assert md.plural_form(21, "ru") == "one"
+
+    assert md.plural_form(1, "en") == "one"
+    assert md.plural_form(2, "en") == "few"
+    assert md.plural_form(21, "es") == "few"
 
 
 def test_формулы_с_долларами_и_скобками_не_ломают_разбор():

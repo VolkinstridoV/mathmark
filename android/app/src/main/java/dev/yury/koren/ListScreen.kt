@@ -12,7 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.clickable
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +50,10 @@ fun ListScreen(
     var moving by remember { mutableStateOf<Entry.Doc?>(null) }
     var newFolder by remember { mutableStateOf(false) }
 
+    var searching by remember { mutableStateOf(false) }
+    var query by remember { mutableStateOf("") }
+    var hits by remember { mutableStateOf(emptyList<Pair<File, String>>()) }
+
     fun refresh() {
         access = hasFilesAccess()
         repo.createRoot()
@@ -54,16 +62,31 @@ fun ListScreen(
         entries = list
         counts = list.filterIsInstance<Entry.Doc>()
             .associate { it.file.path to MdItems.counts(repo.read(it.file)) }
+        if (query.isNotBlank()) {
+            val found = repo.search(query)
+            hits = found
+            counts = counts + found.associate { it.first.path to MdItems.counts(repo.read(it.first)) }
+        } else {
+            hits = emptyList()
+        }
     }
+
+    LaunchedEffect(query) { refresh() }
 
     LaunchedEffect(reload, repo) { refresh() }
 
     // из вложенной папки «назад» поднимает на уровень выше,
     // и только из корня выходит из приложения
-    BackHandler(enabled = !repo.atRoot) { repo.up(); refresh() }
+    BackHandler(enabled = !repo.atRoot || searching) {
+        if (searching) {
+            searching = false; query = ""
+        } else {
+            repo.up(); refresh()
+        }
+    }
 
     val crumbs = repo.crumbs()
-    val title = if (repo.atRoot) "Корень" else here.name
+    val title = if (repo.atRoot) L["list.root"] else here.name
     val sub = if (repo.atRoot) {
         "${repo.root.path} · ${entries.size}"
     } else {
@@ -80,13 +103,42 @@ fun ListScreen(
             } else null,
             right = {
                 Row {
+                    IconBtn("⌕") { searching = !searching; if (!searching) query = "" }
                     IconBtn("+") { newFolder = true }
                     IconBtn("⚙") { onSettings() }
                 }
             },
         )
 
-        if (entries.isEmpty()) {
+        if (searching) {
+            SearchField(query, colors) { query = it }
+        }
+
+        if (searching && query.isNotBlank()) {
+            if (hits.isEmpty()) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        L["list.nothingFound"],
+                        color = colors.dim,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+            } else {
+                LazyColumn(Modifier.fillMaxSize()) {
+                    items(hits, key = { it.first.path }) { (file, hit) ->
+                        HitRow(
+                            file = file,
+                            hit = hit,
+                            root = repo.root,
+                            counts = counts[file.path],
+                            colors = colors,
+                            onClick = { onOpen(file) },
+                        )
+                        HorizontalDivider(color = colors.divider, thickness = 1.dp)
+                    }
+                }
+            }
+        } else if (entries.isEmpty()) {
             EmptyFolder(colors, repo.root.path, access) {
                 openFilesAccessSettings(ctx)
             }
@@ -121,18 +173,18 @@ fun ListScreen(
                 style = MaterialTheme.typography.titleMedium,
             )
             HorizontalDivider(color = colors.divider)
-            SheetItem("Открыть", colors) {
+            SheetItem(L["list.open"], colors) {
                 sheetFor = null
                 when (e) {
                     is Entry.Folder -> { repo.enter(e.file); refresh() }
                     is Entry.Doc -> onOpen(e.file)
                 }
             }
-            SheetItem("Переименовать", colors) { sheetFor = null; renaming = e }
+            SheetItem(L["list.rename"], colors) { sheetFor = null; renaming = e }
             if (e is Entry.Doc) {
-                SheetItem("Переместить в папку", colors) { sheetFor = null; moving = e }
+                SheetItem(L["list.move"], colors) { sheetFor = null; moving = e }
             }
-            SheetItem("Удалить", colors, danger = true) { sheetFor = null; deleting = e }
+            SheetItem(L["common.delete"], colors, danger = true) { sheetFor = null; deleting = e }
             Spacer(Modifier.height(18.dp))
         }
     }
@@ -140,7 +192,7 @@ fun ListScreen(
     // ——— переименование и создание папки ———
     renaming?.let { e ->
         NameDialog(
-            title = "Новое имя",
+            title = L["list.renameTitle"],
             initial = if (e is Entry.Doc) e.title else e.name,
             colors = colors,
             onCancel = { renaming = null },
@@ -154,7 +206,7 @@ fun ListScreen(
 
     if (newFolder) {
         NameDialog(
-            title = "Новая папка",
+            title = L["list.newFolder"],
             initial = "",
             colors = colors,
             onCancel = { newFolder = false },
@@ -171,22 +223,21 @@ fun ListScreen(
         AlertDialog(
             onDismissRequest = { deleting = null },
             containerColor = colors.sheet,
-            title = { Text("Удалить?", color = colors.text) },
+            title = { Text(L["list.deleteQ"], color = colors.text) },
             text = {
                 Text(
-                    if (e is Entry.Folder)
-                        "Папка «${e.name}» удалится вместе со всем, что внутри."
-                    else "Файл «${e.name}» удалится с телефона.",
+                    if (e is Entry.Folder) L.f("list.deleteFolder", e.name)
+                    else L.f("list.deleteFile", e.name),
                     color = colors.dim,
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     repo.delete(e); deleting = null; refresh(); onChanged()
-                }) { Text("Удалить", color = colors.danger) }
+                }) { Text(L["common.delete"], color = colors.danger) }
             },
             dismissButton = {
-                TextButton(onClick = { deleting = null }) { Text("Отмена", color = colors.dim) }
+                TextButton(onClick = { deleting = null }) { Text(L["common.cancel"], color = colors.dim) }
             },
         )
     }
@@ -196,20 +247,98 @@ fun ListScreen(
         val targets = listOf(repo.root) + repo.allFolders()
         ModalBottomSheet(onDismissRequest = { moving = null }, containerColor = colors.sheet) {
             Text(
-                "Куда переместить «${d.title}»",
+                L.f("list.moveTo", d.title),
                 Modifier.padding(start = 22.dp, end = 22.dp, bottom = 12.dp),
                 color = colors.text,
                 style = MaterialTheme.typography.titleMedium,
             )
             HorizontalDivider(color = colors.divider)
             targets.forEach { dir ->
-                val label = if (dir == repo.root) "Корень папки" else
+                val label = if (dir == repo.root) L["list.moveRoot"] else
                     dir.path.removePrefix(repo.root.path + "/")
                 SheetItem(label, colors) {
                     repo.move(d, dir); moving = null; refresh(); onChanged()
                 }
             }
             Spacer(Modifier.height(18.dp))
+        }
+    }
+}
+
+/** Строка ввода поиска — по всем файлам сразу, не только по текущей папке. */
+@Composable
+private fun SearchField(value: String, colors: KorenColors, onChange: (String) -> Unit) {
+    val focus = remember { FocusRequester() }
+    LaunchedEffect(Unit) { focus.requestFocus() }
+    OutlinedTextField(
+        value = value,
+        onValueChange = onChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+            .focusRequester(focus),
+        placeholder = { Text(L["list.searchHint"], color = colors.dim) },
+        singleLine = true,
+        trailingIcon = {
+            if (value.isNotEmpty()) {
+                TextButton(onClick = { onChange("") }) { Text("✕", color = colors.dim) }
+            }
+        },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colors.text,
+            unfocusedTextColor = colors.text,
+            focusedBorderColor = colors.accent,
+            unfocusedBorderColor = colors.divider,
+            cursorColor = colors.accent,
+        ),
+    )
+}
+
+/** Найденный файл: где лежит и строка, в которой совпало. */
+@Composable
+private fun HitRow(
+    file: File,
+    hit: String,
+    root: File,
+    counts: Counts?,
+    colors: KorenColors,
+    onClick: () -> Unit,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 13.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        KindGlyph(counts?.kind ?: FileKind.PLAIN, colors)
+        Spacer(Modifier.width(13.dp))
+        Column(Modifier.weight(1f)) {
+            Text(
+                file.name.removeSuffix(".md").removeSuffix(".MD"),
+                color = colors.text,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            val where = file.parentFile?.path?.removePrefix(root.path)?.trim('/').orEmpty()
+            Text(
+                if (where.isEmpty()) counts?.let { subtitleOf(it) }.orEmpty()
+                else "$where · " + counts?.let { subtitleOf(it) }.orEmpty(),
+                color = colors.dim,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                hit,
+                color = colors.dim,
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily.Monospace,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }
@@ -249,8 +378,8 @@ private fun EntryRow(
             Spacer(Modifier.height(3.dp))
             Text(
                 when (entry) {
-                    is Entry.Folder -> "${entry.items} внутри"
-                    is Entry.Doc -> counts?.let { MdItems.subtitle(it) } ?: ""
+                    is Entry.Folder -> L.f("list.inside", entry.items)
+                    is Entry.Doc -> counts?.let { subtitleOf(it) } ?: ""
                 },
                 color = colors.dim,
                 style = MaterialTheme.typography.bodySmall,
@@ -336,11 +465,11 @@ fun NameDialog(
         },
         confirmButton = {
             TextButton(onClick = { if (value.isNotBlank()) onOk(value) }) {
-                Text("Готово", color = colors.accent)
+                Text(L["common.done"], color = colors.accent)
             }
         },
         dismissButton = {
-            TextButton(onClick = onCancel) { Text("Отмена", color = colors.dim) }
+            TextButton(onClick = onCancel) { Text(L["common.cancel"], color = colors.dim) }
         },
     )
 }

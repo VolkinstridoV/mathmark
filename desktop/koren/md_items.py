@@ -168,24 +168,17 @@ def counts(text: str) -> Counts:
     )
 
 
-def _razdelov(n: int) -> str:
-    if 11 <= n % 100 <= 14:
-        return "разделов"
-    last = n % 10
-    if last == 1:
-        return "раздел"
-    if last in (2, 3, 4):
-        return "раздела"
-    return "разделов"
-
-
-def subtitle(c: Counts) -> str:
-    """Подпись под именем файла в списке."""
-    if c.kind is FileKind.TASKS:
-        return f"{c.tasks_done} из {c.tasks_total} задач"
-    if c.kind is FileKind.TOPICS:
-        return f"пройдено {c.topics_done} из {c.topics_total} тем"
-    if c.kind is FileKind.BOTH:
-        return (f"{c.tasks_done} из {c.tasks_total} задач · "
-                f"{c.topics_done} из {c.topics_total} тем")
-    return f"{c.sections} {_razdelov(c.sections)}" if c.sections else "справочник"
+def plural_form(n: int, lang: str) -> str:
+    """
+    Какая форма слова нужна для числа: у русского три, у английского
+    и испанского две. Правило чистое, без окон, поэтому проверяется тестом.
+    """
+    if lang == "ru":
+        if 11 <= n % 100 <= 14:
+            return "many"
+        if n % 10 == 1:
+            return "one"
+        if n % 10 in (2, 3, 4):
+            return "few"
+        return "many"
+    return "one" if n == 1 else "few"

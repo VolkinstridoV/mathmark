@@ -139,6 +139,44 @@ class FilesRepo(@Volatile var root: File) {
         is Entry.Folder -> entry.file.deleteRecursively()
     }
 
+    /** Все файлы .md во всём дереве — для поиска. */
+    fun allDocs(): List<File> {
+        val out = ArrayList<File>()
+        fun walk(dir: File, depth: Int) {
+            if (depth > 6) return
+            val kids = dir.listFiles()?.filter { !it.name.startsWith(".") } ?: return
+            kids.filter { it.isFile && it.name.endsWith(".md", true) }
+                .sortedBy { it.name.lowercase() }
+                .forEach { out.add(it) }
+            kids.filter { it.isDirectory }
+                .sortedBy { it.name.lowercase() }
+                .forEach { walk(it, depth + 1) }
+        }
+        walk(root, 0)
+        return out
+    }
+
+    /**
+     * Поиск по всем файлам: сначала совпадения в имени, потом в тексте.
+     * Возвращает файл и строку, в которой нашлось.
+     */
+    fun search(query: String, limit: Int = 200): List<Pair<File, String>> {
+        val q = query.trim().lowercase()
+        if (q.isEmpty()) return emptyList()
+        val byName = ArrayList<Pair<File, String>>()
+        val byText = ArrayList<Pair<File, String>>()
+        for (f in allDocs()) {
+            if (f.name.lowercase().contains(q)) {
+                byName.add(f to L["search.nameMatch"])
+                continue
+            }
+            val hit = read(f).lineSequence().firstOrNull { it.lowercase().contains(q) }
+            if (hit != null) byText.add(f to hit.trim().take(120))
+            if (byName.size + byText.size >= limit) break
+        }
+        return byName + byText
+    }
+
     /** Все папки внутри корня — для выбора, куда переместить файл. */
     fun allFolders(): List<File> {
         val out = ArrayList<File>()

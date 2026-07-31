@@ -15,6 +15,12 @@
   var Koren = {};
   window.Koren = Koren;
 
+  /* Надписи страницы приходят снаружи — язык выбирает программа, не страница. */
+  var labels = { empty: '' };
+  Koren.setLabels = function (map) {
+    for (var k in map) labels[k] = map[k];
+  };
+
   /* Одна и та же страница работает и на телефоне, и на компьютере.
      Отличается только способ докричаться до программы:
        Android — объект, положенный внутрь страницы;
@@ -52,6 +58,10 @@
   function inlineFmt(s) {
     return s
       .replace(/`([^`]+)`/g, function (_, c) { return '<code>' + esc(c) + '</code>'; })
+      /* ||любой кусок|| — закрашен, открывается нажатием. Внутри может быть
+         что угодно, включая формулу: она к этому месту уже заглушка. */
+      .replace(/\|\|([^|\n]+)\|\|/g,
+               '<span class="hide" tabindex="0" role="button">$1</span>')
       .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
       .replace(/~~([^~]+)~~/g, '<s>$1</s>')
       .replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1<i>$2</i>');
@@ -179,7 +189,7 @@
 
     var html = out.join('\n').replace(/@@(\d+)@@/g, function (_, n) { return slots[+n]; });
     document.getElementById('doc').innerHTML =
-      html || '<div class="empty">Файл пуст.</div>';
+      html || '<div class="empty">' + esc(labels.empty) + '</div>';
 
     send('onToc', JSON.stringify(toc));
   };
@@ -212,7 +222,13 @@
   }
 
   document.addEventListener('click', function (e) {
-    var box = e.target.closest ? e.target.closest('.box') : null;
+    if (!e.target.closest) return;
+    var hide = e.target.closest('.hide');
+    if (hide) {
+      hide.classList.toggle('open');
+      return;                       // нажатие по закрашенному не отмечает задачу
+    }
+    var box = e.target.closest('.box');
     if (box) fire(box);
   });
 
@@ -222,6 +238,14 @@
     var boxes = Array.prototype.slice.call(document.querySelectorAll('.box'));
     if (!boxes.length) return;
     var here = boxes.indexOf(document.activeElement);
+
+    var act = document.activeElement;
+    if ((e.key === ' ' || e.key === 'Enter') && act && act.classList &&
+        act.classList.contains('hide')) {
+      e.preventDefault();
+      act.classList.toggle('open');
+      return;
+    }
 
     if ((e.key === ' ' || e.key === 'Enter') && here >= 0) {
       e.preventDefault();
