@@ -29,7 +29,7 @@ class PromptProvider : ContentProvider() {
     ): Cursor? {
         if (uri.path?.trimEnd('/') != "/prompt") return null
         val c = MatrixCursor(arrayOf("prompt"))
-        c.addRow(arrayOf(Prompt.TEXT))
+        c.addRow(arrayOf(Prompt.text(context ?: return null)))
         return c
     }
 

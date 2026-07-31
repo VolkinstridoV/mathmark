@@ -103,7 +103,7 @@ fun SettingsScreen(
                 "инструкция, как писать файлы для этого приложения",
                 colors,
             ) {
-                copyToClipboard(ctx, "Промпт «Корень»", Prompt.TEXT)
+                copyToClipboard(ctx, "Промпт «Корень»", Prompt.text(ctx))
                 Toast.makeText(ctx, "Промпт в буфере обмена", Toast.LENGTH_SHORT).show()
             }
             Item(

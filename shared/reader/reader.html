@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="stylesheet" href="katex/katex.min.css">
+<style>
+  :root{
+    --paper:#FCFBFE; --ink:#1B1720; --soft:#6B6279; --rule:#E7E1F1;
+    --accent:#7C3AED; --accent2:#A855F7; --code:#F3EFFA; --quote:#F1ECFA;
+  }
+  html[data-theme=dark]{
+    --paper:#131017; --ink:#E4DFEC; --soft:#9A91AC; --rule:#292235;
+    --accent:#7C3AED; --accent2:#9333EA; --code:#1E1828; --quote:#241E30;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; background:var(--paper); color:var(--ink)}
+  body{
+    font-family:"Noto Serif",Georgia,serif;
+    font-size:calc(16px * var(--sc,1));
+    line-height:1.66;
+    /* на телефоне экран уже этой ширины, на мониторе строка не должна
+       растягиваться через весь экран — глаз теряет начало следующей */
+    max-width:44rem;
+    margin:0 auto;
+    padding:18px 18px calc(64px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:none;
+  }
+  h1{font-size:1.5em; font-weight:700; line-height:1.25; margin:0 0 .35em}
+  h2{font-size:1.18em; font-weight:700; margin:1.7em 0 .5em; padding-bottom:.26em;
+     border-bottom:1px solid var(--rule); color:var(--accent); scroll-margin-top:10px}
+  h3{font-size:1.05em; font-weight:700; margin:1.5em 0 .35em; scroll-margin-top:10px}
+  p{margin:0 0 .95em}
+  hr{border:0; border-top:1px solid var(--rule); margin:1.8em 0}
+  blockquote{margin:1.2em 0; padding:.5em .9em; border-left:3px solid var(--accent);
+             background:var(--quote); border-radius:0 8px 8px 0; color:var(--soft)}
+  blockquote p:last-child{margin:0}
+  code{font-family:"DejaVu Sans Mono",monospace; font-size:.86em; background:var(--code);
+       padding:.12em .35em; border-radius:4px}
+  pre{background:var(--code); padding:11px 13px; border-radius:9px; overflow-x:auto; margin:1.1em 0}
+  pre code{background:none; padding:0}
+  .tw{overflow-x:auto; margin:1.2em 0}
+  table{border-collapse:collapse; width:100%; font-size:.95em}
+  th,td{border-bottom:1px solid var(--rule); padding:.48em .55em; text-align:left}
+  th{color:var(--accent); font-size:.94em; font-weight:700}
+  ul.plain{margin:0 0 1em; padding-left:1.25em}
+  ul.plain li{margin:.2em 0}
+
+  /* отмечаемые строки */
+  ul.marks{list-style:none; margin:0 0 1.1em; padding:0}
+  ul.marks li{display:flex; gap:.7em; align-items:flex-start; padding:.3em 0}
+  .box{flex:0 0 auto; width:23px; height:23px; margin-top:.15em; position:relative;
+       border:1.8px solid var(--soft); display:grid; place-items:center; cursor:pointer;
+       background:var(--paper); transition:background .12s,border-color .12s}
+  .box.task{border-radius:7px}
+  .box:focus{outline:2px solid var(--accent); outline-offset:3px}
+  .box:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+  .box.topic{border-radius:50%}
+  .box svg{width:13px; height:13px; stroke:#fff; stroke-width:2.6; fill:none;
+           stroke-linecap:round; stroke-linejoin:round; opacity:0}
+  li[data-mark=half] .box{
+    border-color:var(--accent);
+    background:linear-gradient(90deg,var(--accent) 50%,transparent 50%);
+  }
+  li[data-mark=done] .box{
+    border-color:transparent;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+  }
+  li[data-mark=done] .box svg{opacity:1}
+  li[data-mark=done] .txt{color:var(--soft)}
+  /* сделанная задача перечёркивается, пройденная тема — нет, она просто гаснет */
+  li[data-kind=task][data-mark=done] .txt{text-decoration:line-through; text-decoration-thickness:1px}
+  .txt{flex:1; min-width:0}
+
+  /* формулы */
+  .katex{font-size:1.04em}
+  .katex .text,.katex .mord.text{font-family:KaTeX_Main,"Noto Serif",serif}
+  .disp{margin:1.2em 0; overflow-x:auto; overflow-y:hidden; padding:.2em 0}
+  .disp .katex-display{margin:0}
+  .bad{color:#D9453D; border-bottom:1px dotted #D9453D}
+  svg.plot{display:block; margin:1.2em auto; max-width:100%; height:auto; color:var(--soft)}
+
+  .empty{padding:56px 20px; text-align:center; color:var(--soft)}
+</style>
+</head>
+<body>
+<div id="doc"></div>
+<script src="katex/katex.min.js"></script>
+<script src="reader.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>dev.yury.koren</id>
+  <name>Корень</name>
+  <summary>Читалка математики в файлах markdown</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+
+  <description>
+    <p>
+      Показывает файлы .md с формулами так, как их печатают в учебниках:
+      интегралы, матрицы, дроби, корни. Задачи и темы отмечаются одним
+      нажатием, при этом в файле меняется ровно один символ — остальное
+      остаётся байт в байт, включая отступы и порядок строк.
+    </p>
+    <p>Формулы рисует KaTeX. Интернет не нужен, своей базы нет.</p>
+  </description>
+
+  <launchable type="desktop-id">dev.yury.koren.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="1.0" date="2026-07-31">
+      <description><p>Первый выпуск.</p></description>
+    </release>
+  </releases>
+</component>

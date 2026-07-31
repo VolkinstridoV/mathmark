@@ -35,6 +35,14 @@ android {
         compose = true
     }
 
+    // страница чтения и KaTeX лежат в общей папке — та же самая, что у десктопа.
+    // Иначе телефон и компьютер со временем начнут рисовать по-разному.
+    sourceSets["main"].assets.srcDirs(
+        "src/main/assets",
+        "../../shared/reader",
+        "../../shared/prompt",
+    )
+
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
