@@ -16,7 +16,7 @@ _HERE = Path(__file__).resolve().parent
 _CANDIDATES = [
     _HERE.parents[1] / "shared",              # запуск из репозитория
     Path("/app/share/mathmark"),                 # Flatpak
-    Path(os.environ.get("KOREN_SHARE", "/usr/share/mathmark")),
+    Path(os.environ.get("MATHMARK_SHARE", "/usr/share/mathmark")),
     Path.home() / ".local/share/mathmark",
 ]
 

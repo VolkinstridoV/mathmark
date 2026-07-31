@@ -1,3 +1,8 @@
 #!/bin/sh
-# Запуск установленной программы: код лежит рядом, общие файлы — в share.
-exec python3 -c 'import sys; sys.path.insert(0, "/app/lib"); from mathmark.app import main; raise SystemExit(main())' "$@"
+# Запуск установленной программы. Код лежит в /usr/lib (обычная установка)
+# или в /app/lib (Flatpak) — берём то, что нашлось.
+exec python3 -c 'import sys
+for d in ("/app/lib", "/usr/lib"):
+    sys.path.insert(0, d)
+from mathmark.app import main
+raise SystemExit(main())' "$@"
