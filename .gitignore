@@ -8,3 +8,8 @@ android/local.properties
 .idea/
 *.iml
 .DS_Store
+
+# готовый APK не храним в репозитории: git держит все версии навсегда.
+# Он выкладывается в Releases.
+apk/
+*.apk

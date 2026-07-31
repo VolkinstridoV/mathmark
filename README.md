@@ -1,259 +1,167 @@
+<div align="center">
+
+<img src="shots/icon.png" width="96" alt="MathMark">
+
 # MathMark
 
-Читалка математики: **телефон и компьютер**, один формат файлов, один рендер.
+**A reader for maths written in Markdown — for the phone and the desktop.**
 
-Приложение под Android: показывает `.md` файлы с математикой из выбранной папки
-и рисует формулы так, как их печатают в учебниках — интегралы, матрицы, дроби,
-корни. Задачи и темы отмечаются тапом, при этом в файле меняется **ровно один
-символ**.
+Formulas look the way they look in textbooks.
+Marking a task changes exactly one byte in your file.
 
-Интернет не нужен: движок формул лежит внутри приложения.
+[Русский](README.ru.md) · [Español](README.es.md)
 
-## Зачем
+<img src="shots/phone-01-list.png" width="230"> <img src="shots/phone-02-doc.png" width="230"> <img src="shots/phone-03-doc-light.png" width="230">
 
-Задачи и шпоры удобно писать текстом — своими руками или нейросетью, — но
-читать их потом негде. Obsidian тяжёлый и превращает файл в свою базу; обычные
-читалки markdown показывают `\int_0^1 \frac{dx}{x}` как есть, набором закорючек;
-PDF из LaTeX верстается под лист A4 и на телефоне его приходится щипать пальцами.
+<img src="shots/20-desktop-doc.png" width="750">
 
-Нужен был узкий инструмент: **показать математику красиво и дать отметить
-пройденное**. Всё остальное по умолчанию не делается.
+</div>
 
-## Как выглядит
+---
+
+## Why
+
+Maths is comfortable to *write* as plain text — by hand or with a language model. Reading it back is where it falls apart.
+
+Plain Markdown readers show `\int_0^1 \frac{dx}{x}` as a row of backslashes. Note systems like Obsidian or Joplin do render formulas, but they want to own your notes: a vault, a database, an account. A PDF built from LaTeX is typeset for a sheet of A4 — on a phone you pinch and drag it forever.
+
+MathMark does two things and refuses to do more: **show the maths properly, and let you mark what you have done.**
+
+## Download
 
 | | |
 |---|---|
-| ![список](shots/01-list-dark.png) | ![чтение](shots/02-doc-dark.png) |
-| Список файлов: значок зависит от того, что внутри | Чтение: формулы, задачи, темы |
-| ![шпора](shots/03-doc-light.png) | ![оглавление](shots/04-toc.png) |
-| Светлая тема | Оглавление — прыжки по разделам |
-| ![настройки](shots/05-settings.png) | ![шторка](shots/06-sheet.png) |
-| Настройки | Долгое нажатие: действия с файлом |
+| **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
+| **Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, or run from source |
 
-## Формат файлов
+No account, no network, no telemetry. The formula engine ships inside the app.
 
-Обычный markdown. Формулы — языком LaTeX между долларами:
+## How a file looks
+
+Ordinary Markdown. Formulas in LaTeX between dollar signs.
 
 ```markdown
-# Матанализ — производные
+# Calculus — derivatives
 
-## Определение
+## Topics
 
-- ( ) Предел разностного отношения      ← ТЕМА, круглые скобки
-- (x) Таблица производных
+- ( ) Difference quotient
+- (x) Table of derivatives
+- (~) Chain rule
 
 $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$
 
-## Задачи
+## Problems
 
-- [x] Вывести производную $f(x)=\sqrt{x^3}$    ← ЗАДАЧА, квадратные скобки
-- [~] Доказать $\dfrac{\partial}{\partial x}(x^{\top}Ax) = 2Ax$
-- [ ] Разобрать случай $f(x)=x^{2/3}$ в нуле
+- [x] Differentiate $f(x)=\sqrt{x^3}$
+- [ ] Prove $\dfrac{\partial}{\partial x}(x^{\top}Ax) = 2Ax$
+
+The answer can be hidden: ||$f'(x) = \tfrac{3}{2}\sqrt{x}$|| — tap to reveal.
 ```
 
-**Скобки задают смысл.** Квадратные — задача, её делают один раз, отмеченная
-перечёркивается. Круглые — тема, её изучают, пройденная не перечёркивается,
-а гаснет: знание не вычёркивают.
+**The brackets carry meaning.**
+`[ ]` is a **problem** — you do it once, and a finished one gets struck through.
+`( )` is a **topic** — you study it, and a finished topic is *not* struck through, it only dims. Knowledge does not get crossed out.
 
-**Три состояния** у обеих: `[ ]` не начато, `[~]` в работе, `[x]` готово.
-Тап по значку переключает их по кругу.
+Both have **three states**: `[ ]` untouched, `[~]` in progress, `[x]` done. Tapping the mark cycles them.
 
-Тип файла объявлять не нужно — приложение считает строки само и по итогу
-выбирает значок в списке: задачник, список тем, смешанный файл или справочник.
+You never declare what a file is. The app counts the lines and picks the icon itself: problem list, topic list, both, or a reference sheet.
 
-Графики и чертежи — встроенным `<svg>` прямо в файле. Ссылок наружу быть не
-должно, интернета у приложения нет.
+## What it does
 
-Полная инструкция для нейросети лежит внутри приложения: **Настройки →
-Скопировать промпт**.
+<div align="center">
+<img src="shots/phone-04b-hidden-open.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-10-reminder.png" width="195">
+</div>
 
-## Главное правило
+- **Formulas, properly.** Fractions, roots of any degree, multiple and contour integrals, sums and products with limits, matrices and determinants, systems, aligned derivations, Greek letters, set and logic symbols, tensor indices, continued fractions, braces under a group of terms. Rendered by [KaTeX](https://katex.org) in Computer Modern — the typeface your textbooks are set in.
+- **Hidden text.** Wrap anything in `||double bars||` and it becomes a plate you tap to reveal. Answers, hints, definitions — whatever you want to recall before you peek.
+- **Search across every file**, by name and by content, showing the line that matched.
+- **Table of contents** built from `##` headings — how you navigate a long cheat sheet.
+- **Progress.** What you closed today, this week, this month, how many days in a row, and a thirty-day chart. Counted from a journal of marks, so it records *when you solved it*, not when you happened to sync.
+- **Reminders** attached to a file, never written into it. Your own wording, daily / weekly / once. Tapping the notification opens that file.
+- **Sync through GitHub**, one button. Marks made on two devices merge, and the more advanced state wins. A genuine text conflict is never resolved behind your back: your version stays, theirs is saved beside it.
+- **Diagrams** as inline `<svg>`, so a plot travels inside the file itself.
+- **Three interface languages**: English, Русский, Español.
 
-Приложение **не перезаписывает файл целиком**. Отметка находит смещение символа
-между скобками и заменяет один байт: пробел на `~`, `~` на `x`, `x` обратно на
-пробел. Все остальные байты — отступы, пустые строки, регистр, порядок строк —
-остаются нетронутыми.
+## The rule that shapes everything
 
-Это важно, потому что те же файлы правит Claude Code с телефона через терминал.
-Если бы приложение разбирало файл в модель и собирало обратно, оно нормализовало
-бы форматирование и правки со стороны терминала поехали бы.
+The app **never rewrites your file.** Marking finds the byte offset of the character between the brackets and replaces that single byte: space → `~` → `x` → space. Every other byte — indentation, blank lines, letter case, the order of lines — stays untouched, and the file length does not change.
 
-Логика вынесена в `MdItems.kt` и покрыта юнит-тестами (`MdItemsTest.kt`) — в том
-числе проверкой, что после отметки в байтах UTF-8 отличается ровно один байт.
+This matters if you also edit those files from a terminal, an editor or an assistant. A program that parsed the file into a model and wrote it back would normalise your formatting and quietly undo work done elsewhere.
 
-## Никакого скрытого состояния
+The logic lives in `MdItems.kt` and `md_items.py` and is covered by unit tests — including one that asserts exactly one byte differs in the UTF-8 output after a mark.
 
-Всё, что делает приложение, можно сделать текстом, и наоборот:
+## Nothing is hidden from the terminal
 
-| Что | Где живёт |
+There is no database. Everything the app knows lives in files you can read and edit:
+
+| What | Where |
 |---|---|
-| отметки | в самих файлах `.md` |
-| настройки | `/data/data/dev.yury.mathmark/files/mathmark.conf`, обычный текст |
-| список файлов | сама папка, реестра внутри приложения нет |
-| инструкция для нейросети | внутри приложения, отдаётся по запросу |
+| marks | inside your own `.md` files |
+| settings | `~/.config/mathmark/mathmark.conf`, plain text |
+| the file list | the folder itself — there is no internal registry |
+| journal of marks | `journal.log`, append-only text |
+| reminders | `reminders.conf`, plain text |
 
-Своей базы нет. Приложение и терминал не мешают друг другу.
+So anything you can do by hand, a script or an assistant working through the terminal can do too — and the other way round. Edit a file from outside and the open document reloads by itself.
 
-## Запрос из терминала
-
-Инструкцию можно получить прямо из приложения, без рута и без файлов на диске:
+The app also hands out its own writing guide on request, so a tool can learn the format without you copying anything:
 
 ```bash
 content query --uri content://dev.yury.mathmark/prompt
 ```
 
-Наружу отдаётся только текст промпта — тот же, что под кнопкой в настройках.
-Ни файлов, ни настроек через этот путь не отдаётся и не меняется.
+On the desktop the same text sits under a button in the settings. It explains the brackets, the three states, hidden text, formulas and diagrams — give it to a language model and the files it writes will render correctly the first time.
 
-## Что умеет
+## Desktop
 
-| | |
-|---|---|
-| Тап по значку | переключить состояние, запись в файл сразу |
-| Тап по файлу | открыть чтение |
-| Долгое нажатие | открыть, переименовать, переместить, удалить |
-| Кнопка «+» | создать папку |
-| Значок «≡» | оглавление по разделам `##` |
-| Настройки | папка, размер текста, тема, промпт |
+<div align="center">
+<img src="shots/21-desktop-search.png" width="370"> <img src="shots/22-desktop-stats.png" width="370">
+</div>
 
-Формулы: дроби, корни любой степени, интегралы кратные и контурные, суммы и
-произведения с пределами, матрицы и определители, системы, многострочные
-выкладки, греческие буквы, множества, кванторы, тензорные индексы, цепные дроби,
-надчёркивания и скобки под группой членов. Не покрываются только чертежи —
-для них `<svg>`.
+The desktop build is the same program, and it draws through the very same page as the phone: `shared/reader/` is used by both, so the two cannot drift apart.
 
-## Данные
-
-Папка `/sdcard/Math`, настраивается. Приложение видит в ней файлы `.md` и
-вложенные папки, файлы по именам не знает — положишь новый, появится сам.
-
-Кодировка UTF-8, переводы строк LF. Запись атомарная: во временный файл, затем
-переименование, — разряд батареи посреди записи не оставит обрезанный файл.
-
-## Настольная версия
-
-Та же программа под Linux. Формулы рисует та же самая страница из `shared/reader/` —
-телефон и компьютер не могут разъехаться по определению.
-
-Чем отличается от телефонной, кроме размера окна:
-
-| | |
-|---|---|
-| Две колонки | список файлов слева, чтение справа |
-| Поиск по всем файлам | по именам и по содержимому, `Ctrl+F` |
-| Клавиатура | `j`/`k` или стрелки по строкам, пробел — отметить |
-| Слежение за папкой | правишь файл в редакторе — окно обновляется само |
-| Печать | `Ctrl+P`, в том числе сохранение шпоры в PDF |
-| Узкое окно | боковая панель уезжает, текст остаётся читаемым |
-
-![компьютер](shots/08-desktop-dark.png)
-
-![поиск](shots/09-desktop-search.png)
-
-Ширина строки ограничена и на широком мониторе не растягивается: растут поля,
-а не строка. Размер и положение окна запоминаются, тема берётся из системы
-и меняется на лету.
-
-### Себе
+What the bigger screen adds: two panes, search across all files, keyboard navigation (`j`/`k` or arrows to move, space to mark), printing and saving a cheat sheet as PDF, and a folder watcher — edit a file in your editor and the window updates on its own. The text column keeps a readable width: widen the window and the margins grow, not the line.
 
 ```bash
-./desktop/install.sh     # кладёт запускалку в ~/.local/bin, ярлык и значок
-mathmark                    # или ярлык в меню
+./desktop/install.sh     # a launcher in ~/.local/bin, plus icon and menu entry
+mathmark
 ```
 
-Код остаётся в репозитории: правишь файл — изменение сразу в деле, пересобирать
-нечего. Настройки — `~/.config/mathmark/mathmark.conf`, обычный текст, те же ключи,
-что на телефоне.
+Needs `gtk4`, `libadwaita`, `webkitgtk-6.0`, `python-gobject`.
 
-Нужны `gtk4`, `libadwaita`, `webkitgtk-6.0`, `python-gobject`.
+## Building
 
-```bash
-python3 -m pytest desktop/tests    # те же 13 проверок побайтовой правки
-```
-
-### Людям
-
-```bash
-flatpak install flathub org.gnome.Platform//49 org.gnome.Sdk//49
-flatpak-builder --force-clean --user --install build desktop/dev.yury.mathmark.yml
-flatpak run dev.yury.mathmark
-```
-
-Flatpak работает на Arch, Fedora, Ubuntu, Mint, Debian, SteamOS — одним пакетом
-на все системы, с обновлениями и с песочницей.
-
-`.deb` и `.rpm` не делаются намеренно: каждый годится только для своего
-семейства систем, а поддерживать пришлось бы все сразу.
-
-## Сборка приложения для телефона
-
-Нужны JDK 21 и Android SDK (`~/Android/Sdk`, платформа 37, средства сборки 36).
+**Android** — JDK 21 and the Android SDK (platform 37):
 
 ```bash
 cd android
-gradle :app:testDebugUnitTest    # тесты побайтовой правки
+gradle :app:testDebugUnitTest
 gradle :app:assembleRelease
 adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 
-Доступ к файлам вне песочницы выдаётся один раз. С рутом — молча:
+The app reads an ordinary folder in shared storage, so it asks for all-files access once. With root you can grant it silently:
 
 ```bash
 adb shell 'su -c "appops set dev.yury.mathmark MANAGE_EXTERNAL_STORAGE allow"'
 ```
 
-Без рута приложение покажет кнопку, открывающую нужный экран настроек.
+**Desktop** — `python3 -m pytest desktop/tests`
 
-Готовый APK лежит в `apk/` и в разделе Releases.
+Both sides carry the same 51 tests: identical rules for parsing, marking, merging, statistics and reminders. If the two implementations ever disagree, the tests fail.
 
-## Устройство проекта
+## Layout
 
 ```
-shared/reader/        страница чтения и KaTeX — общие для телефона и компьютера
-  reader.html         вёрстка и типографика
-  reader.js           разбор markdown и отрисовка формул
-shared/prompt/
-  prompt.md           инструкция для нейросети, одна на обе версии
-
-desktop/
-  mathmark/md_items.py   разбор задач и тем, побайтовая правка (повтор MdItems.kt)
-  mathmark/files.py      папки, файлы, поиск, атомарная запись
-  mathmark/settings.py   настройки текстовым файлом
-  mathmark/paths.py      где лежат общие файлы
-  mathmark/window.py     окно: список, чтение, слежение за папкой
-  mathmark/app.py        действия, горячие клавиши, настройки
-  tests/              те же проверки, что у Kotlin
-  install.sh          установка себе
-  dev.yury.mathmark.yml  сборка Flatpak
-
-android/app/src/main/java/dev/yury/mathmark/
-  MdItems.kt          разбор задач и тем, побайтовая правка (без Android)
-  FilesRepo.kt        папки, файлы, атомарная запись
-  Settings.kt         настройки текстовым файлом
-  Prompt.kt           инструкция для нейросети
-  PromptProvider.kt   отдаёт инструкцию по запросу из терминала
-  Theme.kt            цвета, светлая и тёмная
-  Glyph.kt            значки: задачник, темы, смешанный, справочник, папка
-  MainActivity.kt     состояние и переходы между экранами
-  ListScreen.kt       список папки, шторка действий
-  DocScreen.kt        чтение: шапка, оглавление, мост со страницей
-  SettingsScreen.kt   настройки
-android/app/src/test/ юнит-тесты побайтовой правки
+shared/          used by both builds
+  reader/        the reading page, its typography and KaTeX
+  prompt/        the writing guide handed to language models
+  i18n/          translations, one JSON per language
+android/         Kotlin, Jetpack Compose
+desktop/         Python, GTK4, libadwaita
 ```
 
-## Стек
+## License
 
-Телефон: Kotlin, Jetpack Compose, KaTeX в WebView, AGP 9.3.1, Compose BOM 2026.06.01,
-minSdk 30, target 37. Отдельного плагина `kotlin.android` нет — AGP 9 умеет
-Kotlin сам.
-
-Компьютер: Python, GTK4, libadwaita, KaTeX в WebKitGTK 6.
-
-Формулы рисует KaTeX — тот же движок, что в вебе, шрифтом Computer Modern.
-Свой рендер формул не писался намеренно: растягивание скобок по высоте,
-размеры дробей по уровням вложенности и интервалы между знаками — это работа
-на годы, и она уже сделана.
-
-## Лицензия
-
-MIT, файл `LICENSE`.
+MIT. Do what you like with it.
