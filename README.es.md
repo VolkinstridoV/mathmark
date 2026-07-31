@@ -70,7 +70,7 @@ Nunca declaras qué es un archivo. La aplicación cuenta las líneas y elige el 
 ## Qué hace
 
 <div align="center">
-<img src="shots/phone-04b-hidden-open.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-10-reminder.png" width="195">
+<img src="shots/phone-04-hidden.png" width="195"> <img src="shots/phone-05-search.png" width="195"> <img src="shots/phone-09-stats.png" width="195"> <img src="shots/phone-07-sheet.png" width="195">
 </div>
 
 - **Fórmulas de verdad.** Fracciones, raíces de cualquier índice, integrales múltiples y de contorno, sumas y productos con límites, matrices y determinantes, sistemas, desarrollos alineados, letras griegas, símbolos de conjuntos y lógica, índices tensoriales, fracciones continuas, llaves bajo un grupo de términos. Las dibuja [KaTeX](https://katex.org) en Computer Modern — la tipografía de los libros de matemáticas.
