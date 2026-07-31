@@ -17,6 +17,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 
 from . import i18n  # noqa: E402
 from .i18n import t  # noqa: E402
+from .board import BoardWindow, boards_in  # noqa: E402
 from .settings import Settings  # noqa: E402
 from .window import CSS, MathMarkWindow  # noqa: E402
 
@@ -31,6 +32,7 @@ SHORTCUTS = [
     ("Ctrl + B", "keys.sidebar"),
     ("Ctrl + R", "keys.refresh"),
     ("F11", "keys.fullscreen"),
+    ("Ctrl + D", "keys.board"),
     ("Ctrl + E", "keys.edit"),
     ("Ctrl + N", "keys.newFile"),
     ("Ctrl + S", "keys.sync"),
@@ -95,6 +97,47 @@ class MathMarkApp(Adw.Application):
         dlg.connect("response", done)
         dlg.present(win)
 
+    def open_board(self, parent) -> None:
+        """Доска — отдельное окно. Читалка при этом остаётся открытой."""
+        folder = Path(self.st.folder)
+        existing = boards_in(folder)
+        win = BoardWindow(self, self.st, folder)
+        self._board_actions(win)
+        win.fill_list()
+        if existing:
+            win.open(existing[0])
+        else:
+            win.create(t("board.title"))
+        win.present()
+
+    def _board_actions(self, win) -> None:
+        def add(name, fn, *accels):
+            act = Gio.SimpleAction.new(name, None)
+            act.connect("activate", lambda *_: fn())
+            win.add_action(act)
+            if accels:
+                self.set_accels_for_action(f"win.{name}", list(accels))
+
+        add("board-save", win.save, "<Ctrl>s")
+        add("board-clear", win.clear)
+        add("board-new", lambda: self._ask_board_name(win))
+
+    def _ask_board_name(self, win) -> None:
+        dlg = Adw.AlertDialog(heading=t("board.new"))
+        entry = Gtk.Entry(placeholder_text=t("board.name"))
+        dlg.set_extra_child(entry)
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("common.done"))
+        dlg.set_default_response("ok")
+
+        def done(_d, answer):
+            if answer == "ok" and entry.get_text().strip():
+                win.create(entry.get_text())
+                win.fill_list()
+
+        dlg.connect("response", done)
+        dlg.present(win)
+
     def do_open(self, files, n_files, hint) -> None:
         """Открыть переданный файл: `mathmark шпора.md`."""
         self.do_activate()
@@ -126,6 +169,7 @@ class MathMarkApp(Adw.Application):
         add("copy-prompt", win.copy_prompt)
         add("sync", win.do_sync, "<Ctrl>s")
         add("edit", lambda: win.edit_btn.set_active(not win.edit_btn.get_active()), "<Ctrl>e")
+        add("board", lambda: self.open_board(win), "<Ctrl>d")
         add("new-file", lambda: win._ask_name(
             t("edit.new"), "", win.new_file), "<Ctrl>n")
         add("new-folder", lambda: win._ask_name(

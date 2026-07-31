@@ -230,6 +230,14 @@ class MathMarkWindow(Adw.ApplicationWindow):
         view = Adw.ToolbarView()
         head = Adw.HeaderBar()
 
+        self.board_btn = Gtk.Button(valign=Gtk.Align.CENTER)
+        self.board_btn.set_child(Gtk.Box(spacing=6))
+        self.board_btn.get_child().append(Gtk.Image.new_from_icon_name("view-grid-symbolic"))
+        self.board_btn.get_child().append(Gtk.Label(label=t("board.open")))
+        self.board_btn.add_css_class("suggested-action")
+        self.board_btn.connect("clicked", lambda *_: self.get_application().open_board(self))
+        head.pack_end(self.board_btn)
+
         self.toggle = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", tooltip_text=t("desk.fileList"))
         self.toggle.set_active(self.st.sidebar)
         self.toggle.connect("toggled", lambda b: self.split.set_show_sidebar(b.get_active()))

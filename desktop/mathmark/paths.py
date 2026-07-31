@@ -35,6 +35,10 @@ def reader_html() -> Path:
     return share_dir() / "reader" / "reader.html"
 
 
+def board_html() -> Path:
+    return share_dir() / "board" / "board.html"
+
+
 def links() -> dict:
     """Ссылки наружу — общий файл на обе версии."""
     import json
