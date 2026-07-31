@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "koren"
+rootProject.name = "mathmark"
 include(":app")

@@ -12,12 +12,12 @@
 (function () {
   'use strict';
 
-  var Koren = {};
-  window.Koren = Koren;
+  var MathMark = {};
+  window.MathMark = MathMark;
 
   /* Надписи страницы приходят снаружи — язык выбирает программа, не страница. */
   var labels = { empty: '' };
-  Koren.setLabels = function (map) {
+  MathMark.setLabels = function (map) {
     for (var k in map) labels[k] = map[k];
   };
 
@@ -29,8 +29,8 @@
   function send(name, payload) {
     if (window.Android && typeof window.Android[name] === 'function') {
       window.Android[name](payload);
-    } else if (window.webkit && webkit.messageHandlers && webkit.messageHandlers.koren) {
-      webkit.messageHandlers.koren.postMessage(JSON.stringify({ name: name, payload: payload }));
+    } else if (window.webkit && webkit.messageHandlers && webkit.messageHandlers.mathmark) {
+      webkit.messageHandlers.mathmark.postMessage(JSON.stringify({ name: name, payload: payload }));
     }
   }
 
@@ -77,7 +77,7 @@
 
   function pairs(o, c) { return (o === '[' && c === ']') || (o === '(' && c === ')'); }
 
-  Koren.render = function (src) {
+  MathMark.render = function (src) {
     var slots = [];
     function hold(html) { return '@@' + (slots.push(html) - 1) + '@@'; }
 
@@ -196,25 +196,25 @@
 
   /* Точечное обновление после отметки: перерисовывать весь файл незачем,
      прокрутка осталась бы на месте только случайно. */
-  Koren.setMark = function (off, mark) {
+  MathMark.setMark = function (off, mark) {
     var li = document.querySelector('li[data-off="' + off + '"]');
     if (li) li.setAttribute('data-mark', mark);
   };
 
-  Koren.setTheme = function (dark) {
+  MathMark.setTheme = function (dark) {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   };
 
-  Koren.setScale = function (v) {
+  MathMark.setScale = function (v) {
     document.documentElement.style.setProperty('--sc', v);
   };
 
-  Koren.goto = function (id) {
+  MathMark.goto = function (id) {
     var el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  Koren.top = function () { window.scrollTo(0, 0); };
+  MathMark.top = function () { window.scrollTo(0, 0); };
 
   function fire(box) {
     var off = parseInt(box.getAttribute('data-off'), 10);

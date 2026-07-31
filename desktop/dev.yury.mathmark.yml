@@ -1,0 +1,39 @@
+# Сборка пакета Flatpak — им можно поделиться с людьми на любой системе.
+#
+#   flatpak install flathub org.gnome.Platform//49 org.gnome.Sdk//49
+#   flatpak-builder --force-clean --user --install build desktop/dev.yury.mathmark.yml
+#   flatpak run dev.yury.mathmark
+#
+# Файл собирает и общую папку shared/ — ту же самую, что лежит внутри
+# приложения для телефона.
+
+app-id: dev.yury.mathmark
+runtime: org.gnome.Platform
+runtime-version: '49'
+sdk: org.gnome.Sdk
+command: mathmark
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+  # доступ к документам пользователя: там лежат файлы с математикой
+  - --filesystem=home
+  # печать
+  - --socket=cups
+
+modules:
+  - name: mathmark
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 desktop/mathmark-launcher /app/bin/mathmark
+      - cp -r desktop/mathmark /app/lib/mathmark
+      - mkdir -p /app/share/mathmark
+      - cp -r shared/reader shared/prompt /app/share/mathmark/
+      - install -Dm644 desktop/dev.yury.mathmark.desktop /app/share/applications/dev.yury.mathmark.desktop
+      - install -Dm644 desktop/data/dev.yury.mathmark.svg /app/share/icons/hicolor/scalable/apps/dev.yury.mathmark.svg
+      - install -Dm644 desktop/data/dev.yury.mathmark.metainfo.xml /app/share/metainfo/dev.yury.mathmark.metainfo.xml
+    sources:
+      - type: dir
+        path: ..

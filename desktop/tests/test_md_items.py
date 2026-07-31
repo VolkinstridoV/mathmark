@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from koren import md_items as md   # noqa: E402
+from mathmark import md_items as md   # noqa: E402
 
 SAMPLE = """# Шпора
 

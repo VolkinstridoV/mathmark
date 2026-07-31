@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+Name=MathMark
+GenericName=Math reader
+GenericName[ru]=Читалка математики
+GenericName[es]=Lector de matemáticas
+Comment=Shows .md files with formulas and marks what is done
+Comment[ru]=Показывает файлы .md с формулами и отмечает пройденное
+Comment[es]=Muestra archivos .md con fórmulas y marca lo completado
+Exec=mathmark %f
+Icon=dev.yury.mathmark
+Terminal=false
+Categories=Education;Science;Math;Viewer;
+MimeType=text/markdown;
+Keywords=math;formulas;markdown;LaTeX;tasks;notes;
+Keywords[ru]=математика;формулы;markdown;LaTeX;задачи;шпора;
+Keywords[es]=matemáticas;fórmulas;markdown;LaTeX;tareas;
+StartupNotify=true

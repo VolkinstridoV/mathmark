@@ -1,4 +1,4 @@
-# Корень
+# MathMark
 
 Читалка математики: **телефон и компьютер**, один формат файлов, один рендер.
 
@@ -88,7 +88,7 @@ $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$
 | Что | Где живёт |
 |---|---|
 | отметки | в самих файлах `.md` |
-| настройки | `/data/data/dev.yury.koren/files/koren.conf`, обычный текст |
+| настройки | `/data/data/dev.yury.mathmark/files/mathmark.conf`, обычный текст |
 | список файлов | сама папка, реестра внутри приложения нет |
 | инструкция для нейросети | внутри приложения, отдаётся по запросу |
 
@@ -99,7 +99,7 @@ $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$
 Инструкцию можно получить прямо из приложения, без рута и без файлов на диске:
 
 ```bash
-content query --uri content://dev.yury.koren/prompt
+content query --uri content://dev.yury.mathmark/prompt
 ```
 
 Наружу отдаётся только текст промпта — тот же, что под кнопкой в настройках.
@@ -158,11 +158,11 @@ content query --uri content://dev.yury.koren/prompt
 
 ```bash
 ./desktop/install.sh     # кладёт запускалку в ~/.local/bin, ярлык и значок
-koren                    # или ярлык в меню
+mathmark                    # или ярлык в меню
 ```
 
 Код остаётся в репозитории: правишь файл — изменение сразу в деле, пересобирать
-нечего. Настройки — `~/.config/koren/koren.conf`, обычный текст, те же ключи,
+нечего. Настройки — `~/.config/mathmark/mathmark.conf`, обычный текст, те же ключи,
 что на телефоне.
 
 Нужны `gtk4`, `libadwaita`, `webkitgtk-6.0`, `python-gobject`.
@@ -175,8 +175,8 @@ python3 -m pytest desktop/tests    # те же 13 проверок побайт�
 
 ```bash
 flatpak install flathub org.gnome.Platform//49 org.gnome.Sdk//49
-flatpak-builder --force-clean --user --install build desktop/dev.yury.koren.yml
-flatpak run dev.yury.koren
+flatpak-builder --force-clean --user --install build desktop/dev.yury.mathmark.yml
+flatpak run dev.yury.mathmark
 ```
 
 Flatpak работает на Arch, Fedora, Ubuntu, Mint, Debian, SteamOS — одним пакетом
@@ -199,7 +199,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 Доступ к файлам вне песочницы выдаётся один раз. С рутом — молча:
 
 ```bash
-adb shell 'su -c "appops set dev.yury.koren MANAGE_EXTERNAL_STORAGE allow"'
+adb shell 'su -c "appops set dev.yury.mathmark MANAGE_EXTERNAL_STORAGE allow"'
 ```
 
 Без рута приложение покажет кнопку, открывающую нужный экран настроек.
@@ -216,17 +216,17 @@ shared/prompt/
   prompt.md           инструкция для нейросети, одна на обе версии
 
 desktop/
-  koren/md_items.py   разбор задач и тем, побайтовая правка (повтор MdItems.kt)
-  koren/files.py      папки, файлы, поиск, атомарная запись
-  koren/settings.py   настройки текстовым файлом
-  koren/paths.py      где лежат общие файлы
-  koren/window.py     окно: список, чтение, слежение за папкой
-  koren/app.py        действия, горячие клавиши, настройки
+  mathmark/md_items.py   разбор задач и тем, побайтовая правка (повтор MdItems.kt)
+  mathmark/files.py      папки, файлы, поиск, атомарная запись
+  mathmark/settings.py   настройки текстовым файлом
+  mathmark/paths.py      где лежат общие файлы
+  mathmark/window.py     окно: список, чтение, слежение за папкой
+  mathmark/app.py        действия, горячие клавиши, настройки
   tests/              те же проверки, что у Kotlin
   install.sh          установка себе
-  dev.yury.koren.yml  сборка Flatpak
+  dev.yury.mathmark.yml  сборка Flatpak
 
-android/app/src/main/java/dev/yury/koren/
+android/app/src/main/java/dev/yury/mathmark/
   MdItems.kt          разбор задач и тем, побайтовая правка (без Android)
   FilesRepo.kt        папки, файлы, атомарная запись
   Settings.kt         настройки текстовым файлом

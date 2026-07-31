@@ -10,13 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
-        android:theme="@style/Theme.Koren">
+        android:theme="@style/Theme.MathMark">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="uiMode|orientation|screenSize|screenLayout|density|fontScale"
-            android:theme="@style/Theme.Koren">
+            android:theme="@style/Theme.MathMark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,12 +25,12 @@
 
         <!--
           Отдаёт инструкцию для нейросети по запросу:
-              content query, uri content://dev.yury.koren/prompt
+              content query, uri content://dev.yury.mathmark/prompt
           Наружу уходит только текст промпта. Ни файлов, ни настроек.
         -->
         <provider
             android:name=".PromptProvider"
-            android:authorities="dev.yury.koren"
+            android:authorities="dev.yury.mathmark"
             android:exported="true"
             android:grantUriPermissions="false" />
     </application>

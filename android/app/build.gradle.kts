@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.yury.koren"
+    namespace = "dev.yury.mathmark"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "dev.yury.koren"
+        applicationId = "dev.yury.mathmark"
         minSdk = 30
         targetSdk = 37
         versionCode = 1

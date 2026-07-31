@@ -1,0 +1,3 @@
+#!/bin/sh
+# Запуск установленной программы: код лежит рядом, общие файлы — в share.
+exec python3 -c 'import sys; sys.path.insert(0, "/app/lib"); from mathmark.app import main; raise SystemExit(main())' "$@"
