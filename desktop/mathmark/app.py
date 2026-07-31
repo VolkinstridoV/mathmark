@@ -31,6 +31,8 @@ SHORTCUTS = [
     ("Ctrl + B", "keys.sidebar"),
     ("Ctrl + R", "keys.refresh"),
     ("F11", "keys.fullscreen"),
+    ("Ctrl + E", "keys.edit"),
+    ("Ctrl + N", "keys.newFile"),
     ("Ctrl + S", "keys.sync"),
     ("Ctrl + Q", "keys.quit"),
 ]
@@ -88,6 +90,9 @@ class MathMarkApp(Adw.Application):
         add("quit", lambda: (win.close(), self.quit()), "<Ctrl>q")
         add("copy-prompt", win.copy_prompt)
         add("sync", win.do_sync, "<Ctrl>s")
+        add("edit", lambda: win.edit_btn.set_active(not win.edit_btn.get_active()), "<Ctrl>e")
+        add("new-file", lambda: win._ask_name(
+            t("edit.new"), "", win.new_file), "<Ctrl>n")
         add("new-folder", lambda: win._ask_name(
             t("list.newFolder"), "", lambda n: (win.repo.create_folder(n), win.refresh())))
         add("settings", lambda: self._settings_dialog(win))

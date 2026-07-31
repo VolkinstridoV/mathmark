@@ -38,6 +38,8 @@ fun DocScreen(
     var toc by remember(file) { mutableStateOf(listOf<Pair<String, String>>()) }
     var tocOpen by remember { mutableStateOf(false) }
     var web by remember { mutableStateOf<WebView?>(null) }
+    var editing by remember { mutableStateOf(false) }
+    var clash by remember { mutableStateOf<String?>(null) }   // текст, который спорит с диском
 
     val systemDark = (LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
         Configuration.UI_MODE_NIGHT_YES
@@ -45,16 +47,51 @@ fun DocScreen(
 
     val counts = remember(text) { MdItems.counts(text) }
 
-    // системная кнопка «назад» — это возврат к списку, а не выход из приложения
-    BackHandler { onBack() }
+    /** Надписи редактора: страница их сама не знает, язык выбирает приложение. */
+    fun editLabels(): String = JSONObject().apply {
+        listOf(
+            "edit.save", "edit.cancel", "edit.task", "edit.topic", "edit.hidden",
+            "edit.formula", "edit.matrix", "edit.heading", "edit.plot",
+            "edit.problems", "edit.clean", "edit.matrixSize",
+        ).forEach { put(it, L[it]) }
+    }.toString()
+
+    // из правки «назад» возвращает к чтению, из чтения — к списку
+    BackHandler {
+        if (editing) {
+            editing = false
+            web?.evaluateJavascript("MathMarkEdit.close();", null)
+        } else onBack()
+    }
 
     Column(Modifier.fillMaxSize()) {
         Bar(
             colors = colors,
             title = file.name.removeSuffix(".md").removeSuffix(".MD"),
             subtitle = subtitleOf(counts),
-            left = { IconBtn("‹") { onBack() } },
-            right = { if (toc.isNotEmpty()) IconBtn("≡") { tocOpen = true } },
+            left = {
+                IconBtn("‹") {
+                    if (editing) {
+                        editing = false
+                        web?.evaluateJavascript("MathMarkEdit.close();", null)
+                    } else onBack()
+                }
+            },
+            right = {
+                Row {
+                    if (!editing) {
+                        IconBtn("✎") {
+                            editing = true
+                            web?.evaluateJavascript(
+                                "MathMarkEdit.setLabels(${editLabels()});" +
+                                    "MathMarkEdit.open(${JSONObject.quote(text)});",
+                                null,
+                            )
+                        }
+                    }
+                    if (toc.isNotEmpty() && !editing) IconBtn("≡") { tocOpen = true }
+                }
+            },
         )
 
         AndroidView(
@@ -78,6 +115,31 @@ fun DocScreen(
                                         out.add(o.getString("id") to o.getString("txt"))
                                     }
                                     post { toc = out }
+                                }
+                            },
+                            saveSink = { fresh ->
+                                post {
+                                    val onDisk = repo.read(file)
+                                    if (onDisk != text) {
+                                        clash = fresh          // файл увели из-под нас
+                                    } else if (repo.write(file, fresh)) {
+                                        text = fresh
+                                        editing = false
+                                        evaluateJavascript(
+                                            "MathMarkEdit.close();" +
+                                                "MathMark.render(${JSONObject.quote(fresh)});",
+                                            null,
+                                        )
+                                        android.widget.Toast.makeText(
+                                            ctx, L["edit.saved"], android.widget.Toast.LENGTH_SHORT,
+                                        ).show()
+                                    }
+                                }
+                            },
+                            cancelSink = {
+                                post {
+                                    editing = false
+                                    evaluateJavascript("MathMarkEdit.close();", null)
                                 }
                             },
                             cycleSink = { off ->
@@ -126,6 +188,29 @@ fun DocScreen(
         )
     }
 
+    clash?.let { fresh ->
+        AlertDialog(
+            onDismissRequest = { clash = null },
+            containerColor = colors.sheet,
+            title = { Text(L["edit.title"], color = colors.text) },
+            text = { Text(L["edit.changedOutside"], color = colors.dim) },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (repo.write(file, fresh)) {
+                        text = fresh
+                        editing = false
+                        web?.evaluateJavascript(
+                            "MathMarkEdit.close();MathMark.render(${JSONObject.quote(fresh)});", null)
+                    }
+                    clash = null
+                }) { Text(L["edit.save"], color = colors.danger) }
+            },
+            dismissButton = {
+                TextButton(onClick = { clash = null }) { Text(L["common.cancel"], color = colors.dim) }
+            },
+        )
+    }
+
     if (tocOpen) {
         ModalBottomSheet(onDismissRequest = { tocOpen = false }, containerColor = colors.sheet) {
             Text(
@@ -146,14 +231,22 @@ fun DocScreen(
     }
 }
 
-/** Мост между страницей чтения и приложением. Только два события, оба входящие. */
+/** Мост между страницей и приложением. Наружу уходит текст, обратно — события. */
 private class Bridge(
     private val tocSink: (String) -> Unit,
     private val cycleSink: (Int) -> Unit,
+    private val saveSink: (String) -> Unit,
+    private val cancelSink: () -> Unit,
 ) {
     @JavascriptInterface
     fun onToc(json: String) = tocSink(json)
 
     @JavascriptInterface
     fun onCycle(offset: Int) = cycleSink(offset)
+
+    @JavascriptInterface
+    fun onEditSave(text: String) = saveSink(text)
+
+    @JavascriptInterface
+    fun onEditCancel(ignored: String) = cancelSink()
 }

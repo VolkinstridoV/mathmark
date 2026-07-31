@@ -145,6 +145,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.toc: list[tuple[str, str]] = []
         self._writing: set[str] = set()   # свои записи, чтобы не перечитывать самих себя
         self._syncing = False
+        self._editing = False
         self._monitors: list[Gio.FileMonitor] = []
 
         self.set_default_size(self.st.width, self.st.height)
@@ -195,6 +196,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         head.pack_start(self.up_btn)
 
         menu = Gio.Menu()
+        menu.append(t("edit.new"), "win.new-file")
         menu.append(t("list.newFolder"), "win.new-folder")
         menu.append(t("desk.refresh"), "win.refresh")
         menu.append(t("settings.copyPrompt"), "win.copy-prompt")
@@ -235,6 +237,12 @@ class MathMarkWindow(Adw.ApplicationWindow):
 
         self.doc_title = Adw.WindowTitle(title=t("app.name"), subtitle=t("desk.chooseFile"))
         head.set_title_widget(self.doc_title)
+
+        self.edit_btn = Gtk.ToggleButton(icon_name="document-edit-symbolic",
+                                         tooltip_text=t("edit.title"))
+        self.edit_btn.connect("toggled", self._on_edit_toggled)
+        self.edit_btn.set_sensitive(False)
+        head.pack_end(self.edit_btn)
 
         self.toc_btn = Gtk.MenuButton(icon_name="view-list-symbolic", tooltip_text=t("doc.sections"))
         self.toc_pop = Gtk.Popover()
@@ -447,6 +455,7 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.doc_title.set_title(self.current.stem)
         self.doc_title.set_subtitle(subtitle(c))
         self._render()
+        self.edit_btn.set_sensitive(True)
         if self.split.get_collapsed():
             self.split.set_show_sidebar(False)
 
@@ -469,12 +478,64 @@ class MathMarkWindow(Adw.ApplicationWindow):
             return
         self._js(f"MathMark.render({json.dumps(self.text)});")
 
+    def _edit_labels(self) -> str:
+        keys = ("edit.save", "edit.cancel", "edit.task", "edit.topic", "edit.hidden",
+                "edit.formula", "edit.matrix", "edit.heading", "edit.plot",
+                "edit.problems", "edit.clean", "edit.matrixSize")
+        return json.dumps({k: t(k) for k in keys})
+
+    def _on_edit_toggled(self, btn) -> None:
+        if btn.get_active():
+            if self.current is None:
+                btn.set_active(False)
+                return
+            self._editing = True
+            self._js(f"MathMarkEdit.setLabels({self._edit_labels()});"
+                     f"MathMarkEdit.open({json.dumps(self.text)});")
+        else:
+            self._editing = False
+            self._js("MathMarkEdit.close();")
+
+    def _save_edited(self, fresh: str) -> None:
+        """Сохраняем ровно то, что набрано. Чужие правки молча не затираем."""
+        on_disk = self.repo.read(self.current)
+        if on_disk != self.text:
+            dlg = Adw.AlertDialog(heading=t("edit.title"), body=t("edit.changedOutside"))
+            dlg.add_response("cancel", t("common.cancel"))
+            dlg.add_response("save", t("edit.save"))
+            dlg.set_response_appearance("save", Adw.ResponseAppearance.DESTRUCTIVE)
+            dlg.connect("response", lambda _d, r: r == "save" and self._write_edited(fresh))
+            dlg.present(self)
+            return
+        self._write_edited(fresh)
+
+    def _write_edited(self, fresh: str) -> None:
+        self._writing.add(str(self.current))
+        if self.repo.write(self.current, fresh):
+            self.text = fresh
+            self._editing = False
+            self.edit_btn.set_active(False)
+            self._js(f"MathMarkEdit.close();MathMark.render({json.dumps(fresh)});")
+            self.doc_title.set_subtitle(subtitle(md.counts(fresh)))
+            self.toast(t("edit.saved"))
+            self.refresh()
+        GLib.timeout_add(700, lambda: self._writing.discard(str(self.current)) or False)
+
     def _on_message(self, _ucm, value) -> None:
         try:
             data = json.loads(value.to_string())
         except (ValueError, AttributeError):
             return
         name, payload = data.get("name"), data.get("payload")
+
+        if name == "onEditSave" and self.current is not None:
+            self._save_edited(payload)
+            return
+        if name == "onEditCancel":
+            self._editing = False
+            self.edit_btn.set_active(False)
+            self._js("MathMarkEdit.close();")
+            return
 
         if name == "onToc":
             self.toc = [(h["id"], h["txt"]) for h in json.loads(payload)]
@@ -570,6 +631,22 @@ class MathMarkWindow(Adw.ApplicationWindow):
         app = self.get_application()
         if app is not None:
             app.send_notification(f"rem-{r.path}", note)
+
+    def new_file(self, name: str) -> None:
+        """Создать пустой файл и сразу открыть его на правку."""
+        clean = name.strip()
+        if not clean:
+            return
+        if not clean.lower().endswith(".md"):
+            clean += ".md"
+        path = self.repo.cwd / clean
+        if path.exists():
+            self.toast(clean)
+            return
+        if self.repo.write(path, "# " + clean[:-3] + "\n\n"):
+            self.refresh()
+            self.open_doc(path)
+            self.edit_btn.set_active(True)
 
     def do_sync(self) -> None:
         """

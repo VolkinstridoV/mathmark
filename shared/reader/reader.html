@@ -92,11 +92,88 @@
   .hide:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
   .empty{padding:56px 20px; text-align:center; color:var(--soft)}
+
+  /* ——————————— правка: голый текст, как в редакторе кода ——————————— */
+  :root{
+    --ed-head:#7C3AED; --ed-mark:#2F855A; --ed-math:#B7791F;
+    --ed-hide:#805AD5; --ed-draw:#2B6CB0; --ed-soft:#718096; --ed-bad:#D9453D;
+  }
+  html[data-theme=dark]{
+    --ed-head:#B794F4; --ed-mark:#68D391; --ed-math:#F6C177;
+    --ed-hide:#C4A7F5; --ed-draw:#7FB4E8; --ed-soft:#8A93A5; --ed-bad:#FF6B6B;
+  }
+
+  #edit{display:none; position:fixed; inset:0; background:var(--paper); flex-direction:column; z-index:50}
+  html[data-mode=edit] #edit{display:flex}
+  html[data-mode=edit], html[data-mode=edit] body{overflow:hidden; height:100%}
+  html[data-mode=edit] #doc{display:none}
+
+  #tools{display:flex; gap:6px; overflow-x:auto; padding:8px 8px 6px;
+         border-bottom:1px solid var(--rule); background:var(--paper)}
+  #tools button{flex:0 0 auto; font-family:system-ui,sans-serif; font-size:13px;
+    padding:7px 12px; border-radius:8px; cursor:pointer; white-space:nowrap;
+    color:var(--accent); background:none; border:1px solid var(--rule)}
+  #tools button:active{background:var(--quote)}
+
+  #pane{flex:1; display:flex; min-height:0; overflow:hidden}
+  #hl, #raw{font-family:"DejaVu Sans Mono",monospace; font-size:13.5px; line-height:1.6}
+
+  #wrap{position:relative; flex:1; overflow:hidden}
+  #hl, #raw{position:absolute; inset:0; margin:0; padding:10px 12px; border:0;
+    white-space:pre-wrap; overflow-wrap:break-word; overflow:auto; tab-size:2}
+  #hl{pointer-events:none; color:var(--ink)}
+  #raw{background:transparent; color:transparent; caret-color:var(--accent); resize:none; outline:none}
+
+  .t-head{color:var(--ed-head); font-weight:700}
+  .t-mark{color:var(--ed-mark); font-weight:700}
+  .t-math{color:var(--ed-math)}
+  .t-hide{color:var(--ed-hide); text-decoration:underline; text-decoration-style:dotted}
+  .t-draw{color:var(--ed-draw)}
+  .t-soft{color:var(--ed-soft)}
+  .t-bad{color:var(--ed-bad); text-decoration:underline wavy var(--ed-bad)}
+
+  #status{display:flex; align-items:center; gap:10px; padding:8px 10px;
+    border-top:1px solid var(--rule); font-family:system-ui,sans-serif; font-size:12.5px;
+    color:var(--soft); background:var(--paper)}
+  #status.bad #verdict{color:var(--ed-bad); cursor:pointer; text-decoration:underline}
+  #status .grow{flex:1}
+  #status button{font-family:system-ui,sans-serif; font-size:13px; padding:8px 15px;
+    border-radius:8px; cursor:pointer; border:1px solid var(--rule); background:none; color:var(--ink)}
+  #status button.main{background:var(--accent); color:#fff; border-color:transparent}
+
+  /* меню по слэшу */
+  /* подсказки по слэшу: полоска сверху поля — клавиатура её не закрывает */
+  #slash{position:absolute; left:0; right:0; top:0; z-index:60; display:none;
+    gap:6px; padding:6px; overflow-x:auto; white-space:nowrap;
+    background:var(--sheet, var(--paper)); border-bottom:1px solid var(--rule);
+    box-shadow:0 6px 18px rgba(0,0,0,.22)}
+  #slash.on{display:flex}
+  #slash div{flex:0 0 auto; padding:7px 11px; border-radius:8px; cursor:pointer;
+    font-family:system-ui,sans-serif; font-size:13.5px; color:var(--ink);
+    border:1px solid var(--rule)}
+  #slash div.sel{background:var(--accent); color:#fff; border-color:transparent}
+  #slash div b{font-family:"DejaVu Sans Mono",monospace; opacity:.7; font-weight:400}
 </style>
 </head>
 <body>
 <div id="doc"></div>
+
+<div id="edit">
+  <div id="tools"></div>
+  <div id="pane">
+    <div id="wrap">
+      <pre id="hl"><code></code></pre>
+      <textarea id="raw" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+      <div id="slash"></div>
+    </div>
+  </div>
+  <div id="status">
+    <span id="verdict"></span><span class="grow"></span>
+    <button id="cancel"></button><button id="save" class="main"></button>
+  </div>
+</div>
 <script src="katex/katex.min.js"></script>
 <script src="reader.js"></script>
+<script src="editor.js"></script>
 </body>
 </html>
