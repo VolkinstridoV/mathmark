@@ -18,6 +18,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 from . import i18n  # noqa: E402
 from .i18n import t  # noqa: E402
 from .board import BoardWindow, boards_in  # noqa: E402
+from .writer import WriterWindow  # noqa: E402
 from .settings import Settings  # noqa: E402
 from .window import CSS, MathMarkWindow  # noqa: E402
 
@@ -33,6 +34,7 @@ SHORTCUTS = [
     ("Ctrl + R", "keys.refresh"),
     ("F11", "keys.fullscreen"),
     ("Ctrl + D", "keys.board"),
+    ("Ctrl + M", "keys.write"),
     ("Ctrl + E", "keys.edit"),
     ("Ctrl + N", "keys.newFile"),
     ("Ctrl + S", "keys.sync"),
@@ -110,6 +112,21 @@ class MathMarkApp(Adw.Application):
             win.create(t("board.title"))
         win.present()
 
+    def open_writer(self, parent=None) -> None:
+        """Помогалка по записи. Окно одно на всю программу: второй раз — поднимаем."""
+        if getattr(self, "_writer", None) is not None:
+            self._writer.present()
+            return
+        win = WriterWindow(self, self.st)
+        self._writer = win
+
+        def gone(*_):
+            self._writer = None
+            return False
+
+        win.connect("close-request", gone)
+        win.present()
+
     def _board_actions(self, win) -> None:
         def add(name, fn, *accels):
             act = Gio.SimpleAction.new(name, None)
@@ -118,6 +135,7 @@ class MathMarkApp(Adw.Application):
             if accels:
                 self.set_accels_for_action(f"win.{name}", list(accels))
 
+        add("board-write", lambda: self.open_writer(win), "<Ctrl>m")
         add("board-save", win.save, "<Ctrl>s")
         add("board-clear", win.clear)
         add("board-new", lambda: self._ask_board_name(win))
@@ -170,6 +188,7 @@ class MathMarkApp(Adw.Application):
         add("sync", win.do_sync, "<Ctrl>s")
         add("edit", lambda: win.edit_btn.set_active(not win.edit_btn.get_active()), "<Ctrl>e")
         add("board", lambda: self.open_board(win), "<Ctrl>d")
+        add("write", lambda: self.open_writer(win), "<Ctrl>m")
         add("new-file", lambda: win._ask_name(
             t("edit.new"), "", win.new_file), "<Ctrl>n")
         add("new-folder", lambda: win._ask_name(

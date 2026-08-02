@@ -187,5 +187,15 @@
   "sync.tokenSet": "ключ сохранён",
   "toast.commandCopied": "Команда в буфере обмена",
   "toast.folderNotResolved": "Такую папку не получилось развернуть в путь — впиши вручную",
-  "toast.promptCopied": "Промпт в буфере обмена"
+  "toast.promptCopied": "Промпт в буфере обмена",
+  "write.title": "Как это записать",
+  "write.open": "Как записать",
+  "write.search": "Поиск",
+  "write.pick": "Выберите, что нужно записать",
+  "write.hint": "Слева разделы и поиск. Заполните квадратики — текст соберётся сам.",
+  "write.copy": "Скопировать",
+  "write.copyPlain": "Без долларов",
+  "write.copied": "Скопировано",
+  "write.none": "Ничего не нашлось",
+  "keys.write": "Как это записать"
 }

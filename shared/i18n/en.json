@@ -187,5 +187,15 @@
   "sync.tokenSet": "the key is saved",
   "toast.commandCopied": "Command is in the clipboard",
   "toast.folderNotResolved": "Could not turn that folder into a path — type it by hand",
-  "toast.promptCopied": "Prompt is in the clipboard"
+  "toast.promptCopied": "Prompt is in the clipboard",
+  "write.title": "How to write it",
+  "write.open": "How to write it",
+  "write.search": "Search",
+  "write.pick": "Pick what you need to write",
+  "write.hint": "Sections and search are on the left. Fill the boxes — the text builds itself.",
+  "write.copy": "Copy",
+  "write.copyPlain": "Without dollars",
+  "write.copied": "Copied",
+  "write.none": "Nothing found",
+  "keys.write": "How to write it"
 }

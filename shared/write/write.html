@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../reader/katex/katex.min.css">
+<style>
+  :root{
+    --paper:#FCFBFE; --ink:#1B1720; --soft:#6B6279; --rule:#E7E1F1;
+    --accent:#7C3AED; --sheet:#FFFFFF; --side:#F6F3FB; --slot:#EDE6FB;
+  }
+  html[data-theme=dark]{
+    --paper:#131017; --ink:#E4DFEC; --soft:#9A91AC; --rule:#292235;
+    --accent:#A78BFA; --sheet:#1D1826; --side:#181320; --slot:#2A2138;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; height:100%; background:var(--paper); color:var(--ink);
+            font-family:system-ui,-apple-system,"Segoe UI",sans-serif; font-size:15px}
+  body{display:flex; overflow:hidden}
+
+  /* ——— левая колонка: поиск и список ——— */
+  #side{width:290px; flex:0 0 290px; background:var(--side); border-right:1px solid var(--rule);
+        display:flex; flex-direction:column}
+  #searchbox{padding:10px; border-bottom:1px solid var(--rule)}
+  #search{width:100%; padding:9px 11px; border:1px solid var(--rule); border-radius:10px;
+          background:var(--sheet); color:var(--ink); font-size:14.5px; outline:none}
+  #search:focus{border-color:var(--accent)}
+  #list{flex:1; overflow-y:auto; padding:6px 6px 20px}
+  .sec{margin-top:8px}
+  .sec > h3{margin:0; padding:7px 10px; font-size:12px; font-weight:600; letter-spacing:.04em;
+            text-transform:uppercase; color:var(--soft); cursor:pointer; display:flex;
+            align-items:center; gap:6px; border-radius:8px; user-select:none}
+  .sec > h3:hover{background:var(--rule)}
+  .sec > h3 .ar{transition:transform .12s; font-size:10px; opacity:.7}
+  .sec.closed > h3 .ar{transform:rotate(-90deg)}
+  .sec.closed .body{display:none}
+  .row{padding:7px 12px; border-radius:8px; cursor:pointer; line-height:1.3}
+  .row:hover{background:var(--rule)}
+  .row.on{background:var(--accent); color:#fff}
+  .row small{display:block; font-size:11.5px; opacity:.7}
+  #none{padding:18px 12px; color:var(--soft); font-size:14px}
+
+  /* ——— правая колонка ——— */
+  #main{flex:1; display:flex; flex-direction:column; overflow:hidden}
+  #head{padding:16px 22px 10px; border-bottom:1px solid var(--rule)}
+  #head h2{margin:0; font-size:19px; font-weight:650}
+  #head p{margin:3px 0 0; color:var(--soft); font-size:13px}
+  #view{padding:20px 22px; overflow-y:auto; flex:1}
+
+  #preview{background:var(--sheet); border:1px solid var(--rule); border-radius:14px;
+           padding:22px 18px; text-align:center; overflow-x:auto; min-height:96px;
+           display:flex; align-items:center; justify-content:center; font-size:19px}
+  #preview .katex{font-size:1.25em}
+  #preview.bad{color:#C0392B; font-size:14px; font-family:ui-monospace,monospace}
+
+  #fields{margin-top:18px; display:flex; flex-direction:column; gap:12px}
+  .fld{display:flex; align-items:center; gap:12px}
+  .fld > label{flex:0 0 168px; color:var(--soft); font-size:13.5px; text-align:right}
+  .fld input[type=text], .fld select{
+      flex:1; padding:8px 11px; border:1px solid var(--rule); border-radius:9px;
+      background:var(--sheet); color:var(--ink); font-size:14.5px; outline:none;
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .fld input[type=text]:focus, .fld select:focus{border-color:var(--accent)}
+  .fld .num{display:flex; align-items:center; gap:6px}
+  .fld .num button{width:30px; height:30px; border:1px solid var(--rule); border-radius:8px;
+                   background:var(--sheet); color:var(--ink); cursor:pointer; font-size:16px}
+  .fld .num button:hover{border-color:var(--accent)}
+  .fld .num span{min-width:26px; text-align:center; font-variant-numeric:tabular-nums}
+
+  .grid{display:grid; gap:6px; flex:1}
+  .grid input{padding:7px 8px; border:1px solid var(--rule); border-radius:8px; text-align:center;
+              background:var(--sheet); color:var(--ink); outline:none; min-width:0;
+              font-family:ui-monospace,monospace; font-size:14px}
+  .grid input:focus{border-color:var(--accent)}
+  .fld.top > label{align-self:start; padding-top:8px}
+
+  #out{margin-top:20px}
+  #outtext{width:100%; min-height:64px; padding:11px 13px; border:1px solid var(--rule);
+           border-radius:11px; background:var(--slot); color:var(--ink); resize:vertical;
+           font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13.5px;
+           line-height:1.5; outline:none}
+  #buttons{margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  button.act{padding:10px 18px; border:0; border-radius:11px; background:var(--accent); color:#fff;
+             font-size:14.5px; font-weight:600; cursor:pointer}
+  button.act:hover{filter:brightness(1.08)}
+  button.plain{padding:10px 16px; border:1px solid var(--rule); border-radius:11px;
+               background:var(--sheet); color:var(--ink); font-size:14.5px; cursor:pointer}
+  button.plain:hover{border-color:var(--accent)}
+  #said{color:var(--accent); font-size:13.5px; opacity:0; transition:opacity .15s}
+  #said.on{opacity:1}
+  #empty{color:var(--soft); padding:40px 10px; text-align:center; line-height:1.6}
+
+</style>
+</head>
+<body>
+<div id="side">
+  <div id="searchbox"><input id="search" type="text" spellcheck="false" autocomplete="off"></div>
+  <div id="list"></div>
+</div>
+
+<div id="main">
+  <div id="head"><h2 id="title"></h2><p id="sub"></p></div>
+  <div id="view">
+    <div id="empty"></div>
+    <div id="card" style="display:none">
+      <div id="preview"></div>
+      <div id="fields"></div>
+      <div id="out">
+        <textarea id="outtext" spellcheck="false" readonly></textarea>
+        <div id="buttons">
+          <button class="act" id="copy"></button>
+          <button class="plain" id="copyplain"></button>
+          <span id="said"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../reader/katex/katex.min.js"></script>
+<script src="write.js"></script>
+</body>
+</html>

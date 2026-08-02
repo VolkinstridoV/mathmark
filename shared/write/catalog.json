@@ -1,0 +1,6286 @@
+{
+ "version": 1,
+ "labels": {
+  "a": {
+   "en": "a",
+   "ru": "a",
+   "es": "a"
+  },
+  "b": {
+   "en": "b",
+   "ru": "b",
+   "es": "b"
+  },
+  "c": {
+   "en": "c",
+   "ru": "c",
+   "es": "c"
+  },
+  "n": {
+   "en": "n",
+   "ru": "n",
+   "es": "n"
+  },
+  "k": {
+   "en": "k",
+   "ru": "k",
+   "es": "k"
+  },
+  "x": {
+   "en": "x",
+   "ru": "x",
+   "es": "x"
+  },
+  "num": {
+   "en": "numerator",
+   "ru": "числитель",
+   "es": "numerador"
+  },
+  "den": {
+   "en": "denominator",
+   "ru": "знаменатель",
+   "es": "denominador"
+  },
+  "base": {
+   "en": "base",
+   "ru": "основание",
+   "es": "base"
+  },
+  "power": {
+   "en": "exponent",
+   "ru": "степень",
+   "es": "exponente"
+  },
+  "index": {
+   "en": "index",
+   "ru": "индекс",
+   "es": "índice"
+  },
+  "root": {
+   "en": "root degree",
+   "ru": "степень корня",
+   "es": "índice de la raíz"
+  },
+  "expr": {
+   "en": "expression",
+   "ru": "выражение",
+   "es": "expresión"
+  },
+  "body": {
+   "en": "body",
+   "ru": "тело",
+   "es": "cuerpo"
+  },
+  "lo": {
+   "en": "lower limit",
+   "ru": "нижний предел",
+   "es": "límite inferior"
+  },
+  "hi": {
+   "en": "upper limit",
+   "ru": "верхний предел",
+   "es": "límite superior"
+  },
+  "var": {
+   "en": "variable",
+   "ru": "переменная",
+   "es": "variable"
+  },
+  "to": {
+   "en": "tends to",
+   "ru": "стремится к",
+   "es": "tiende a"
+  },
+  "func": {
+   "en": "function",
+   "ru": "функция",
+   "es": "función"
+  },
+  "rows": {
+   "en": "rows",
+   "ru": "строк",
+   "es": "filas"
+  },
+  "cols": {
+   "en": "columns",
+   "ru": "столбцов",
+   "es": "columnas"
+  },
+  "cells": {
+   "en": "values",
+   "ru": "значения",
+   "es": "valores"
+  },
+  "size": {
+   "en": "size",
+   "ru": "размер",
+   "es": "tamaño"
+  },
+  "name": {
+   "en": "name",
+   "ru": "имя",
+   "es": "nombre"
+  },
+  "left": {
+   "en": "left side",
+   "ru": "слева",
+   "es": "izquierda"
+  },
+  "right": {
+   "en": "right side",
+   "ru": "справа",
+   "es": "derecha"
+  },
+  "cond": {
+   "en": "condition",
+   "ru": "условие",
+   "es": "condición"
+  },
+  "lines": {
+   "en": "lines",
+   "ru": "строк",
+   "es": "líneas"
+  },
+  "text": {
+   "en": "text",
+   "ru": "текст",
+   "es": "texto"
+  },
+  "set": {
+   "en": "set",
+   "ru": "множество",
+   "es": "conjunto"
+  },
+  "elem": {
+   "en": "element",
+   "ru": "элемент",
+   "es": "elemento"
+  },
+  "event": {
+   "en": "event",
+   "ru": "событие",
+   "es": "evento"
+  },
+  "brackets": {
+   "en": "brackets",
+   "ru": "скобки",
+   "es": "paréntesis"
+  },
+  "letter": {
+   "en": "letter",
+   "ru": "буква",
+   "es": "letra"
+  },
+  "sign": {
+   "en": "sign",
+   "ru": "знак",
+   "es": "signo"
+  },
+  "acc": {
+   "en": "mark",
+   "ru": "знак сверху",
+   "es": "marca"
+  },
+  "angle": {
+   "en": "angle",
+   "ru": "угол",
+   "es": "ángulo"
+  },
+  "pt": {
+   "en": "points",
+   "ru": "точки",
+   "es": "puntos"
+  },
+  "dim": {
+   "en": "dimension",
+   "ru": "размерность",
+   "es": "dimensión"
+  },
+  "mat": {
+   "en": "matrix",
+   "ru": "матрица",
+   "es": "matriz"
+  },
+  "vec": {
+   "en": "vector",
+   "ru": "вектор",
+   "es": "vector"
+  },
+  "op": {
+   "en": "operation",
+   "ru": "операция",
+   "es": "operación"
+  },
+  "color": {
+   "en": "colour",
+   "ru": "цвет",
+   "es": "color"
+  },
+  "width": {
+   "en": "width",
+   "ru": "ширина",
+   "es": "ancho"
+  },
+  "den2": {
+   "en": "second denominator",
+   "ru": "второй знаменатель",
+   "es": "segundo denominador"
+  },
+  "var2": {
+   "en": "second variable",
+   "ru": "вторая переменная",
+   "es": "segunda variable"
+  },
+  "hi2": {
+   "en": "second upper limit",
+   "ru": "второй верхний предел",
+   "es": "segundo límite superior"
+  },
+  "side": {
+   "en": "side",
+   "ru": "сторона",
+   "es": "lado"
+  },
+  "y": {
+   "en": "y",
+   "ru": "y",
+   "es": "y"
+  },
+  "z": {
+   "en": "z",
+   "ru": "z",
+   "es": "z"
+  },
+  "func2": {
+   "en": "second function",
+   "ru": "вторая функция",
+   "es": "segunda función"
+  },
+  "event2": {
+   "en": "second event",
+   "ru": "второе событие",
+   "es": "segundo suceso"
+  }
+ },
+ "sections": [
+  {
+   "id": "basic",
+   "n": {
+    "en": "Basics",
+    "ru": "Основы",
+    "es": "Fundamentos"
+   }
+  },
+  {
+   "id": "greek",
+   "n": {
+    "en": "Greek letters",
+    "ru": "Греческие буквы",
+    "es": "Letras griegas"
+   }
+  },
+  {
+   "id": "ops",
+   "n": {
+    "en": "Signs and operators",
+    "ru": "Знаки и операторы",
+    "es": "Signos y operadores"
+   }
+  },
+  {
+   "id": "rel",
+   "n": {
+    "en": "Relations and arrows",
+    "ru": "Отношения и стрелки",
+    "es": "Relaciones y flechas"
+   }
+  },
+  {
+   "id": "sums",
+   "n": {
+    "en": "Sums, products, limits",
+    "ru": "Суммы, произведения, пределы",
+    "es": "Sumas, productos, límites"
+   }
+  },
+  {
+   "id": "calc",
+   "n": {
+    "en": "Derivatives, integrals",
+    "ru": "Производные и интегралы",
+    "es": "Derivadas e integrales"
+   }
+  },
+  {
+   "id": "matrix",
+   "n": {
+    "en": "Matrices, determinants",
+    "ru": "Матрицы и определители",
+    "es": "Matrices y determinantes"
+   }
+  },
+  {
+   "id": "vector",
+   "n": {
+    "en": "Vectors",
+    "ru": "Векторы",
+    "es": "Vectores"
+   }
+  },
+  {
+   "id": "linalg",
+   "n": {
+    "en": "Linear algebra",
+    "ru": "Линейная алгебра",
+    "es": "Álgebra lineal"
+   }
+  },
+  {
+   "id": "sys",
+   "n": {
+    "en": "Systems and cases",
+    "ru": "Системы и случаи",
+    "es": "Sistemas y casos"
+   }
+  },
+  {
+   "id": "sets",
+   "n": {
+    "en": "Sets and logic",
+    "ru": "Множества и логика",
+    "es": "Conjuntos y lógica"
+   }
+  },
+  {
+   "id": "func",
+   "n": {
+    "en": "Functions",
+    "ru": "Функции",
+    "es": "Funciones"
+   }
+  },
+  {
+   "id": "complex",
+   "n": {
+    "en": "Complex numbers",
+    "ru": "Комплексные числа",
+    "es": "Números complejos"
+   }
+  },
+  {
+   "id": "prob",
+   "n": {
+    "en": "Probability, statistics",
+    "ru": "Вероятность и статистика",
+    "es": "Probabilidad y estadística"
+   }
+  },
+  {
+   "id": "geom",
+   "n": {
+    "en": "Geometry",
+    "ru": "Геометрия",
+    "es": "Geometría"
+   }
+  },
+  {
+   "id": "series",
+   "n": {
+    "en": "Series and sequences",
+    "ru": "Ряды и последовательности",
+    "es": "Series y sucesiones"
+   }
+  },
+  {
+   "id": "accent",
+   "n": {
+    "en": "Marks and brackets",
+    "ru": "Знаки сверху и скобки",
+    "es": "Marcas y paréntesis"
+   }
+  },
+  {
+   "id": "layout",
+   "n": {
+    "en": "Layout",
+    "ru": "Оформление",
+    "es": "Composición"
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "frac",
+   "s": "basic",
+   "n": {
+    "en": "Fraction",
+    "ru": "Дробь",
+    "es": "Fracción"
+   },
+   "k": {
+    "en": "fraction over divide ratio",
+    "ru": "дробь деление отношение черта",
+    "es": "fracción división razón"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "num",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "den",
+     "d": ""
+    }
+   ],
+   "tpl": "\\frac{#a}{#b}"
+  },
+  {
+   "id": "dfrac",
+   "s": "basic",
+   "n": {
+    "en": "Big fraction",
+    "ru": "Крупная дробь",
+    "es": "Fracción grande"
+   },
+   "k": {
+    "en": "big fraction display",
+    "ru": "крупная большая дробь в строке",
+    "es": "fracción grande"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "num",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "den",
+     "d": ""
+    }
+   ],
+   "tpl": "\\dfrac{#a}{#b}"
+  },
+  {
+   "id": "cfrac",
+   "s": "basic",
+   "n": {
+    "en": "Continued fraction",
+    "ru": "Цепная дробь",
+    "es": "Fracción continua"
+   },
+   "k": {
+    "en": "continued fraction nested",
+    "ru": "цепная непрерывная дробь многоэтажная",
+    "es": "fracción continua"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "num",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "den",
+     "d": ""
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "den2",
+     "d": ""
+    }
+   ],
+   "tpl": "\\cfrac{#a}{#b + \\cfrac{1}{#c}}"
+  },
+  {
+   "id": "pow",
+   "s": "basic",
+   "n": {
+    "en": "Power",
+    "ru": "Степень",
+    "es": "Potencia"
+   },
+   "k": {
+    "en": "power exponent square cube superscript",
+    "ru": "степень возведение квадрат куб верхний индекс",
+    "es": "potencia exponente cuadrado cubo"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "base",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "power",
+     "d": ""
+    }
+   ],
+   "tpl": "#a^{#b}"
+  },
+  {
+   "id": "sub",
+   "s": "basic",
+   "n": {
+    "en": "Subscript",
+    "ru": "Нижний индекс",
+    "es": "Subíndice"
+   },
+   "k": {
+    "en": "subscript index below",
+    "ru": "нижний индекс подстрочный",
+    "es": "subíndice"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "base",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "index",
+     "d": ""
+    }
+   ],
+   "tpl": "#a_{#b}"
+  },
+  {
+   "id": "subsup",
+   "s": "basic",
+   "n": {
+    "en": "Index and power",
+    "ru": "Индекс и степень",
+    "es": "Índice y potencia"
+   },
+   "k": {
+    "en": "subscript superscript both",
+    "ru": "индекс и степень вместе",
+    "es": "subíndice y exponente"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "base",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "index",
+     "d": ""
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "power",
+     "d": ""
+    }
+   ],
+   "tpl": "#a_{#b}^{#c}"
+  },
+  {
+   "id": "sqrt",
+   "s": "basic",
+   "n": {
+    "en": "Square root",
+    "ru": "Квадратный корень",
+    "es": "Raíz cuadrada"
+   },
+   "k": {
+    "en": "square root radical",
+    "ru": "квадратный корень радикал извлечь",
+    "es": "raíz cuadrada radical"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\sqrt{#a}"
+  },
+  {
+   "id": "nroot",
+   "s": "basic",
+   "n": {
+    "en": "n-th root",
+    "ru": "Корень степени n",
+    "es": "Raíz n-ésima"
+   },
+   "k": {
+    "en": "nth root cube radical degree",
+    "ru": "корень степени кубический n-й",
+    "es": "raíz n-ésima cúbica"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "text",
+     "l": "root",
+     "d": "3"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\sqrt[#n]{#a}"
+  },
+  {
+   "id": "binom",
+   "s": "basic",
+   "n": {
+    "en": "Binomial coefficient",
+    "ru": "Число сочетаний",
+    "es": "Coeficiente binomial"
+   },
+   "k": {
+    "en": "binomial coefficient choose combinations",
+    "ru": "сочетания биномиальный коэффициент из по",
+    "es": "binomial combinaciones"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": ""
+    },
+    {
+     "id": "k",
+     "t": "text",
+     "l": "k",
+     "d": ""
+    }
+   ],
+   "tpl": "\\binom{#n}{#k}"
+  },
+  {
+   "id": "abs",
+   "s": "basic",
+   "n": {
+    "en": "Absolute value",
+    "ru": "Модуль",
+    "es": "Valor absoluto"
+   },
+   "k": {
+    "en": "absolute value modulus magnitude",
+    "ru": "модуль абсолютная величина",
+    "es": "valor absoluto módulo"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\left| #a \\right|"
+  },
+  {
+   "id": "norm",
+   "s": "basic",
+   "n": {
+    "en": "Norm",
+    "ru": "Норма",
+    "es": "Norma"
+   },
+   "k": {
+    "en": "norm length magnitude",
+    "ru": "норма длина",
+    "es": "norma longitud"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\left\\| #a \\right\\|"
+  },
+  {
+   "id": "floor",
+   "s": "basic",
+   "n": {
+    "en": "Floor",
+    "ru": "Целая часть вниз",
+    "es": "Parte entera inferior"
+   },
+   "k": {
+    "en": "floor integer part round down",
+    "ru": "целая часть пол округление вниз антье",
+    "es": "parte entera suelo"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\left\\lfloor #a \\right\\rfloor"
+  },
+  {
+   "id": "ceil",
+   "s": "basic",
+   "n": {
+    "en": "Ceiling",
+    "ru": "Целая часть вверх",
+    "es": "Parte entera superior"
+   },
+   "k": {
+    "en": "ceiling round up",
+    "ru": "потолок округление вверх",
+    "es": "techo redondeo"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": ""
+    }
+   ],
+   "tpl": "\\left\\lceil #a \\right\\rceil"
+  },
+  {
+   "id": "interval",
+   "s": "basic",
+   "n": {
+    "en": "Interval",
+    "ru": "Промежуток",
+    "es": "Intervalo"
+   },
+   "k": {
+    "en": "interval segment closed open range",
+    "ru": "промежуток интервал отрезок полуинтервал",
+    "es": "intervalo segmento"
+   },
+   "f": [
+    {
+     "id": "kind",
+     "t": "choice",
+     "l": "brackets",
+     "o": [
+      {
+       "v": "[]",
+       "n": {
+        "en": "closed [a, b]",
+        "ru": "отрезок [a, b]",
+        "es": "cerrado [a, b]"
+       }
+      },
+      {
+       "v": "()",
+       "n": {
+        "en": "open (a, b)",
+        "ru": "интервал (a, b)",
+        "es": "abierto (a, b)"
+       }
+      },
+      {
+       "v": "[)",
+       "n": {
+        "en": "half [a, b)",
+        "ru": "полуинтервал [a, b)",
+        "es": "semiabierto [a, b)"
+       }
+      },
+      {
+       "v": "(]",
+       "n": {
+        "en": "half (a, b]",
+        "ru": "полуинтервал (a, b]",
+        "es": "semiabierto (a, b]"
+       }
+      }
+     ],
+     "d": "[]"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": ""
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": ""
+    }
+   ],
+   "tpl": "#kind:a,b"
+  },
+  {
+   "id": "pct",
+   "s": "basic",
+   "n": {
+    "en": "Percent",
+    "ru": "Проценты",
+    "es": "Porcentaje"
+   },
+   "k": {
+    "en": "percent per cent",
+    "ru": "процент проценты",
+    "es": "porcentaje por ciento"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "50"
+    }
+   ],
+   "tpl": "#a\\%"
+  },
+  {
+   "id": "degree",
+   "s": "basic",
+   "n": {
+    "en": "Degrees",
+    "ru": "Градусы",
+    "es": "Grados"
+   },
+   "k": {
+    "en": "degree angle celsius",
+    "ru": "градус градусы угол",
+    "es": "grado grados"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "30"
+    }
+   ],
+   "tpl": "#a^{\\circ}"
+  },
+  {
+   "id": "greek",
+   "s": "greek",
+   "n": {
+    "en": "Greek letter",
+    "ru": "Греческая буква",
+    "es": "Letra griega"
+   },
+   "k": {
+    "en": "greek letter alphabet α alpha β beta γ gamma δ delta ε epsilon ε varepsilon ζ zeta η eta θ theta ϑ vartheta ι iota κ kappa λ lambda μ mu ν nu ξ xi π pi ρ rho σ sigma τ tau υ upsilon ϕ phi φ varphi χ chi ψ psi ω omega Γ Gamma Δ Delta Θ Theta Λ Lambda Ξ Xi Π Pi Σ Sigma Υ Upsilon Φ Phi Ψ Psi Ω Omega",
+    "ru": "греческая буква алфавит альфа бета гамма дельта эпсилон эпсилон дзета эта тета тета йота каппа лямбда мю ню кси пи ро сигма тау ипсилон фи фи хи пси омега гамма большая дельта большая приращение тета большая лямбда большая кси большая пи большая произведение сигма большая сумма ипсилон большая фи большая пси большая омега большая ом",
+    "es": "letra griega alfabeto alfa beta gamma delta épsilon épsilon dseta eta theta theta iota kappa lambda mu nu xi pi ro sigma tau ípsilon fi fi ji psi omega Gamma Delta Theta Lambda Xi Pi Sigma Ípsilon Fi Psi Omega"
+   },
+   "f": [
+    {
+     "id": "l",
+     "t": "choice",
+     "l": "letter",
+     "o": [
+      {
+       "v": "\\alpha",
+       "n": {
+        "en": "α alpha",
+        "ru": "альфа",
+        "es": "alfa"
+       }
+      },
+      {
+       "v": "\\beta",
+       "n": {
+        "en": "β beta",
+        "ru": "бета",
+        "es": "beta"
+       }
+      },
+      {
+       "v": "\\gamma",
+       "n": {
+        "en": "γ gamma",
+        "ru": "гамма",
+        "es": "gamma"
+       }
+      },
+      {
+       "v": "\\delta",
+       "n": {
+        "en": "δ delta",
+        "ru": "дельта",
+        "es": "delta"
+       }
+      },
+      {
+       "v": "\\epsilon",
+       "n": {
+        "en": "ε epsilon",
+        "ru": "эпсилон",
+        "es": "épsilon"
+       }
+      },
+      {
+       "v": "\\varepsilon",
+       "n": {
+        "en": "ε varepsilon",
+        "ru": "эпсилон",
+        "es": "épsilon"
+       }
+      },
+      {
+       "v": "\\zeta",
+       "n": {
+        "en": "ζ zeta",
+        "ru": "дзета",
+        "es": "dseta"
+       }
+      },
+      {
+       "v": "\\eta",
+       "n": {
+        "en": "η eta",
+        "ru": "эта",
+        "es": "eta"
+       }
+      },
+      {
+       "v": "\\theta",
+       "n": {
+        "en": "θ theta",
+        "ru": "тета",
+        "es": "theta"
+       }
+      },
+      {
+       "v": "\\vartheta",
+       "n": {
+        "en": "ϑ vartheta",
+        "ru": "тета",
+        "es": "theta"
+       }
+      },
+      {
+       "v": "\\iota",
+       "n": {
+        "en": "ι iota",
+        "ru": "йота",
+        "es": "iota"
+       }
+      },
+      {
+       "v": "\\kappa",
+       "n": {
+        "en": "κ kappa",
+        "ru": "каппа",
+        "es": "kappa"
+       }
+      },
+      {
+       "v": "\\lambda",
+       "n": {
+        "en": "λ lambda",
+        "ru": "лямбда",
+        "es": "lambda"
+       }
+      },
+      {
+       "v": "\\mu",
+       "n": {
+        "en": "μ mu",
+        "ru": "мю",
+        "es": "mu"
+       }
+      },
+      {
+       "v": "\\nu",
+       "n": {
+        "en": "ν nu",
+        "ru": "ню",
+        "es": "nu"
+       }
+      },
+      {
+       "v": "\\xi",
+       "n": {
+        "en": "ξ xi",
+        "ru": "кси",
+        "es": "xi"
+       }
+      },
+      {
+       "v": "\\pi",
+       "n": {
+        "en": "π pi",
+        "ru": "пи",
+        "es": "pi"
+       }
+      },
+      {
+       "v": "\\rho",
+       "n": {
+        "en": "ρ rho",
+        "ru": "ро",
+        "es": "ro"
+       }
+      },
+      {
+       "v": "\\sigma",
+       "n": {
+        "en": "σ sigma",
+        "ru": "сигма",
+        "es": "sigma"
+       }
+      },
+      {
+       "v": "\\tau",
+       "n": {
+        "en": "τ tau",
+        "ru": "тау",
+        "es": "tau"
+       }
+      },
+      {
+       "v": "\\upsilon",
+       "n": {
+        "en": "υ upsilon",
+        "ru": "ипсилон",
+        "es": "ípsilon"
+       }
+      },
+      {
+       "v": "\\phi",
+       "n": {
+        "en": "ϕ phi",
+        "ru": "фи",
+        "es": "fi"
+       }
+      },
+      {
+       "v": "\\varphi",
+       "n": {
+        "en": "φ varphi",
+        "ru": "фи",
+        "es": "fi"
+       }
+      },
+      {
+       "v": "\\chi",
+       "n": {
+        "en": "χ chi",
+        "ru": "хи",
+        "es": "ji"
+       }
+      },
+      {
+       "v": "\\psi",
+       "n": {
+        "en": "ψ psi",
+        "ru": "пси",
+        "es": "psi"
+       }
+      },
+      {
+       "v": "\\omega",
+       "n": {
+        "en": "ω omega",
+        "ru": "омега",
+        "es": "omega"
+       }
+      },
+      {
+       "v": "\\Gamma",
+       "n": {
+        "en": "Γ Gamma",
+        "ru": "гамма большая",
+        "es": "Gamma"
+       }
+      },
+      {
+       "v": "\\Delta",
+       "n": {
+        "en": "Δ Delta",
+        "ru": "дельта большая приращение",
+        "es": "Delta"
+       }
+      },
+      {
+       "v": "\\Theta",
+       "n": {
+        "en": "Θ Theta",
+        "ru": "тета большая",
+        "es": "Theta"
+       }
+      },
+      {
+       "v": "\\Lambda",
+       "n": {
+        "en": "Λ Lambda",
+        "ru": "лямбда большая",
+        "es": "Lambda"
+       }
+      },
+      {
+       "v": "\\Xi",
+       "n": {
+        "en": "Ξ Xi",
+        "ru": "кси большая",
+        "es": "Xi"
+       }
+      },
+      {
+       "v": "\\Pi",
+       "n": {
+        "en": "Π Pi",
+        "ru": "пи большая произведение",
+        "es": "Pi"
+       }
+      },
+      {
+       "v": "\\Sigma",
+       "n": {
+        "en": "Σ Sigma",
+        "ru": "сигма большая сумма",
+        "es": "Sigma"
+       }
+      },
+      {
+       "v": "\\Upsilon",
+       "n": {
+        "en": "Υ Upsilon",
+        "ru": "ипсилон большая",
+        "es": "Ípsilon"
+       }
+      },
+      {
+       "v": "\\Phi",
+       "n": {
+        "en": "Φ Phi",
+        "ru": "фи большая",
+        "es": "Fi"
+       }
+      },
+      {
+       "v": "\\Psi",
+       "n": {
+        "en": "Ψ Psi",
+        "ru": "пси большая",
+        "es": "Psi"
+       }
+      },
+      {
+       "v": "\\Omega",
+       "n": {
+        "en": "Ω Omega",
+        "ru": "омега большая ом",
+        "es": "Omega"
+       }
+      }
+     ],
+     "d": "\\alpha"
+    }
+   ],
+   "tpl": "#l"
+  },
+  {
+   "id": "sign",
+   "s": "ops",
+   "n": {
+    "en": "Sign",
+    "ru": "Знак",
+    "es": "Signo"
+   },
+   "k": {
+    "en": "sign symbol · times dot × times cross ÷ divide ± plus minus ∓ minus plus ∗ asterisk ∘ composition • bullet ⊕ direct sum ⊗ tensor product ⊙ hadamard ∞ infinity ∂ partial ∇ nabla gradient ′ prime ℏ planck ℓ ell ℜ real part ℑ imaginary part ℵ aleph ∀ for all ∃ exists ∄ not exists ¬ negation not ∅ empty set … dots ellipsis ⋯ centered dots ⋮ vertical dots ⋱ diagonal dots",
+    "ru": "знак символ умножение точка умножение крест векторное деление плюс-минус минус-плюс звёздочка композиция кружок точка жирная прямая сумма тензорное произведение поэлементное произведение бесконечность частная производная набла градиент штрих производная планка постоянная эль вещественная часть мнимая часть алеф для любого квантор всеобщности существует квантор не существует отрицание не пустое множество многоточие многоточие по центру многоточие вертикальное многоточие диагональное",
+    "es": "signo símbolo por punto por aspa dividir más menos menos más asterisco composición viñeta suma directa producto tensorial producto de Hadamard infinito parcial nabla gradiente prima planck ele parte real parte imaginaria alef para todo existe no existe negación conjunto vacío puntos suspensivos puntos centrados puntos verticales puntos diagonales"
+   },
+   "f": [
+    {
+     "id": "s",
+     "t": "choice",
+     "l": "sign",
+     "o": [
+      {
+       "v": "\\cdot",
+       "n": {
+        "en": "· times dot",
+        "ru": "умножение точка",
+        "es": "por punto"
+       }
+      },
+      {
+       "v": "\\times",
+       "n": {
+        "en": "× times cross",
+        "ru": "умножение крест векторное",
+        "es": "por aspa"
+       }
+      },
+      {
+       "v": "\\div",
+       "n": {
+        "en": "÷ divide",
+        "ru": "деление",
+        "es": "dividir"
+       }
+      },
+      {
+       "v": "\\pm",
+       "n": {
+        "en": "± plus minus",
+        "ru": "плюс-минус",
+        "es": "más menos"
+       }
+      },
+      {
+       "v": "\\mp",
+       "n": {
+        "en": "∓ minus plus",
+        "ru": "минус-плюс",
+        "es": "menos más"
+       }
+      },
+      {
+       "v": "\\ast",
+       "n": {
+        "en": "∗ asterisk",
+        "ru": "звёздочка",
+        "es": "asterisco"
+       }
+      },
+      {
+       "v": "\\circ",
+       "n": {
+        "en": "∘ composition",
+        "ru": "композиция кружок",
+        "es": "composición"
+       }
+      },
+      {
+       "v": "\\bullet",
+       "n": {
+        "en": "• bullet",
+        "ru": "точка жирная",
+        "es": "viñeta"
+       }
+      },
+      {
+       "v": "\\oplus",
+       "n": {
+        "en": "⊕ direct sum",
+        "ru": "прямая сумма",
+        "es": "suma directa"
+       }
+      },
+      {
+       "v": "\\otimes",
+       "n": {
+        "en": "⊗ tensor product",
+        "ru": "тензорное произведение",
+        "es": "producto tensorial"
+       }
+      },
+      {
+       "v": "\\odot",
+       "n": {
+        "en": "⊙ hadamard",
+        "ru": "поэлементное произведение",
+        "es": "producto de Hadamard"
+       }
+      },
+      {
+       "v": "\\infty",
+       "n": {
+        "en": "∞ infinity",
+        "ru": "бесконечность",
+        "es": "infinito"
+       }
+      },
+      {
+       "v": "\\partial",
+       "n": {
+        "en": "∂ partial",
+        "ru": "частная производная",
+        "es": "parcial"
+       }
+      },
+      {
+       "v": "\\nabla",
+       "n": {
+        "en": "∇ nabla gradient",
+        "ru": "набла градиент",
+        "es": "nabla gradiente"
+       }
+      },
+      {
+       "v": "\\prime",
+       "n": {
+        "en": "′ prime",
+        "ru": "штрих производная",
+        "es": "prima"
+       }
+      },
+      {
+       "v": "\\hbar",
+       "n": {
+        "en": "ℏ planck",
+        "ru": "планка постоянная",
+        "es": "planck"
+       }
+      },
+      {
+       "v": "\\ell",
+       "n": {
+        "en": "ℓ ell",
+        "ru": "эль",
+        "es": "ele"
+       }
+      },
+      {
+       "v": "\\Re",
+       "n": {
+        "en": "ℜ real part",
+        "ru": "вещественная часть",
+        "es": "parte real"
+       }
+      },
+      {
+       "v": "\\Im",
+       "n": {
+        "en": "ℑ imaginary part",
+        "ru": "мнимая часть",
+        "es": "parte imaginaria"
+       }
+      },
+      {
+       "v": "\\aleph",
+       "n": {
+        "en": "ℵ aleph",
+        "ru": "алеф",
+        "es": "alef"
+       }
+      },
+      {
+       "v": "\\forall",
+       "n": {
+        "en": "∀ for all",
+        "ru": "для любого квантор всеобщности",
+        "es": "para todo"
+       }
+      },
+      {
+       "v": "\\exists",
+       "n": {
+        "en": "∃ exists",
+        "ru": "существует квантор",
+        "es": "existe"
+       }
+      },
+      {
+       "v": "\\nexists",
+       "n": {
+        "en": "∄ not exists",
+        "ru": "не существует",
+        "es": "no existe"
+       }
+      },
+      {
+       "v": "\\neg",
+       "n": {
+        "en": "¬ negation not",
+        "ru": "отрицание не",
+        "es": "negación"
+       }
+      },
+      {
+       "v": "\\emptyset",
+       "n": {
+        "en": "∅ empty set",
+        "ru": "пустое множество",
+        "es": "conjunto vacío"
+       }
+      },
+      {
+       "v": "\\dots",
+       "n": {
+        "en": "… dots ellipsis",
+        "ru": "многоточие",
+        "es": "puntos suspensivos"
+       }
+      },
+      {
+       "v": "\\cdots",
+       "n": {
+        "en": "⋯ centered dots",
+        "ru": "многоточие по центру",
+        "es": "puntos centrados"
+       }
+      },
+      {
+       "v": "\\vdots",
+       "n": {
+        "en": "⋮ vertical dots",
+        "ru": "многоточие вертикальное",
+        "es": "puntos verticales"
+       }
+      },
+      {
+       "v": "\\ddots",
+       "n": {
+        "en": "⋱ diagonal dots",
+        "ru": "многоточие диагональное",
+        "es": "puntos diagonales"
+       }
+      }
+     ],
+     "d": "\\cdot"
+    }
+   ],
+   "tpl": "#s"
+  },
+  {
+   "id": "blackboard",
+   "s": "ops",
+   "n": {
+    "en": "Number set",
+    "ru": "Числовое множество",
+    "es": "Conjunto numérico"
+   },
+   "k": {
+    "en": "natural integer rational real complex numbers set blackboard",
+    "ru": "натуральные целые рациональные вещественные действительные комплексные числа множество",
+    "es": "naturales enteros racionales reales complejos conjunto"
+   },
+   "f": [
+    {
+     "id": "s",
+     "t": "choice",
+     "l": "set",
+     "o": [
+      {
+       "v": "\\mathbb{N}",
+       "n": {
+        "en": "ℕ natural",
+        "ru": "ℕ натуральные",
+        "es": "ℕ naturales"
+       }
+      },
+      {
+       "v": "\\mathbb{Z}",
+       "n": {
+        "en": "ℤ integer",
+        "ru": "ℤ целые",
+        "es": "ℤ enteros"
+       }
+      },
+      {
+       "v": "\\mathbb{Q}",
+       "n": {
+        "en": "ℚ rational",
+        "ru": "ℚ рациональные",
+        "es": "ℚ racionales"
+       }
+      },
+      {
+       "v": "\\mathbb{R}",
+       "n": {
+        "en": "ℝ real",
+        "ru": "ℝ вещественные",
+        "es": "ℝ reales"
+       }
+      },
+      {
+       "v": "\\mathbb{C}",
+       "n": {
+        "en": "ℂ complex",
+        "ru": "ℂ комплексные",
+        "es": "ℂ complejos"
+       }
+      },
+      {
+       "v": "\\mathbb{H}",
+       "n": {
+        "en": "ℍ quaternion",
+        "ru": "ℍ кватернионы",
+        "es": "ℍ cuaterniones"
+       }
+      },
+      {
+       "v": "\\mathbb{F}",
+       "n": {
+        "en": "𝔽 field",
+        "ru": "𝔽 поле",
+        "es": "𝔽 cuerpo"
+       }
+      },
+      {
+       "v": "\\mathbb{P}",
+       "n": {
+        "en": "ℙ probability",
+        "ru": "ℙ вероятность",
+        "es": "ℙ probabilidad"
+       }
+      },
+      {
+       "v": "\\mathbb{E}",
+       "n": {
+        "en": "𝔼 expectation",
+        "ru": "𝔼 матожидание",
+        "es": "𝔼 esperanza"
+       }
+      }
+     ],
+     "d": "\\mathbb{N}"
+    }
+   ],
+   "tpl": "#s"
+  },
+  {
+   "id": "space",
+   "s": "ops",
+   "n": {
+    "en": "Space",
+    "ru": "Пробел",
+    "es": "Espacio"
+   },
+   "k": {
+    "en": "space gap thin quad hspace",
+    "ru": "пробел отступ промежуток",
+    "es": "espacio separación"
+   },
+   "f": [
+    {
+     "id": "s",
+     "t": "choice",
+     "l": "size",
+     "o": [
+      {
+       "v": "\\,",
+       "n": {
+        "en": "thin",
+        "ru": "тонкий",
+        "es": "fino"
+       }
+      },
+      {
+       "v": "\\;",
+       "n": {
+        "en": "medium",
+        "ru": "средний",
+        "es": "medio"
+       }
+      },
+      {
+       "v": "\\quad",
+       "n": {
+        "en": "wide",
+        "ru": "широкий",
+        "es": "ancho"
+       }
+      },
+      {
+       "v": "\\qquad",
+       "n": {
+        "en": "double",
+        "ru": "двойной",
+        "es": "doble"
+       }
+      },
+      {
+       "v": "\\!",
+       "n": {
+        "en": "negative",
+        "ru": "отрицательный",
+        "es": "negativo"
+       }
+      }
+     ],
+     "d": "\\,"
+    }
+   ],
+   "tpl": "#s"
+  },
+  {
+   "id": "rel",
+   "s": "rel",
+   "n": {
+    "en": "Relation",
+    "ru": "Знак отношения",
+    "es": "Relación"
+   },
+   "k": {
+    "en": "relation sign equals arrow = equals ≠ not equal ≈ approximately ≡ identical congruent ∼ similar ≃ asymptotically equal ≅ congruent ∝ proportional < less > greater ≤ less or equal ≥ greater or equal ≪ much less ≫ much greater → to arrow ↦ maps to ⇒ implies ⇐ implied by ⇔ if and only if ⟺ iff ↑ up ↓ down ⇉ pair ⊥ perpendicular ∥ parallel",
+    "ru": "отношение знак равно стрелка равно не равно приблизительно приближённо тождественно сравнимо конгруэнтно подобно эквивалентно асимптотически равно конгруэнтно равно пропорционально меньше больше меньше или равно не больше больше или равно не меньше много меньше много больше стремится к в отображается в следует влечёт импликация следует обратно тогда и только тогда равносильно равносильно эквивалентно вверх возрастает вниз убывает пара стрелок перпендикулярно ортогонально параллельно",
+    "es": "relación signo igual flecha igual distinto aproximadamente idéntico semejante asintóticamente igual congruente proporcional menor mayor menor o igual mayor o igual mucho menor mucho mayor tiende a va a implica implicado por si y sólo si equivale arriba abajo par de flechas perpendicular paralelo"
+   },
+   "f": [
+    {
+     "id": "s",
+     "t": "choice",
+     "l": "sign",
+     "o": [
+      {
+       "v": "=",
+       "n": {
+        "en": "= equals",
+        "ru": "равно",
+        "es": "igual"
+       }
+      },
+      {
+       "v": "\\neq",
+       "n": {
+        "en": "≠ not equal",
+        "ru": "не равно",
+        "es": "distinto"
+       }
+      },
+      {
+       "v": "\\approx",
+       "n": {
+        "en": "≈ approximately",
+        "ru": "приблизительно приближённо",
+        "es": "aproximadamente"
+       }
+      },
+      {
+       "v": "\\equiv",
+       "n": {
+        "en": "≡ identical congruent",
+        "ru": "тождественно сравнимо конгруэнтно",
+        "es": "idéntico"
+       }
+      },
+      {
+       "v": "\\sim",
+       "n": {
+        "en": "∼ similar",
+        "ru": "подобно эквивалентно",
+        "es": "semejante"
+       }
+      },
+      {
+       "v": "\\simeq",
+       "n": {
+        "en": "≃ asymptotically equal",
+        "ru": "асимптотически равно",
+        "es": "asintóticamente igual"
+       }
+      },
+      {
+       "v": "\\cong",
+       "n": {
+        "en": "≅ congruent",
+        "ru": "конгруэнтно равно",
+        "es": "congruente"
+       }
+      },
+      {
+       "v": "\\propto",
+       "n": {
+        "en": "∝ proportional",
+        "ru": "пропорционально",
+        "es": "proporcional"
+       }
+      },
+      {
+       "v": "<",
+       "n": {
+        "en": "< less",
+        "ru": "меньше",
+        "es": "menor"
+       }
+      },
+      {
+       "v": ">",
+       "n": {
+        "en": "> greater",
+        "ru": "больше",
+        "es": "mayor"
+       }
+      },
+      {
+       "v": "\\leq",
+       "n": {
+        "en": "≤ less or equal",
+        "ru": "меньше или равно не больше",
+        "es": "menor o igual"
+       }
+      },
+      {
+       "v": "\\geq",
+       "n": {
+        "en": "≥ greater or equal",
+        "ru": "больше или равно не меньше",
+        "es": "mayor o igual"
+       }
+      },
+      {
+       "v": "\\ll",
+       "n": {
+        "en": "≪ much less",
+        "ru": "много меньше",
+        "es": "mucho menor"
+       }
+      },
+      {
+       "v": "\\gg",
+       "n": {
+        "en": "≫ much greater",
+        "ru": "много больше",
+        "es": "mucho mayor"
+       }
+      },
+      {
+       "v": "\\to",
+       "n": {
+        "en": "→ to arrow",
+        "ru": "стремится к в",
+        "es": "tiende a"
+       }
+      },
+      {
+       "v": "\\mapsto",
+       "n": {
+        "en": "↦ maps to",
+        "ru": "отображается в",
+        "es": "va a"
+       }
+      },
+      {
+       "v": "\\Rightarrow",
+       "n": {
+        "en": "⇒ implies",
+        "ru": "следует влечёт импликация",
+        "es": "implica"
+       }
+      },
+      {
+       "v": "\\Leftarrow",
+       "n": {
+        "en": "⇐ implied by",
+        "ru": "следует обратно",
+        "es": "implicado por"
+       }
+      },
+      {
+       "v": "\\Leftrightarrow",
+       "n": {
+        "en": "⇔ if and only if",
+        "ru": "тогда и только тогда равносильно",
+        "es": "si y sólo si"
+       }
+      },
+      {
+       "v": "\\iff",
+       "n": {
+        "en": "⟺ iff",
+        "ru": "равносильно эквивалентно",
+        "es": "equivale"
+       }
+      },
+      {
+       "v": "\\uparrow",
+       "n": {
+        "en": "↑ up",
+        "ru": "вверх возрастает",
+        "es": "arriba"
+       }
+      },
+      {
+       "v": "\\downarrow",
+       "n": {
+        "en": "↓ down",
+        "ru": "вниз убывает",
+        "es": "abajo"
+       }
+      },
+      {
+       "v": "\\rightrightarrows",
+       "n": {
+        "en": "⇉ pair",
+        "ru": "пара стрелок",
+        "es": "par de flechas"
+       }
+      },
+      {
+       "v": "\\perp",
+       "n": {
+        "en": "⊥ perpendicular",
+        "ru": "перпендикулярно ортогонально",
+        "es": "perpendicular"
+       }
+      },
+      {
+       "v": "\\parallel",
+       "n": {
+        "en": "∥ parallel",
+        "ru": "параллельно",
+        "es": "paralelo"
+       }
+      }
+     ],
+     "d": "="
+    }
+   ],
+   "tpl": "#s"
+  },
+  {
+   "id": "labarrow",
+   "s": "rel",
+   "n": {
+    "en": "Arrow with label",
+    "ru": "Стрелка с подписью",
+    "es": "Flecha con etiqueta"
+   },
+   "k": {
+    "en": "arrow with text above transformation",
+    "ru": "стрелка с надписью над преобразование переход",
+    "es": "flecha con texto encima"
+   },
+   "f": [
+    {
+     "id": "t",
+     "t": "text",
+     "l": "text",
+     "d": "n \\to \\infty"
+    }
+   ],
+   "tpl": "\\xrightarrow{#t}"
+  },
+  {
+   "id": "equal_over",
+   "s": "rel",
+   "n": {
+    "en": "Sign with note",
+    "ru": "Знак с пояснением",
+    "es": "Signo con nota"
+   },
+   "k": {
+    "en": "equals with text above by definition",
+    "ru": "равно по определению с пояснением сверху",
+    "es": "igual por definición"
+   },
+   "f": [
+    {
+     "id": "s",
+     "t": "choice",
+     "l": "sign",
+     "o": [
+      {
+       "v": "=",
+       "n": {
+        "en": "=",
+        "ru": "=",
+        "es": "="
+       }
+      },
+      {
+       "v": "\\leq",
+       "n": {
+        "en": "≤",
+        "ru": "≤",
+        "es": "≤"
+       }
+      },
+      {
+       "v": "\\Rightarrow",
+       "n": {
+        "en": "⇒",
+        "ru": "⇒",
+        "es": "⇒"
+       }
+      },
+      {
+       "v": "\\to",
+       "n": {
+        "en": "→",
+        "ru": "→",
+        "es": "→"
+       }
+      }
+     ],
+     "d": "="
+    },
+    {
+     "id": "t",
+     "t": "text",
+     "l": "text",
+     "d": "def"
+    }
+   ],
+   "tpl": "\\overset{#t}{#s}"
+  },
+  {
+   "id": "sum",
+   "s": "sums",
+   "n": {
+    "en": "Sum",
+    "ru": "Сумма",
+    "es": "Suma"
+   },
+   "k": {
+    "en": "sum sigma series total",
+    "ru": "сумма сигма ряд сложить",
+    "es": "suma sigma serie"
+   },
+   "f": [
+    {
+     "id": "i",
+     "t": "text",
+     "l": "var",
+     "d": "i"
+    },
+    {
+     "id": "lo",
+     "t": "text",
+     "l": "lo",
+     "d": "1"
+    },
+    {
+     "id": "hi",
+     "t": "text",
+     "l": "hi",
+     "d": "n"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_i"
+    }
+   ],
+   "tpl": "\\sum_{#i=#lo}^{#hi} #a",
+   "d": true
+  },
+  {
+   "id": "sum_cond",
+   "s": "sums",
+   "n": {
+    "en": "Sum with condition",
+    "ru": "Сумма по условию",
+    "es": "Suma con condición"
+   },
+   "k": {
+    "en": "sum over set condition subscript",
+    "ru": "сумма по множеству условию индексам",
+    "es": "suma sobre conjunto condición"
+   },
+   "f": [
+    {
+     "id": "c",
+     "t": "text",
+     "l": "cond",
+     "d": "i \\in I"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_i"
+    }
+   ],
+   "tpl": "\\sum_{#c} #a",
+   "d": true
+  },
+  {
+   "id": "dsum",
+   "s": "sums",
+   "n": {
+    "en": "Double sum",
+    "ru": "Двойная сумма",
+    "es": "Suma doble"
+   },
+   "k": {
+    "en": "double sum two indices",
+    "ru": "двойная сумма два индекса",
+    "es": "suma doble"
+   },
+   "f": [
+    {
+     "id": "i",
+     "t": "text",
+     "l": "var",
+     "d": "i"
+    },
+    {
+     "id": "j",
+     "t": "text",
+     "l": "var2",
+     "d": "j"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "hi",
+     "d": "n"
+    },
+    {
+     "id": "m",
+     "t": "text",
+     "l": "hi2",
+     "d": "m"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_{ij}"
+    }
+   ],
+   "tpl": "\\sum_{#i=1}^{#n} \\sum_{#j=1}^{#m} #a",
+   "d": true
+  },
+  {
+   "id": "prod",
+   "s": "sums",
+   "n": {
+    "en": "Product",
+    "ru": "Произведение",
+    "es": "Producto"
+   },
+   "k": {
+    "en": "product pi multiply",
+    "ru": "произведение пи перемножить",
+    "es": "producto pi multiplicar"
+   },
+   "f": [
+    {
+     "id": "i",
+     "t": "text",
+     "l": "var",
+     "d": "i"
+    },
+    {
+     "id": "lo",
+     "t": "text",
+     "l": "lo",
+     "d": "1"
+    },
+    {
+     "id": "hi",
+     "t": "text",
+     "l": "hi",
+     "d": "n"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_i"
+    }
+   ],
+   "tpl": "\\prod_{#i=#lo}^{#hi} #a",
+   "d": true
+  },
+  {
+   "id": "union_big",
+   "s": "sums",
+   "n": {
+    "en": "Big union",
+    "ru": "Объединение по индексу",
+    "es": "Unión indexada"
+   },
+   "k": {
+    "en": "big union intersection indexed",
+    "ru": "объединение пересечение по индексу большое",
+    "es": "unión intersección indexada"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\bigcup",
+       "n": {
+        "en": "⋃ union",
+        "ru": "⋃ объединение",
+        "es": "⋃ unión"
+       }
+      },
+      {
+       "v": "\\bigcap",
+       "n": {
+        "en": "⋂ intersection",
+        "ru": "⋂ пересечение",
+        "es": "⋂ intersección"
+       }
+      },
+      {
+       "v": "\\bigoplus",
+       "n": {
+        "en": "⨁ direct sum",
+        "ru": "⨁ прямая сумма",
+        "es": "⨁ suma directa"
+       }
+      },
+      {
+       "v": "\\bigotimes",
+       "n": {
+        "en": "⨂ tensor",
+        "ru": "⨂ тензорное",
+        "es": "⨂ tensorial"
+       }
+      }
+     ],
+     "d": "\\bigcup"
+    },
+    {
+     "id": "i",
+     "t": "text",
+     "l": "var",
+     "d": "i"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "hi",
+     "d": "n"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "A_i"
+    }
+   ],
+   "tpl": "#op_{#i=1}^{#n} #a",
+   "d": true
+  },
+  {
+   "id": "lim",
+   "s": "sums",
+   "n": {
+    "en": "Limit",
+    "ru": "Предел",
+    "es": "Límite"
+   },
+   "k": {
+    "en": "limit tends approaches",
+    "ru": "предел стремится лимит",
+    "es": "límite tiende"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "to",
+     "t": "text",
+     "l": "to",
+     "d": "0"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x)"
+    }
+   ],
+   "tpl": "\\lim_{#x \\to #to} #f",
+   "d": true
+  },
+  {
+   "id": "lim_side",
+   "s": "sums",
+   "n": {
+    "en": "One-sided limit",
+    "ru": "Односторонний предел",
+    "es": "Límite lateral"
+   },
+   "k": {
+    "en": "one sided limit left right",
+    "ru": "односторонний предел слева справа",
+    "es": "límite lateral izquierda derecha"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "to",
+     "t": "text",
+     "l": "to",
+     "d": "0"
+    },
+    {
+     "id": "side",
+     "t": "choice",
+     "l": "side",
+     "o": [
+      {
+       "v": "+",
+       "n": {
+        "en": "from the right",
+        "ru": "справа",
+        "es": "por la derecha"
+       }
+      },
+      {
+       "v": "-",
+       "n": {
+        "en": "from the left",
+        "ru": "слева",
+        "es": "por la izquierda"
+       }
+      }
+     ],
+     "d": "+"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x)"
+    }
+   ],
+   "tpl": "\\lim_{#x \\to #to^{#side}} #f",
+   "d": true
+  },
+  {
+   "id": "limsup",
+   "s": "sums",
+   "n": {
+    "en": "Upper / lower limit",
+    "ru": "Верхний и нижний предел",
+    "es": "Límite superior"
+   },
+   "k": {
+    "en": "limsup liminf upper lower limit",
+    "ru": "верхний нижний предел супремум инфимум",
+    "es": "límite superior inferior"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\limsup",
+       "n": {
+        "en": "limsup",
+        "ru": "верхний",
+        "es": "superior"
+       }
+      },
+      {
+       "v": "\\liminf",
+       "n": {
+        "en": "liminf",
+        "ru": "нижний",
+        "es": "inferior"
+       }
+      },
+      {
+       "v": "\\sup",
+       "n": {
+        "en": "sup",
+        "ru": "супремум",
+        "es": "supremo"
+       }
+      },
+      {
+       "v": "\\inf",
+       "n": {
+        "en": "inf",
+        "ru": "инфимум",
+        "es": "ínfimo"
+       }
+      },
+      {
+       "v": "\\max",
+       "n": {
+        "en": "max",
+        "ru": "максимум",
+        "es": "máximo"
+       }
+      },
+      {
+       "v": "\\min",
+       "n": {
+        "en": "min",
+        "ru": "минимум",
+        "es": "mínimo"
+       }
+      }
+     ],
+     "d": "\\limsup"
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "cond",
+     "d": "n \\to \\infty"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_n"
+    }
+   ],
+   "tpl": "#op_{#c} #a",
+   "d": true
+  },
+  {
+   "id": "argmax",
+   "s": "sums",
+   "n": {
+    "en": "argmax / argmin",
+    "ru": "argmax и argmin",
+    "es": "argmax y argmin"
+   },
+   "k": {
+    "en": "argmax argmin optimisation",
+    "ru": "аргмакс аргмин оптимизация точка максимума",
+    "es": "argmax argmin optimización"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\arg\\max",
+       "n": {
+        "en": "argmax",
+        "ru": "argmax",
+        "es": "argmax"
+       }
+      },
+      {
+       "v": "\\arg\\min",
+       "n": {
+        "en": "argmin",
+        "ru": "argmin",
+        "es": "argmin"
+       }
+      }
+     ],
+     "d": "\\arg\\max"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x)"
+    }
+   ],
+   "tpl": "\\operatorname*{#op}_{#x} #f",
+   "d": true
+  },
+  {
+   "id": "deriv",
+   "s": "calc",
+   "n": {
+    "en": "Derivative",
+    "ru": "Производная",
+    "es": "Derivada"
+   },
+   "k": {
+    "en": "derivative differentiate leibniz",
+    "ru": "производная дифференцирование лейбниц",
+    "es": "derivada derivar"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\frac{d#f}{d#x}"
+  },
+  {
+   "id": "deriv_n",
+   "s": "calc",
+   "n": {
+    "en": "n-th derivative",
+    "ru": "Производная порядка n",
+    "es": "Derivada n-ésima"
+   },
+   "k": {
+    "en": "second third nth derivative order",
+    "ru": "вторая третья производная порядка высшего",
+    "es": "segunda derivada orden"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "2"
+    }
+   ],
+   "tpl": "\\frac{d^{#n} #f}{d#x^{#n}}"
+  },
+  {
+   "id": "partial",
+   "s": "calc",
+   "n": {
+    "en": "Partial derivative",
+    "ru": "Частная производная",
+    "es": "Derivada parcial"
+   },
+   "k": {
+    "en": "partial derivative",
+    "ru": "частная производная по переменной",
+    "es": "derivada parcial"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\frac{\\partial #f}{\\partial #x}"
+  },
+  {
+   "id": "partial2",
+   "s": "calc",
+   "n": {
+    "en": "Mixed partial",
+    "ru": "Смешанная производная",
+    "es": "Derivada mixta"
+   },
+   "k": {
+    "en": "mixed second partial derivative",
+    "ru": "смешанная вторая частная производная",
+    "es": "derivada parcial mixta"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "y",
+     "t": "text",
+     "l": "var2",
+     "d": "y"
+    }
+   ],
+   "tpl": "\\frac{\\partial^{2} #f}{\\partial #x \\, \\partial #y}"
+  },
+  {
+   "id": "prime",
+   "s": "calc",
+   "n": {
+    "en": "Prime notation",
+    "ru": "Штрих",
+    "es": "Notación con primas"
+   },
+   "k": {
+    "en": "prime lagrange derivative dot",
+    "ru": "штрих производная точка ньютон",
+    "es": "prima derivada punto"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "acc",
+     "o": [
+      {
+       "v": "'",
+       "n": {
+        "en": "f′",
+        "ru": "f′",
+        "es": "f′"
+       }
+      },
+      {
+       "v": "''",
+       "n": {
+        "en": "f″",
+        "ru": "f″",
+        "es": "f″"
+       }
+      },
+      {
+       "v": "'''",
+       "n": {
+        "en": "f‴",
+        "ru": "f‴",
+        "es": "f‴"
+       }
+      },
+      {
+       "v": "^{(n)}",
+       "n": {
+        "en": "f⁽ⁿ⁾",
+        "ru": "f⁽ⁿ⁾",
+        "es": "f⁽ⁿ⁾"
+       }
+      }
+     ],
+     "d": "'"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "#f#m(#x)"
+  },
+  {
+   "id": "int",
+   "s": "calc",
+   "n": {
+    "en": "Indefinite integral",
+    "ru": "Неопределённый интеграл",
+    "es": "Integral indefinida"
+   },
+   "k": {
+    "en": "integral antiderivative indefinite",
+    "ru": "интеграл неопределённый первообразная",
+    "es": "integral indefinida primitiva"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x)"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\int #f \\, d#x",
+   "d": true
+  },
+  {
+   "id": "dint",
+   "s": "calc",
+   "n": {
+    "en": "Definite integral",
+    "ru": "Определённый интеграл",
+    "es": "Integral definida"
+   },
+   "k": {
+    "en": "definite integral limits area",
+    "ru": "определённый интеграл пределы площадь",
+    "es": "integral definida límites área"
+   },
+   "f": [
+    {
+     "id": "lo",
+     "t": "text",
+     "l": "lo",
+     "d": "a"
+    },
+    {
+     "id": "hi",
+     "t": "text",
+     "l": "hi",
+     "d": "b"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x)"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\int_{#lo}^{#hi} #f \\, d#x",
+   "d": true
+  },
+  {
+   "id": "mint",
+   "s": "calc",
+   "n": {
+    "en": "Multiple integral",
+    "ru": "Кратный интеграл",
+    "es": "Integral múltiple"
+   },
+   "k": {
+    "en": "double triple multiple integral region volume",
+    "ru": "двойной тройной кратный интеграл объём область",
+    "es": "integral doble triple múltiple"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\iint",
+       "n": {
+        "en": "double ∬",
+        "ru": "двойной ∬",
+        "es": "doble ∬"
+       }
+      },
+      {
+       "v": "\\iiint",
+       "n": {
+        "en": "triple ∭",
+        "ru": "тройной ∭",
+        "es": "triple ∭"
+       }
+      },
+      {
+       "v": "\\int\\!\\!\\cdots\\!\\!\\int",
+       "n": {
+        "en": "n-fold",
+        "ru": "n-кратный",
+        "es": "n-múltiple"
+       }
+      }
+     ],
+     "d": "\\iint"
+    },
+    {
+     "id": "d",
+     "t": "text",
+     "l": "set",
+     "d": "D"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "f(x, y)"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x \\, dy"
+    }
+   ],
+   "tpl": "#op\\limits_{#d} #f \\, d#x",
+   "d": true
+  },
+  {
+   "id": "oint",
+   "s": "calc",
+   "n": {
+    "en": "Contour integral",
+    "ru": "Контурный интеграл",
+    "es": "Integral de contorno"
+   },
+   "k": {
+    "en": "contour line closed integral circulation",
+    "ru": "контурный криволинейный замкнутый интеграл циркуляция",
+    "es": "integral de contorno circulación"
+   },
+   "f": [
+    {
+     "id": "c",
+     "t": "text",
+     "l": "set",
+     "d": "C"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "expr",
+     "d": "F \\cdot d\\vec{r}"
+    }
+   ],
+   "tpl": "\\oint_{#c} #f",
+   "d": true
+  },
+  {
+   "id": "diff",
+   "s": "calc",
+   "n": {
+    "en": "Differential",
+    "ru": "Дифференциал",
+    "es": "Diferencial"
+   },
+   "k": {
+    "en": "differential increment",
+    "ru": "дифференциал приращение",
+    "es": "diferencial incremento"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "1"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    }
+   ],
+   "tpl": "d^{#n} #f"
+  },
+  {
+   "id": "taylor",
+   "s": "calc",
+   "n": {
+    "en": "Taylor series",
+    "ru": "Ряд Тейлора",
+    "es": "Serie de Taylor"
+   },
+   "k": {
+    "en": "taylor maclaurin expansion series",
+    "ru": "тейлор маклорен разложение ряд",
+    "es": "taylor maclaurin desarrollo"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    }
+   ],
+   "tpl": "#f(#x) = \\sum_{n=0}^{\\infty} \\frac{#f^{(n)}(#a)}{n!}(#x - #a)^{n}",
+   "d": true
+  },
+  {
+   "id": "grad",
+   "s": "calc",
+   "n": {
+    "en": "Gradient, divergence, curl",
+    "ru": "Градиент, дивергенция, ротор",
+    "es": "Gradiente, divergencia, rotacional"
+   },
+   "k": {
+    "en": "gradient divergence curl laplacian nabla",
+    "ru": "градиент дивергенция ротор лапласиан набла",
+    "es": "gradiente divergencia rotacional laplaciano"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\nabla",
+       "n": {
+        "en": "∇f gradient",
+        "ru": "∇f градиент",
+        "es": "∇f gradiente"
+       }
+      },
+      {
+       "v": "\\nabla \\cdot",
+       "n": {
+        "en": "∇· divergence",
+        "ru": "∇· дивергенция",
+        "es": "∇· divergencia"
+       }
+      },
+      {
+       "v": "\\nabla \\times",
+       "n": {
+        "en": "∇× curl",
+        "ru": "∇× ротор",
+        "es": "∇× rotacional"
+       }
+      },
+      {
+       "v": "\\nabla^{2}",
+       "n": {
+        "en": "∇² laplacian",
+        "ru": "∇² лапласиан",
+        "es": "∇² laplaciano"
+       }
+      }
+     ],
+     "d": "\\nabla"
+    },
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    }
+   ],
+   "tpl": "#op #f"
+  },
+  {
+   "id": "matrix",
+   "s": "matrix",
+   "n": {
+    "en": "Matrix",
+    "ru": "Матрица",
+    "es": "Matriz"
+   },
+   "k": {
+    "en": "matrix table array grid rows columns",
+    "ru": "матрица таблица массив строки столбцы размер",
+    "es": "matriz tabla arreglo filas columnas"
+   },
+   "f": [
+    {
+     "id": "br",
+     "t": "choice",
+     "l": "brackets",
+     "o": [
+      {
+       "v": "pmatrix",
+       "n": {
+        "en": "round ( )",
+        "ru": "круглые ( )",
+        "es": "redondos ( )"
+       }
+      },
+      {
+       "v": "bmatrix",
+       "n": {
+        "en": "square [ ]",
+        "ru": "квадратные [ ]",
+        "es": "corchetes [ ]"
+       }
+      },
+      {
+       "v": "Bmatrix",
+       "n": {
+        "en": "curly { }",
+        "ru": "фигурные { }",
+        "es": "llaves { }"
+       }
+      },
+      {
+       "v": "vmatrix",
+       "n": {
+        "en": "bars | | (determinant)",
+        "ru": "прямые | | (определитель)",
+        "es": "barras | |"
+       }
+      },
+      {
+       "v": "Vmatrix",
+       "n": {
+        "en": "double bars ‖ ‖",
+        "ru": "двойные ‖ ‖",
+        "es": "dobles ‖ ‖"
+       }
+      },
+      {
+       "v": "matrix",
+       "n": {
+        "en": "none",
+        "ru": "без скобок",
+        "es": "sin paréntesis"
+       }
+      }
+     ],
+     "d": "pmatrix"
+    },
+    {
+     "id": "r",
+     "t": "int",
+     "l": "rows",
+     "d": 2,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "c",
+     "t": "int",
+     "l": "cols",
+     "d": 2,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "cells",
+     "t": "grid",
+     "l": "cells",
+     "rows": "r",
+     "cols": "c"
+    }
+   ],
+   "tpl": "\\begin{#br}#cells\\end{#br}",
+   "d": true
+  },
+  {
+   "id": "det",
+   "s": "matrix",
+   "n": {
+    "en": "Determinant",
+    "ru": "Определитель",
+    "es": "Determinante"
+   },
+   "k": {
+    "en": "determinant det",
+    "ru": "определитель детерминант",
+    "es": "determinante"
+   },
+   "f": [
+    {
+     "id": "r",
+     "t": "int",
+     "l": "rows",
+     "d": 3,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "cells",
+     "t": "grid",
+     "l": "cells",
+     "rows": "r",
+     "cols": "r"
+    }
+   ],
+   "tpl": "\\begin{vmatrix}#cells\\end{vmatrix}",
+   "d": true
+  },
+  {
+   "id": "det_named",
+   "s": "matrix",
+   "n": {
+    "en": "det of a matrix",
+    "ru": "det матрицы",
+    "es": "det de una matriz"
+   },
+   "k": {
+    "en": "det determinant named",
+    "ru": "определитель матрицы обозначение",
+    "es": "determinante de matriz"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    }
+   ],
+   "tpl": "\\det #a"
+  },
+  {
+   "id": "matrix_general",
+   "s": "matrix",
+   "n": {
+    "en": "General matrix",
+    "ru": "Матрица в общем виде",
+    "es": "Matriz general"
+   },
+   "k": {
+    "en": "general matrix dots elements a11 a1n",
+    "ru": "матрица общего вида с многоточиями элементы",
+    "es": "matriz general con puntos"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    },
+    {
+     "id": "m",
+     "t": "text",
+     "l": "rows",
+     "d": "m"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "cols",
+     "d": "n"
+    },
+    {
+     "id": "br",
+     "t": "choice",
+     "l": "brackets",
+     "o": [
+      {
+       "v": "pmatrix",
+       "n": {
+        "en": "round ( )",
+        "ru": "круглые ( )",
+        "es": "redondos ( )"
+       }
+      },
+      {
+       "v": "bmatrix",
+       "n": {
+        "en": "square [ ]",
+        "ru": "квадратные [ ]",
+        "es": "corchetes [ ]"
+       }
+      },
+      {
+       "v": "Bmatrix",
+       "n": {
+        "en": "curly { }",
+        "ru": "фигурные { }",
+        "es": "llaves { }"
+       }
+      },
+      {
+       "v": "vmatrix",
+       "n": {
+        "en": "bars | | (determinant)",
+        "ru": "прямые | | (определитель)",
+        "es": "barras | |"
+       }
+      },
+      {
+       "v": "Vmatrix",
+       "n": {
+        "en": "double bars ‖ ‖",
+        "ru": "двойные ‖ ‖",
+        "es": "dobles ‖ ‖"
+       }
+      },
+      {
+       "v": "matrix",
+       "n": {
+        "en": "none",
+        "ru": "без скобок",
+        "es": "sin paréntesis"
+       }
+      }
+     ],
+     "d": "pmatrix"
+    }
+   ],
+   "tpl": "\\begin{#br} #a_{11} & \\cdots & #a_{1#n} \\\\ \\vdots & \\ddots & \\vdots \\\\ #a_{#m 1} & \\cdots & #a_{#m#n} \\end{#br}",
+   "d": true
+  },
+  {
+   "id": "transpose",
+   "s": "matrix",
+   "n": {
+    "en": "Transpose, inverse",
+    "ru": "Транспонирование, обратная",
+    "es": "Traspuesta, inversa"
+   },
+   "k": {
+    "en": "transpose inverse conjugate power of matrix",
+    "ru": "транспонированная обратная сопряжённая степень матрицы",
+    "es": "traspuesta inversa conjugada"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    },
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "T",
+       "n": {
+        "en": "transpose Aᵀ",
+        "ru": "транспонированная Aᵀ",
+        "es": "traspuesta Aᵀ"
+       }
+      },
+      {
+       "v": "-1",
+       "n": {
+        "en": "inverse A⁻¹",
+        "ru": "обратная A⁻¹",
+        "es": "inversa A⁻¹"
+       }
+      },
+      {
+       "v": "*",
+       "n": {
+        "en": "conjugate A*",
+        "ru": "сопряжённая A*",
+        "es": "conjugada A*"
+       }
+      },
+      {
+       "v": "\\dagger",
+       "n": {
+        "en": "adjoint A†",
+        "ru": "эрмитово сопряжённая A†",
+        "es": "adjunta A†"
+       }
+      },
+      {
+       "v": "n",
+       "n": {
+        "en": "power Aⁿ",
+        "ru": "степень Aⁿ",
+        "es": "potencia Aⁿ"
+       }
+      }
+     ],
+     "d": "T"
+    }
+   ],
+   "tpl": "#a^{#m}"
+  },
+  {
+   "id": "identity",
+   "s": "matrix",
+   "n": {
+    "en": "Identity matrix",
+    "ru": "Единичная матрица",
+    "es": "Matriz identidad"
+   },
+   "k": {
+    "en": "identity unit matrix diagonal ones",
+    "ru": "единичная матрица диагональ",
+    "es": "matriz identidad unidad"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "size",
+     "d": 3,
+     "lo": 1,
+     "hi": 8
+    }
+   ],
+   "tpl": "I_{#n}"
+  },
+  {
+   "id": "diag",
+   "s": "matrix",
+   "n": {
+    "en": "Diagonal matrix",
+    "ru": "Диагональная матрица",
+    "es": "Matriz diagonal"
+   },
+   "k": {
+    "en": "diagonal matrix",
+    "ru": "диагональная матрица",
+    "es": "matriz diagonal"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "size",
+     "d": 3,
+     "lo": 1,
+     "hi": 8
+    },
+    {
+     "id": "cells",
+     "t": "list",
+     "l": "cells",
+     "n": "n",
+     "sep": ", "
+    }
+   ],
+   "tpl": "\\operatorname{diag}(#cells)"
+  },
+  {
+   "id": "aug",
+   "s": "matrix",
+   "n": {
+    "en": "Augmented matrix",
+    "ru": "Расширенная матрица",
+    "es": "Matriz aumentada"
+   },
+   "k": {
+    "en": "augmented matrix system bar",
+    "ru": "расширенная матрица системы черта",
+    "es": "matriz aumentada del sistema"
+   },
+   "f": [
+    {
+     "id": "r",
+     "t": "int",
+     "l": "rows",
+     "d": 3,
+     "lo": 1,
+     "hi": 8
+    },
+    {
+     "id": "c",
+     "t": "int",
+     "l": "cols",
+     "d": 3,
+     "lo": 1,
+     "hi": 8
+    },
+    {
+     "id": "cells",
+     "t": "grid",
+     "l": "cells",
+     "rows": "r",
+     "cols": "c"
+    },
+    {
+     "id": "rhs",
+     "t": "list",
+     "l": "right",
+     "n": "r",
+     "sep": " \\\\ "
+    }
+   ],
+   "tpl": "\\left[\\begin{array}{#colspec|c}#augrows\\end{array}\\right]",
+   "d": true
+  },
+  {
+   "id": "minor",
+   "s": "matrix",
+   "n": {
+    "en": "Minor, cofactor, rank",
+    "ru": "Минор, ранг, след",
+    "es": "Menor, rango, traza"
+   },
+   "k": {
+    "en": "minor cofactor rank trace",
+    "ru": "минор алгебраическое дополнение ранг след",
+    "es": "menor cofactor rango traza"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\operatorname{rank}",
+       "n": {
+        "en": "rank",
+        "ru": "ранг",
+        "es": "rango"
+       }
+      },
+      {
+       "v": "\\operatorname{tr}",
+       "n": {
+        "en": "trace",
+        "ru": "след",
+        "es": "traza"
+       }
+      },
+      {
+       "v": "M",
+       "n": {
+        "en": "minor M",
+        "ru": "минор M",
+        "es": "menor M"
+       }
+      },
+      {
+       "v": "A",
+       "n": {
+        "en": "cofactor A",
+        "ru": "дополнение A",
+        "es": "cofactor A"
+       }
+      }
+     ],
+     "d": "\\operatorname{rank}"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    }
+   ],
+   "tpl": "#op #a"
+  },
+  {
+   "id": "vec",
+   "s": "vector",
+   "n": {
+    "en": "Vector",
+    "ru": "Вектор",
+    "es": "Vector"
+   },
+   "k": {
+    "en": "vector arrow above bold",
+    "ru": "вектор стрелка обозначение",
+    "es": "vector flecha"
+   },
+   "f": [
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "acc",
+     "o": [
+      {
+       "v": "\\vec",
+       "n": {
+        "en": "arrow →",
+        "ru": "стрелка →",
+        "es": "flecha →"
+       }
+      },
+      {
+       "v": "\\overrightarrow",
+       "n": {
+        "en": "long arrow",
+        "ru": "длинная стрелка",
+        "es": "flecha larga"
+       }
+      },
+      {
+       "v": "\\mathbf",
+       "n": {
+        "en": "bold a",
+        "ru": "жирная a",
+        "es": "negrita a"
+       }
+      },
+      {
+       "v": "\\bar",
+       "n": {
+        "en": "bar ā",
+        "ru": "черта ā",
+        "es": "barra ā"
+       }
+      }
+     ],
+     "d": "\\vec"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    }
+   ],
+   "tpl": "#m{#a}"
+  },
+  {
+   "id": "vec_coord",
+   "s": "vector",
+   "n": {
+    "en": "Vector with coordinates",
+    "ru": "Вектор в координатах",
+    "es": "Vector en coordenadas"
+   },
+   "k": {
+    "en": "vector coordinates components row column",
+    "ru": "вектор координаты компоненты в базисе строкой столбцом",
+    "es": "vector coordenadas componentes"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    },
+    {
+     "id": "n",
+     "t": "int",
+     "l": "dim",
+     "d": 3,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "shape",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "row",
+       "n": {
+        "en": "row (x, y, z)",
+        "ru": "строкой (x, y, z)",
+        "es": "fila (x, y, z)"
+       }
+      },
+      {
+       "v": "col",
+       "n": {
+        "en": "column",
+        "ru": "столбцом",
+        "es": "columna"
+       }
+      }
+     ],
+     "d": "row"
+    },
+    {
+     "id": "cells",
+     "t": "list",
+     "l": "cells",
+     "n": "n",
+     "sep": ", "
+    }
+   ],
+   "tpl": "#veccoord",
+   "d": true
+  },
+  {
+   "id": "vec_basis",
+   "s": "vector",
+   "n": {
+    "en": "Vector in a basis",
+    "ru": "Вектор через базис",
+    "es": "Vector en una base"
+   },
+   "k": {
+    "en": "vector basis i j k unit decomposition",
+    "ru": "вектор базис орты разложение i j k",
+    "es": "vector base versores descomposición"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "x",
+     "d": "x"
+    },
+    {
+     "id": "y",
+     "t": "text",
+     "l": "y",
+     "d": "y"
+    },
+    {
+     "id": "z",
+     "t": "text",
+     "l": "z",
+     "d": "z"
+    }
+   ],
+   "tpl": "\\vec{#a} = #x\\,\\vec{i} + #y\\,\\vec{j} + #z\\,\\vec{k}",
+   "d": true
+  },
+  {
+   "id": "dot",
+   "s": "vector",
+   "n": {
+    "en": "Dot product",
+    "ru": "Скалярное произведение",
+    "es": "Producto escalar"
+   },
+   "k": {
+    "en": "dot scalar inner product",
+    "ru": "скалярное произведение точка",
+    "es": "producto escalar punto"
+   },
+   "f": [
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "cdot",
+       "n": {
+        "en": "a · b",
+        "ru": "a · b",
+        "es": "a · b"
+       }
+      },
+      {
+       "v": "angle",
+       "n": {
+        "en": "⟨a, b⟩",
+        "ru": "⟨a, b⟩",
+        "es": "⟨a, b⟩"
+       }
+      },
+      {
+       "v": "paren",
+       "n": {
+        "en": "(a, b)",
+        "ru": "(a, b)",
+        "es": "(a, b)"
+       }
+      }
+     ],
+     "d": "cdot"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    }
+   ],
+   "tpl": "#dotprod"
+  },
+  {
+   "id": "cross",
+   "s": "vector",
+   "n": {
+    "en": "Cross product",
+    "ru": "Векторное произведение",
+    "es": "Producto vectorial"
+   },
+   "k": {
+    "en": "cross vector product",
+    "ru": "векторное произведение крест",
+    "es": "producto vectorial cruz"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    }
+   ],
+   "tpl": "\\vec{#a} \\times \\vec{#b}"
+  },
+  {
+   "id": "triple",
+   "s": "vector",
+   "n": {
+    "en": "Triple product",
+    "ru": "Смешанное произведение",
+    "es": "Producto mixto"
+   },
+   "k": {
+    "en": "triple scalar product box",
+    "ru": "смешанное произведение трёх векторов",
+    "es": "producto mixto triple"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "c",
+     "d": "c"
+    }
+   ],
+   "tpl": "\\left( \\vec{#a}, \\vec{#b}, \\vec{#c} \\right)"
+  },
+  {
+   "id": "veclen",
+   "s": "vector",
+   "n": {
+    "en": "Length of a vector",
+    "ru": "Длина вектора",
+    "es": "Módulo de un vector"
+   },
+   "k": {
+    "en": "length magnitude norm of vector",
+    "ru": "длина модуль норма вектора",
+    "es": "módulo longitud norma"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    }
+   ],
+   "tpl": "\\left| \\vec{#a} \\right|"
+  },
+  {
+   "id": "eigen",
+   "s": "linalg",
+   "n": {
+    "en": "Eigenvalue equation",
+    "ru": "Собственные значения",
+    "es": "Autovalores"
+   },
+   "k": {
+    "en": "eigenvalue eigenvector characteristic",
+    "ru": "собственные значения векторы характеристическое",
+    "es": "autovalor autovector característico"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "vec",
+     "d": "x"
+    },
+    {
+     "id": "l",
+     "t": "text",
+     "l": "letter",
+     "d": "\\lambda"
+    }
+   ],
+   "tpl": "#a\\vec{#x} = #l\\vec{#x}",
+   "d": true
+  },
+  {
+   "id": "charpoly",
+   "s": "linalg",
+   "n": {
+    "en": "Characteristic polynomial",
+    "ru": "Характеристический многочлен",
+    "es": "Polinomio característico"
+   },
+   "k": {
+    "en": "characteristic polynomial determinant lambda",
+    "ru": "характеристический многочлен уравнение определитель лямбда",
+    "es": "polinomio característico"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    }
+   ],
+   "tpl": "\\det(#a - \\lambda E) = 0",
+   "d": true
+  },
+  {
+   "id": "span",
+   "s": "linalg",
+   "n": {
+    "en": "Span, kernel, image",
+    "ru": "Линейная оболочка, ядро, образ",
+    "es": "Envolvente, núcleo, imagen"
+   },
+   "k": {
+    "en": "span kernel image null space rank dimension",
+    "ru": "линейная оболочка ядро образ размерность базис",
+    "es": "envolvente lineal núcleo imagen dimensión"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\operatorname{span}",
+       "n": {
+        "en": "span",
+        "ru": "оболочка span",
+        "es": "span"
+       }
+      },
+      {
+       "v": "\\ker",
+       "n": {
+        "en": "ker",
+        "ru": "ядро ker",
+        "es": "ker"
+       }
+      },
+      {
+       "v": "\\operatorname{im}",
+       "n": {
+        "en": "im",
+        "ru": "образ im",
+        "es": "im"
+       }
+      },
+      {
+       "v": "\\dim",
+       "n": {
+        "en": "dim",
+        "ru": "размерность dim",
+        "es": "dim"
+       }
+      }
+     ],
+     "d": "\\operatorname{span}"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "A"
+    }
+   ],
+   "tpl": "#op #a"
+  },
+  {
+   "id": "linsys_form",
+   "s": "linalg",
+   "n": {
+    "en": "Matrix form of a system",
+    "ru": "Система в матричном виде",
+    "es": "Forma matricial"
+   },
+   "k": {
+    "en": "matrix form linear system ax b",
+    "ru": "матричная форма система линейных уравнений",
+    "es": "forma matricial sistema lineal"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "mat",
+     "d": "A"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "vec",
+     "d": "x"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "vec",
+     "d": "b"
+    }
+   ],
+   "tpl": "#a\\vec{#x} = \\vec{#b}",
+   "d": true
+  },
+  {
+   "id": "proj",
+   "s": "linalg",
+   "n": {
+    "en": "Projection",
+    "ru": "Проекция",
+    "es": "Proyección"
+   },
+   "k": {
+    "en": "projection onto vector",
+    "ru": "проекция вектора на",
+    "es": "proyección sobre"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    }
+   ],
+   "tpl": "\\operatorname{proj}_{\\vec{#b}} \\vec{#a} = \\frac{\\langle \\vec{#a}, \\vec{#b} \\rangle}{\\left| \\vec{#b} \\right|^{2}} \\vec{#b}",
+   "d": true
+  },
+  {
+   "id": "cases",
+   "s": "sys",
+   "n": {
+    "en": "System of equations",
+    "ru": "Система уравнений",
+    "es": "Sistema de ecuaciones"
+   },
+   "k": {
+    "en": "system of equations brace simultaneous",
+    "ru": "система уравнений фигурная скобка совокупность",
+    "es": "sistema de ecuaciones llave"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "lines",
+     "d": 2,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "rows",
+     "t": "list",
+     "l": "lines",
+     "n": "n",
+     "sep": " \\\\ "
+    }
+   ],
+   "tpl": "\\begin{cases} #rows \\end{cases}",
+   "d": true
+  },
+  {
+   "id": "piecewise",
+   "s": "sys",
+   "n": {
+    "en": "Piecewise function",
+    "ru": "Функция по кускам",
+    "es": "Función a trozos"
+   },
+   "k": {
+    "en": "piecewise function defined by cases if",
+    "ru": "кусочно заданная функция по частям если",
+    "es": "función a trozos definida por casos"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f(x)"
+    },
+    {
+     "id": "n",
+     "t": "int",
+     "l": "lines",
+     "d": 2,
+     "lo": 1,
+     "hi": 8
+    },
+    {
+     "id": "vals",
+     "t": "list",
+     "l": "expr",
+     "n": "n",
+     "sep": "|"
+    },
+    {
+     "id": "conds",
+     "t": "list",
+     "l": "cond",
+     "n": "n",
+     "sep": "|"
+    }
+   ],
+   "tpl": "#f = \\begin{cases} #piecerows \\end{cases}",
+   "d": true
+  },
+  {
+   "id": "gathered",
+   "s": "sys",
+   "n": {
+    "en": "Several lines",
+    "ru": "Несколько строк",
+    "es": "Varias líneas"
+   },
+   "k": {
+    "en": "several lines stacked equations",
+    "ru": "несколько строк подряд выкладка столбиком",
+    "es": "varias líneas apiladas"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "lines",
+     "d": 3,
+     "lo": 1,
+     "hi": 12
+    },
+    {
+     "id": "rows",
+     "t": "list",
+     "l": "lines",
+     "n": "n",
+     "sep": " \\\\ "
+    }
+   ],
+   "tpl": "\\begin{gathered} #rows \\end{gathered}",
+   "d": true
+  },
+  {
+   "id": "aligned",
+   "s": "sys",
+   "n": {
+    "en": "Aligned by equals",
+    "ru": "Выравнивание по знаку",
+    "es": "Alineado por el igual"
+   },
+   "k": {
+    "en": "aligned equals step by step derivation chain",
+    "ru": "выравнивание по равно цепочка преобразований по шагам",
+    "es": "alineado por igual cadena"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "lines",
+     "d": 3,
+     "lo": 1,
+     "hi": 12
+    },
+    {
+     "id": "lhs",
+     "t": "list",
+     "l": "left",
+     "n": "n",
+     "sep": "|"
+    },
+    {
+     "id": "rhs",
+     "t": "list",
+     "l": "right",
+     "n": "n",
+     "sep": "|"
+    }
+   ],
+   "tpl": "\\begin{aligned} #alignrows \\end{aligned}",
+   "d": true
+  },
+  {
+   "id": "setop",
+   "s": "sets",
+   "n": {
+    "en": "Set operation",
+    "ru": "Знак множеств и логики",
+    "es": "Operación de conjuntos"
+   },
+   "k": {
+    "en": "set operation union intersection belongs logic ∈ belongs to ∉ does not belong ∋ contains element ⊂ subset ⊆ subset or equal ⊃ superset ∪ union ∩ intersection ∖ difference △ symmetric difference × cartesian product ∧ and ∨ or ⊕ xor ⊢ proves ⊨ models",
+    "ru": "множества логика операция принадлежит лежит в не принадлежит содержит элемент подмножество строгое подмножество нестрогое надмножество объединение пересечение разность без симметрическая разность декартово произведение и конъюнкция или дизъюнкция исключающее или выводимо следует семантически",
+    "es": "conjuntos lógica operación pertenece no pertenece contiene subconjunto subconjunto o igual superconjunto unión intersección diferencia diferencia simétrica producto cartesiano y conjunción o disyunción o exclusivo demuestra modela"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "left",
+     "d": "A"
+    },
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\in",
+       "n": {
+        "en": "∈ belongs to",
+        "ru": "принадлежит лежит в",
+        "es": "pertenece"
+       }
+      },
+      {
+       "v": "\\notin",
+       "n": {
+        "en": "∉ does not belong",
+        "ru": "не принадлежит",
+        "es": "no pertenece"
+       }
+      },
+      {
+       "v": "\\ni",
+       "n": {
+        "en": "∋ contains element",
+        "ru": "содержит элемент",
+        "es": "contiene"
+       }
+      },
+      {
+       "v": "\\subset",
+       "n": {
+        "en": "⊂ subset",
+        "ru": "подмножество строгое",
+        "es": "subconjunto"
+       }
+      },
+      {
+       "v": "\\subseteq",
+       "n": {
+        "en": "⊆ subset or equal",
+        "ru": "подмножество нестрогое",
+        "es": "subconjunto o igual"
+       }
+      },
+      {
+       "v": "\\supset",
+       "n": {
+        "en": "⊃ superset",
+        "ru": "надмножество",
+        "es": "superconjunto"
+       }
+      },
+      {
+       "v": "\\cup",
+       "n": {
+        "en": "∪ union",
+        "ru": "объединение",
+        "es": "unión"
+       }
+      },
+      {
+       "v": "\\cap",
+       "n": {
+        "en": "∩ intersection",
+        "ru": "пересечение",
+        "es": "intersección"
+       }
+      },
+      {
+       "v": "\\setminus",
+       "n": {
+        "en": "∖ difference",
+        "ru": "разность без",
+        "es": "diferencia"
+       }
+      },
+      {
+       "v": "\\triangle",
+       "n": {
+        "en": "△ symmetric difference",
+        "ru": "симметрическая разность",
+        "es": "diferencia simétrica"
+       }
+      },
+      {
+       "v": "\\times",
+       "n": {
+        "en": "× cartesian product",
+        "ru": "декартово произведение",
+        "es": "producto cartesiano"
+       }
+      },
+      {
+       "v": "\\land",
+       "n": {
+        "en": "∧ and",
+        "ru": "и конъюнкция",
+        "es": "y conjunción"
+       }
+      },
+      {
+       "v": "\\lor",
+       "n": {
+        "en": "∨ or",
+        "ru": "или дизъюнкция",
+        "es": "o disyunción"
+       }
+      },
+      {
+       "v": "\\oplus",
+       "n": {
+        "en": "⊕ xor",
+        "ru": "исключающее или",
+        "es": "o exclusivo"
+       }
+      },
+      {
+       "v": "\\vdash",
+       "n": {
+        "en": "⊢ proves",
+        "ru": "выводимо",
+        "es": "demuestra"
+       }
+      },
+      {
+       "v": "\\models",
+       "n": {
+        "en": "⊨ models",
+        "ru": "следует семантически",
+        "es": "modela"
+       }
+      }
+     ],
+     "d": "\\in"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "right",
+     "d": "B"
+    }
+   ],
+   "tpl": "#a #op #b"
+  },
+  {
+   "id": "setbuilder",
+   "s": "sets",
+   "n": {
+    "en": "Set-builder",
+    "ru": "Множество по условию",
+    "es": "Conjunto por comprensión"
+   },
+   "k": {
+    "en": "set builder notation such that condition",
+    "ru": "множество по условию задание такое что фигурные скобки",
+    "es": "conjunto por comprensión tal que"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "elem",
+     "d": "x"
+    },
+    {
+     "id": "s",
+     "t": "text",
+     "l": "set",
+     "d": "\\mathbb{R}"
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "cond",
+     "d": "x > 0"
+    }
+   ],
+   "tpl": "\\left\\{\\, #x \\in #s \\;\\middle|\\; #c \\,\\right\\}",
+   "d": true
+  },
+  {
+   "id": "setlist",
+   "s": "sets",
+   "n": {
+    "en": "Set by listing",
+    "ru": "Множество перечислением",
+    "es": "Conjunto por extensión"
+   },
+   "k": {
+    "en": "set list elements enumerate",
+    "ru": "множество перечислением элементы список",
+    "es": "conjunto por extensión lista"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "int",
+     "l": "elem",
+     "d": 3,
+     "lo": 1,
+     "hi": 12
+    },
+    {
+     "id": "cells",
+     "t": "list",
+     "l": "cells",
+     "n": "n",
+     "sep": ", "
+    }
+   ],
+   "tpl": "\\left\\{ #cells \\right\\}"
+  },
+  {
+   "id": "quant",
+   "s": "sets",
+   "n": {
+    "en": "Quantifier",
+    "ru": "Квантор",
+    "es": "Cuantificador"
+   },
+   "k": {
+    "en": "quantifier for all exists unique",
+    "ru": "квантор для любого существует единственный",
+    "es": "cuantificador para todo existe"
+   },
+   "f": [
+    {
+     "id": "q",
+     "t": "choice",
+     "l": "sign",
+     "o": [
+      {
+       "v": "\\forall",
+       "n": {
+        "en": "∀ for all",
+        "ru": "∀ для любого",
+        "es": "∀ para todo"
+       }
+      },
+      {
+       "v": "\\exists",
+       "n": {
+        "en": "∃ exists",
+        "ru": "∃ существует",
+        "es": "∃ existe"
+       }
+      },
+      {
+       "v": "\\exists!",
+       "n": {
+        "en": "∃! unique",
+        "ru": "∃! единственный",
+        "es": "∃! único"
+       }
+      },
+      {
+       "v": "\\nexists",
+       "n": {
+        "en": "∄ none",
+        "ru": "∄ не существует",
+        "es": "∄ no existe"
+       }
+      }
+     ],
+     "d": "\\forall"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "s",
+     "t": "text",
+     "l": "set",
+     "d": "\\mathbb{R}"
+    },
+    {
+     "id": "c",
+     "t": "text",
+     "l": "cond",
+     "d": "P(x)"
+    }
+   ],
+   "tpl": "#q #x \\in #s : #c",
+   "d": true
+  },
+  {
+   "id": "trig",
+   "s": "func",
+   "n": {
+    "en": "Standard function",
+    "ru": "Стандартная функция",
+    "es": "Función estándar"
+   },
+   "k": {
+    "en": "function sin cos tan log exp sin cos tan cot sec csc arcsin arccos arctan sinh cosh tanh exp ln lg",
+    "ru": "функция синус косинус логарифм синус косинус тангенс котангенс секанс косеканс арксинус арккосинус арктангенс гиперболический синус гиперболический косинус гиперболический тангенс экспонента натуральный логарифм десятичный логарифм",
+    "es": "función seno coseno logaritmo seno coseno tangente cotangente secante cosecante arcoseno arcocoseno arcotangente seno hiperbólico coseno hiperbólico tangente hiperbólica exponencial logaritmo natural logaritmo decimal"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "choice",
+     "l": "func",
+     "o": [
+      {
+       "v": "\\sin",
+       "n": {
+        "en": "sin",
+        "ru": "синус",
+        "es": "seno"
+       }
+      },
+      {
+       "v": "\\cos",
+       "n": {
+        "en": "cos",
+        "ru": "косинус",
+        "es": "coseno"
+       }
+      },
+      {
+       "v": "\\tan",
+       "n": {
+        "en": "tan",
+        "ru": "тангенс",
+        "es": "tangente"
+       }
+      },
+      {
+       "v": "\\cot",
+       "n": {
+        "en": "cot",
+        "ru": "котангенс",
+        "es": "cotangente"
+       }
+      },
+      {
+       "v": "\\sec",
+       "n": {
+        "en": "sec",
+        "ru": "секанс",
+        "es": "secante"
+       }
+      },
+      {
+       "v": "\\csc",
+       "n": {
+        "en": "csc",
+        "ru": "косеканс",
+        "es": "cosecante"
+       }
+      },
+      {
+       "v": "\\arcsin",
+       "n": {
+        "en": "arcsin",
+        "ru": "арксинус",
+        "es": "arcoseno"
+       }
+      },
+      {
+       "v": "\\arccos",
+       "n": {
+        "en": "arccos",
+        "ru": "арккосинус",
+        "es": "arcocoseno"
+       }
+      },
+      {
+       "v": "\\arctan",
+       "n": {
+        "en": "arctan",
+        "ru": "арктангенс",
+        "es": "arcotangente"
+       }
+      },
+      {
+       "v": "\\sinh",
+       "n": {
+        "en": "sinh",
+        "ru": "гиперболический синус",
+        "es": "seno hiperbólico"
+       }
+      },
+      {
+       "v": "\\cosh",
+       "n": {
+        "en": "cosh",
+        "ru": "гиперболический косинус",
+        "es": "coseno hiperbólico"
+       }
+      },
+      {
+       "v": "\\tanh",
+       "n": {
+        "en": "tanh",
+        "ru": "гиперболический тангенс",
+        "es": "tangente hiperbólica"
+       }
+      },
+      {
+       "v": "\\exp",
+       "n": {
+        "en": "exp",
+        "ru": "экспонента",
+        "es": "exponencial"
+       }
+      },
+      {
+       "v": "\\ln",
+       "n": {
+        "en": "ln",
+        "ru": "натуральный логарифм",
+        "es": "logaritmo natural"
+       }
+      },
+      {
+       "v": "\\lg",
+       "n": {
+        "en": "lg",
+        "ru": "десятичный логарифм",
+        "es": "logaritmo decimal"
+       }
+      }
+     ],
+     "d": "\\sin"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "#f #x"
+  },
+  {
+   "id": "log",
+   "s": "func",
+   "n": {
+    "en": "Logarithm with base",
+    "ru": "Логарифм по основанию",
+    "es": "Logaritmo en base"
+   },
+   "k": {
+    "en": "log base logarithm",
+    "ru": "логарифм по основанию",
+    "es": "logaritmo en base"
+   },
+   "f": [
+    {
+     "id": "b",
+     "t": "text",
+     "l": "base",
+     "d": "a"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "expr",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\log_{#b} #x"
+  },
+  {
+   "id": "func_def",
+   "s": "func",
+   "n": {
+    "en": "Function definition",
+    "ru": "Задание функции",
+    "es": "Definición de función"
+   },
+   "k": {
+    "en": "function from to mapping domain codomain",
+    "ru": "функция отображение из в область определения значений",
+    "es": "función aplicación de en dominio"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "left",
+     "d": "X"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "right",
+     "d": "Y"
+    }
+   ],
+   "tpl": "#f \\colon #a \\to #b"
+  },
+  {
+   "id": "compose",
+   "s": "func",
+   "n": {
+    "en": "Composition",
+    "ru": "Композиция",
+    "es": "Composición"
+   },
+   "k": {
+    "en": "composition of functions circle",
+    "ru": "композиция функций сложная функция",
+    "es": "composición de funciones"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "g",
+     "t": "text",
+     "l": "func2",
+     "d": "g"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "(#f \\circ #g)(#x) = #f\\big(#g(#x)\\big)"
+  },
+  {
+   "id": "inverse",
+   "s": "func",
+   "n": {
+    "en": "Inverse function",
+    "ru": "Обратная функция",
+    "es": "Función inversa"
+   },
+   "k": {
+    "en": "inverse function",
+    "ru": "обратная функция",
+    "es": "función inversa"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "#f^{-1}(#x)"
+  },
+  {
+   "id": "factorial",
+   "s": "func",
+   "n": {
+    "en": "Factorial",
+    "ru": "Факториал",
+    "es": "Factorial"
+   },
+   "k": {
+    "en": "factorial permutations",
+    "ru": "факториал перестановки",
+    "es": "factorial permutaciones"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    }
+   ],
+   "tpl": "#n!"
+  },
+  {
+   "id": "mod",
+   "s": "func",
+   "n": {
+    "en": "Modulo",
+    "ru": "Остаток по модулю",
+    "es": "Módulo"
+   },
+   "k": {
+    "en": "modulo remainder congruent mod",
+    "ru": "остаток по модулю сравнение делимость",
+    "es": "módulo resto congruencia"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    }
+   ],
+   "tpl": "#a \\equiv #b \\pmod{#n}"
+  },
+  {
+   "id": "gcd",
+   "s": "func",
+   "n": {
+    "en": "GCD and LCM",
+    "ru": "НОД и НОК",
+    "es": "MCD y MCM"
+   },
+   "k": {
+    "en": "gcd lcm greatest common divisor",
+    "ru": "нод нок наибольший общий делитель кратное",
+    "es": "mcd mcm máximo común divisor"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\gcd",
+       "n": {
+        "en": "gcd",
+        "ru": "НОД",
+        "es": "mcd"
+       }
+      },
+      {
+       "v": "\\operatorname{lcm}",
+       "n": {
+        "en": "lcm",
+        "ru": "НОК",
+        "es": "mcm"
+       }
+      }
+     ],
+     "d": "\\gcd"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    }
+   ],
+   "tpl": "#op(#a, #b)"
+  },
+  {
+   "id": "complex_alg",
+   "s": "complex",
+   "n": {
+    "en": "Algebraic form",
+    "ru": "Алгебраическая форма",
+    "es": "Forma binómica"
+   },
+   "k": {
+    "en": "complex number algebraic form real imaginary",
+    "ru": "комплексное число алгебраическая форма мнимая часть",
+    "es": "número complejo forma binómica"
+   },
+   "f": [
+    {
+     "id": "z",
+     "t": "text",
+     "l": "name",
+     "d": "z"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    }
+   ],
+   "tpl": "#z = #a + #b i"
+  },
+  {
+   "id": "complex_trig",
+   "s": "complex",
+   "n": {
+    "en": "Trigonometric form",
+    "ru": "Тригонометрическая форма",
+    "es": "Forma polar"
+   },
+   "k": {
+    "en": "complex trigonometric polar form modulus argument",
+    "ru": "комплексное тригонометрическая форма модуль аргумент",
+    "es": "forma polar trigonométrica módulo argumento"
+   },
+   "f": [
+    {
+     "id": "z",
+     "t": "text",
+     "l": "name",
+     "d": "z"
+    },
+    {
+     "id": "r",
+     "t": "text",
+     "l": "a",
+     "d": "r"
+    },
+    {
+     "id": "p",
+     "t": "text",
+     "l": "angle",
+     "d": "\\varphi"
+    }
+   ],
+   "tpl": "#z = #r\\left(\\cos #p + i\\sin #p\\right)",
+   "d": true
+  },
+  {
+   "id": "complex_exp",
+   "s": "complex",
+   "n": {
+    "en": "Exponential form",
+    "ru": "Показательная форма",
+    "es": "Forma exponencial"
+   },
+   "k": {
+    "en": "complex exponential euler form",
+    "ru": "показательная экспоненциальная форма эйлер",
+    "es": "forma exponencial euler"
+   },
+   "f": [
+    {
+     "id": "z",
+     "t": "text",
+     "l": "name",
+     "d": "z"
+    },
+    {
+     "id": "r",
+     "t": "text",
+     "l": "a",
+     "d": "r"
+    },
+    {
+     "id": "p",
+     "t": "text",
+     "l": "angle",
+     "d": "\\varphi"
+    }
+   ],
+   "tpl": "#z = #r e^{i#p}"
+  },
+  {
+   "id": "moivre",
+   "s": "complex",
+   "n": {
+    "en": "De Moivre's formula",
+    "ru": "Формула Муавра",
+    "es": "Fórmula de De Moivre"
+   },
+   "k": {
+    "en": "de moivre power root complex",
+    "ru": "муавр степень корень комплексного",
+    "es": "de moivre potencia raíz"
+   },
+   "f": [
+    {
+     "id": "r",
+     "t": "text",
+     "l": "a",
+     "d": "r"
+    },
+    {
+     "id": "p",
+     "t": "text",
+     "l": "angle",
+     "d": "\\varphi"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    }
+   ],
+   "tpl": "\\left(#r(\\cos #p + i\\sin #p)\\right)^{#n} = #r^{#n}(\\cos #n#p + i\\sin #n#p)",
+   "d": true
+  },
+  {
+   "id": "conj",
+   "s": "complex",
+   "n": {
+    "en": "Conjugate, modulus, argument",
+    "ru": "Сопряжённое, модуль, аргумент",
+    "es": "Conjugado, módulo, argumento"
+   },
+   "k": {
+    "en": "conjugate modulus argument real imaginary part",
+    "ru": "сопряжённое модуль аргумент вещественная мнимая часть",
+    "es": "conjugado módulo argumento parte real"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "bar",
+       "n": {
+        "en": "conjugate z̄",
+        "ru": "сопряжённое z̄",
+        "es": "conjugado z̄"
+       }
+      },
+      {
+       "v": "abs",
+       "n": {
+        "en": "modulus |z|",
+        "ru": "модуль |z|",
+        "es": "módulo |z|"
+       }
+      },
+      {
+       "v": "\\arg",
+       "n": {
+        "en": "argument arg z",
+        "ru": "аргумент arg z",
+        "es": "argumento arg z"
+       }
+      },
+      {
+       "v": "\\operatorname{Re}",
+       "n": {
+        "en": "Re z",
+        "ru": "Re z",
+        "es": "Re z"
+       }
+      },
+      {
+       "v": "\\operatorname{Im}",
+       "n": {
+        "en": "Im z",
+        "ru": "Im z",
+        "es": "Im z"
+       }
+      }
+     ],
+     "d": "bar"
+    },
+    {
+     "id": "z",
+     "t": "text",
+     "l": "name",
+     "d": "z"
+    }
+   ],
+   "tpl": "#conjop"
+  },
+  {
+   "id": "prob",
+   "s": "prob",
+   "n": {
+    "en": "Probability",
+    "ru": "Вероятность",
+    "es": "Probabilidad"
+   },
+   "k": {
+    "en": "probability of event",
+    "ru": "вероятность события",
+    "es": "probabilidad del suceso"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "event",
+     "d": "A"
+    }
+   ],
+   "tpl": "P(#a)"
+  },
+  {
+   "id": "cond_prob",
+   "s": "prob",
+   "n": {
+    "en": "Conditional probability",
+    "ru": "Условная вероятность",
+    "es": "Probabilidad condicionada"
+   },
+   "k": {
+    "en": "conditional probability given",
+    "ru": "условная вероятность при условии",
+    "es": "probabilidad condicionada dado"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "event",
+     "d": "A"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "event2",
+     "d": "B"
+    }
+   ],
+   "tpl": "P(#a \\mid #b)"
+  },
+  {
+   "id": "bayes",
+   "s": "prob",
+   "n": {
+    "en": "Bayes' theorem",
+    "ru": "Формула Байеса",
+    "es": "Teorema de Bayes"
+   },
+   "k": {
+    "en": "bayes theorem posterior",
+    "ru": "байес формула апостериорная",
+    "es": "bayes teorema"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "event",
+     "d": "A"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "event2",
+     "d": "B"
+    }
+   ],
+   "tpl": "P(#a \\mid #b) = \\frac{P(#b \\mid #a)\\,P(#a)}{P(#b)}",
+   "d": true
+  },
+  {
+   "id": "expect",
+   "s": "prob",
+   "n": {
+    "en": "Expectation, variance",
+    "ru": "Матожидание, дисперсия",
+    "es": "Esperanza, varianza"
+   },
+   "k": {
+    "en": "expectation mean variance covariance standard deviation",
+    "ru": "математическое ожидание дисперсия ковариация отклонение",
+    "es": "esperanza media varianza covarianza desviación"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "E",
+       "n": {
+        "en": "E[X] expectation",
+        "ru": "E[X] матожидание",
+        "es": "E[X] esperanza"
+       }
+      },
+      {
+       "v": "D",
+       "n": {
+        "en": "Var(X) variance",
+        "ru": "D(X) дисперсия",
+        "es": "Var(X) varianza"
+       }
+      },
+      {
+       "v": "cov",
+       "n": {
+        "en": "Cov(X, Y)",
+        "ru": "Cov(X, Y) ковариация",
+        "es": "Cov(X, Y)"
+       }
+      },
+      {
+       "v": "sd",
+       "n": {
+        "en": "σ(X)",
+        "ru": "σ(X) отклонение",
+        "es": "σ(X)"
+       }
+      }
+     ],
+     "d": "E"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "x",
+     "d": "X"
+    },
+    {
+     "id": "y",
+     "t": "text",
+     "l": "y",
+     "d": "Y"
+    }
+   ],
+   "tpl": "#expop"
+  },
+  {
+   "id": "distrib",
+   "s": "prob",
+   "n": {
+    "en": "Distribution",
+    "ru": "Распределение",
+    "es": "Distribución"
+   },
+   "k": {
+    "en": "distributed normal binomial poisson uniform",
+    "ru": "распределение нормальное биномиальное пуассона равномерное",
+    "es": "distribución normal binomial poisson uniforme"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "x",
+     "d": "X"
+    },
+    {
+     "id": "d",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\mathcal{N}(\\mu, \\sigma^{2})",
+       "n": {
+        "en": "normal",
+        "ru": "нормальное",
+        "es": "normal"
+       }
+      },
+      {
+       "v": "\\mathrm{Bin}(n, p)",
+       "n": {
+        "en": "binomial",
+        "ru": "биномиальное",
+        "es": "binomial"
+       }
+      },
+      {
+       "v": "\\mathrm{Pois}(\\lambda)",
+       "n": {
+        "en": "Poisson",
+        "ru": "Пуассона",
+        "es": "Poisson"
+       }
+      },
+      {
+       "v": "U[a, b]",
+       "n": {
+        "en": "uniform",
+        "ru": "равномерное",
+        "es": "uniforme"
+       }
+      },
+      {
+       "v": "\\mathrm{Exp}(\\lambda)",
+       "n": {
+        "en": "exponential",
+        "ru": "показательное",
+        "es": "exponencial"
+       }
+      }
+     ],
+     "d": "\\mathcal{N}(\\mu, \\sigma^{2})"
+    }
+   ],
+   "tpl": "#x \\sim #d"
+  },
+  {
+   "id": "mean",
+   "s": "prob",
+   "n": {
+    "en": "Sample mean",
+    "ru": "Выборочное среднее",
+    "es": "Media muestral"
+   },
+   "k": {
+    "en": "sample mean average x bar",
+    "ru": "выборочное среднее арифметическое",
+    "es": "media muestral promedio"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "x",
+     "d": "x"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    }
+   ],
+   "tpl": "\\bar{#x} = \\frac{1}{#n}\\sum_{i=1}^{#n} #x_i",
+   "d": true
+  },
+  {
+   "id": "var_formula",
+   "s": "prob",
+   "n": {
+    "en": "Variance formula",
+    "ru": "Формула дисперсии",
+    "es": "Fórmula de la varianza"
+   },
+   "k": {
+    "en": "variance formula sum squares deviation",
+    "ru": "дисперсия формула сумма квадратов отклонений",
+    "es": "varianza fórmula suma de cuadrados"
+   },
+   "f": [
+    {
+     "id": "x",
+     "t": "text",
+     "l": "x",
+     "d": "x"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    }
+   ],
+   "tpl": "S^{2} = \\frac{1}{#n - 1}\\sum_{i=1}^{#n}\\left(#x_i - \\bar{#x}\\right)^{2}",
+   "d": true
+  },
+  {
+   "id": "perm",
+   "s": "prob",
+   "n": {
+    "en": "Permutations, combinations",
+    "ru": "Размещения и сочетания",
+    "es": "Variaciones y combinaciones"
+   },
+   "k": {
+    "en": "permutations combinations arrangements factorial",
+    "ru": "размещения сочетания перестановки комбинаторика",
+    "es": "variaciones combinaciones permutaciones"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "C",
+       "n": {
+        "en": "combinations C(n, k)",
+        "ru": "сочетания C(n, k)",
+        "es": "combinaciones C(n, k)"
+       }
+      },
+      {
+       "v": "A",
+       "n": {
+        "en": "arrangements A(n, k)",
+        "ru": "размещения A(n, k)",
+        "es": "variaciones A(n, k)"
+       }
+      },
+      {
+       "v": "P",
+       "n": {
+        "en": "permutations P(n)",
+        "ru": "перестановки P(n)",
+        "es": "permutaciones P(n)"
+       }
+      }
+     ],
+     "d": "C"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "n",
+     "d": "n"
+    },
+    {
+     "id": "k",
+     "t": "text",
+     "l": "k",
+     "d": "k"
+    }
+   ],
+   "tpl": "#permop"
+  },
+  {
+   "id": "angle",
+   "s": "geom",
+   "n": {
+    "en": "Angle",
+    "ru": "Угол",
+    "es": "Ángulo"
+   },
+   "k": {
+    "en": "angle abc measure",
+    "ru": "угол обозначение",
+    "es": "ángulo"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "pt",
+     "d": "ABC"
+    }
+   ],
+   "tpl": "\\angle #a"
+  },
+  {
+   "id": "triangle_g",
+   "s": "geom",
+   "n": {
+    "en": "Triangle, segment, line",
+    "ru": "Треугольник, отрезок, прямая",
+    "es": "Triángulo, segmento, recta"
+   },
+   "k": {
+    "en": "triangle segment line arc ray",
+    "ru": "треугольник отрезок прямая дуга луч",
+    "es": "triángulo segmento recta arco"
+   },
+   "f": [
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\triangle",
+       "n": {
+        "en": "△ triangle",
+        "ru": "△ треугольник",
+        "es": "△ triángulo"
+       }
+      },
+      {
+       "v": "\\overline",
+       "n": {
+        "en": "segment AB",
+        "ru": "отрезок AB",
+        "es": "segmento AB"
+       }
+      },
+      {
+       "v": "\\overleftrightarrow",
+       "n": {
+        "en": "line AB",
+        "ru": "прямая AB",
+        "es": "recta AB"
+       }
+      },
+      {
+       "v": "\\overrightarrow",
+       "n": {
+        "en": "ray AB",
+        "ru": "луч AB",
+        "es": "rayo AB"
+       }
+      },
+      {
+       "v": "\\overset{\\frown}",
+       "n": {
+        "en": "arc AB",
+        "ru": "дуга AB",
+        "es": "arco AB"
+       }
+      }
+     ],
+     "d": "\\triangle"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "pt",
+     "d": "AB"
+    }
+   ],
+   "tpl": "#op{#a}"
+  },
+  {
+   "id": "geom_rel",
+   "s": "geom",
+   "n": {
+    "en": "Perpendicular, parallel, similar",
+    "ru": "Перпендикулярно, параллельно, подобно",
+    "es": "Perpendicular, paralelo, semejante"
+   },
+   "k": {
+    "en": "perpendicular parallel similar congruent",
+    "ru": "перпендикулярно параллельно подобно равно конгруэнтно",
+    "es": "perpendicular paralelo semejante congruente"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "left",
+     "d": "AB"
+    },
+    {
+     "id": "op",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\perp",
+       "n": {
+        "en": "⊥",
+        "ru": "⊥ перпендикулярно",
+        "es": "⊥"
+       }
+      },
+      {
+       "v": "\\parallel",
+       "n": {
+        "en": "∥",
+        "ru": "∥ параллельно",
+        "es": "∥"
+       }
+      },
+      {
+       "v": "\\sim",
+       "n": {
+        "en": "∼ similar",
+        "ru": "∼ подобно",
+        "es": "∼ semejante"
+       }
+      },
+      {
+       "v": "\\cong",
+       "n": {
+        "en": "≅ congruent",
+        "ru": "≅ равно",
+        "es": "≅ congruente"
+       }
+      }
+     ],
+     "d": "\\perp"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "right",
+     "d": "CD"
+    }
+   ],
+   "tpl": "#a #op #b"
+  },
+  {
+   "id": "dist",
+   "s": "geom",
+   "n": {
+    "en": "Distance",
+    "ru": "Расстояние",
+    "es": "Distancia"
+   },
+   "k": {
+    "en": "distance between points euclid",
+    "ru": "расстояние между точками",
+    "es": "distancia entre puntos"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "A"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "B"
+    }
+   ],
+   "tpl": "\\rho(#a, #b)"
+  },
+  {
+   "id": "circle_eq",
+   "s": "geom",
+   "n": {
+    "en": "Equation of a circle",
+    "ru": "Уравнение окружности",
+    "es": "Ecuación de la circunferencia"
+   },
+   "k": {
+    "en": "circle equation centre radius",
+    "ru": "окружность уравнение центр радиус",
+    "es": "circunferencia ecuación centro radio"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "b",
+     "d": "b"
+    },
+    {
+     "id": "r",
+     "t": "text",
+     "l": "root",
+     "d": "R"
+    }
+   ],
+   "tpl": "(x - #a)^{2} + (y - #b)^{2} = #r^{2}",
+   "d": true
+  },
+  {
+   "id": "series",
+   "s": "series",
+   "n": {
+    "en": "Infinite series",
+    "ru": "Числовой ряд",
+    "es": "Serie infinita"
+   },
+   "k": {
+    "en": "infinite series convergence sum",
+    "ru": "ряд числовой бесконечный сходимость сумма",
+    "es": "serie infinita convergencia"
+   },
+   "f": [
+    {
+     "id": "n",
+     "t": "text",
+     "l": "var",
+     "d": "n"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "body",
+     "d": "a_n"
+    }
+   ],
+   "tpl": "\\sum_{#n=1}^{\\infty} #a",
+   "d": true
+  },
+  {
+   "id": "seq",
+   "s": "series",
+   "n": {
+    "en": "Sequence",
+    "ru": "Последовательность",
+    "es": "Sucesión"
+   },
+   "k": {
+    "en": "sequence terms indexed",
+    "ru": "последовательность члены",
+    "es": "sucesión términos"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "var",
+     "d": "n"
+    }
+   ],
+   "tpl": "\\{#a_{#n}\\}_{#n=1}^{\\infty}"
+  },
+  {
+   "id": "power_series",
+   "s": "series",
+   "n": {
+    "en": "Power series",
+    "ru": "Степенной ряд",
+    "es": "Serie de potencias"
+   },
+   "k": {
+    "en": "power series radius convergence",
+    "ru": "степенной ряд радиус сходимости",
+    "es": "serie de potencias radio"
+   },
+   "f": [
+    {
+     "id": "c",
+     "t": "text",
+     "l": "name",
+     "d": "c"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    }
+   ],
+   "tpl": "\\sum_{n=0}^{\\infty} #c_n (#x - #a)^{n}",
+   "d": true
+  },
+  {
+   "id": "fourier",
+   "s": "series",
+   "n": {
+    "en": "Fourier series",
+    "ru": "Ряд Фурье",
+    "es": "Serie de Fourier"
+   },
+   "k": {
+    "en": "fourier series harmonic",
+    "ru": "ряд фурье гармоники разложение",
+    "es": "serie de fourier armónicos"
+   },
+   "f": [
+    {
+     "id": "f",
+     "t": "text",
+     "l": "func",
+     "d": "f"
+    },
+    {
+     "id": "x",
+     "t": "text",
+     "l": "var",
+     "d": "x"
+    }
+   ],
+   "tpl": "#f(#x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty}\\left(a_n \\cos n#x + b_n \\sin n#x\\right)",
+   "d": true
+  },
+  {
+   "id": "recur",
+   "s": "series",
+   "n": {
+    "en": "Recurrence",
+    "ru": "Рекуррентная формула",
+    "es": "Recurrencia"
+   },
+   "k": {
+    "en": "recurrence relation fibonacci",
+    "ru": "рекуррентное соотношение фибоначчи",
+    "es": "relación de recurrencia"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "name",
+     "d": "a"
+    },
+    {
+     "id": "n",
+     "t": "text",
+     "l": "var",
+     "d": "n"
+    },
+    {
+     "id": "e",
+     "t": "text",
+     "l": "expr",
+     "d": "a_{n-1} + a_{n-2}"
+    }
+   ],
+   "tpl": "#a_{#n} = #e"
+  },
+  {
+   "id": "accent",
+   "s": "accent",
+   "n": {
+    "en": "Mark above a letter",
+    "ru": "Знак над буквой",
+    "es": "Marca sobre una letra"
+   },
+   "k": {
+    "en": "hat bar tilde dot vector above accent",
+    "ru": "шляпка черта тильда точка стрелка над буквой",
+    "es": "sombrero barra tilde punto encima"
+   },
+   "f": [
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "acc",
+     "o": [
+      {
+       "v": "\\hat",
+       "n": {
+        "en": "hat â",
+        "ru": "шляпка â",
+        "es": "sombrero â"
+       }
+      },
+      {
+       "v": "\\widehat",
+       "n": {
+        "en": "wide hat",
+        "ru": "широкая шляпка",
+        "es": "sombrero ancho"
+       }
+      },
+      {
+       "v": "\\bar",
+       "n": {
+        "en": "bar ā",
+        "ru": "черта ā",
+        "es": "barra ā"
+       }
+      },
+      {
+       "v": "\\overline",
+       "n": {
+        "en": "long bar",
+        "ru": "длинная черта",
+        "es": "barra larga"
+       }
+      },
+      {
+       "v": "\\tilde",
+       "n": {
+        "en": "tilde ã",
+        "ru": "тильда ã",
+        "es": "tilde ã"
+       }
+      },
+      {
+       "v": "\\vec",
+       "n": {
+        "en": "arrow",
+        "ru": "стрелка",
+        "es": "flecha"
+       }
+      },
+      {
+       "v": "\\dot",
+       "n": {
+        "en": "dot ȧ",
+        "ru": "точка ȧ",
+        "es": "punto ȧ"
+       }
+      },
+      {
+       "v": "\\ddot",
+       "n": {
+        "en": "two dots ä",
+        "ru": "две точки ä",
+        "es": "dos puntos ä"
+       }
+      },
+      {
+       "v": "\\underline",
+       "n": {
+        "en": "underline",
+        "ru": "подчёркивание",
+        "es": "subrayado"
+       }
+      }
+     ],
+     "d": "\\hat"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "a"
+    }
+   ],
+   "tpl": "#m{#a}"
+  },
+  {
+   "id": "brace",
+   "s": "accent",
+   "n": {
+    "en": "Brace with a label",
+    "ru": "Скобка с подписью",
+    "es": "Llave con etiqueta"
+   },
+   "k": {
+    "en": "overbrace underbrace label group",
+    "ru": "фигурная скобка сверху снизу с подписью группировка",
+    "es": "llave superior inferior con etiqueta"
+   },
+   "f": [
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\overbrace",
+       "n": {
+        "en": "above",
+        "ru": "сверху",
+        "es": "encima"
+       }
+      },
+      {
+       "v": "\\underbrace",
+       "n": {
+        "en": "below",
+        "ru": "снизу",
+        "es": "debajo"
+       }
+      }
+     ],
+     "d": "\\overbrace"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "a + b"
+    },
+    {
+     "id": "t",
+     "t": "text",
+     "l": "text",
+     "d": "n"
+    }
+   ],
+   "tpl": "#bracetpl"
+  },
+  {
+   "id": "bigparen",
+   "s": "accent",
+   "n": {
+    "en": "Big brackets",
+    "ru": "Большие скобки",
+    "es": "Paréntesis grandes"
+   },
+   "k": {
+    "en": "big brackets auto size left right",
+    "ru": "большие скобки по высоте автоматические",
+    "es": "paréntesis grandes automáticos"
+   },
+   "f": [
+    {
+     "id": "br",
+     "t": "choice",
+     "l": "brackets",
+     "o": [
+      {
+       "v": "()",
+       "n": {
+        "en": "( )",
+        "ru": "( )",
+        "es": "( )"
+       }
+      },
+      {
+       "v": "[]",
+       "n": {
+        "en": "[ ]",
+        "ru": "[ ]",
+        "es": "[ ]"
+       }
+      },
+      {
+       "v": "{}",
+       "n": {
+        "en": "{ }",
+        "ru": "{ }",
+        "es": "{ }"
+       }
+      },
+      {
+       "v": "||",
+       "n": {
+        "en": "| |",
+        "ru": "| |",
+        "es": "| |"
+       }
+      },
+      {
+       "v": "<>",
+       "n": {
+        "en": "⟨ ⟩",
+        "ru": "⟨ ⟩",
+        "es": "⟨ ⟩"
+       }
+      },
+      {
+       "v": "floor",
+       "n": {
+        "en": "⌊ ⌋",
+        "ru": "⌊ ⌋",
+        "es": "⌊ ⌋"
+       }
+      }
+     ],
+     "d": "()"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "\\frac{a}{b}"
+    }
+   ],
+   "tpl": "#bigparen"
+  },
+  {
+   "id": "stack",
+   "s": "accent",
+   "n": {
+    "en": "One above another",
+    "ru": "Одно над другим",
+    "es": "Uno sobre otro"
+   },
+   "k": {
+    "en": "stack over under substack",
+    "ru": "друг над другом надстрочное подстрочное",
+    "es": "uno sobre otro"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "hi",
+     "d": "a"
+    },
+    {
+     "id": "b",
+     "t": "text",
+     "l": "lo",
+     "d": "b"
+    }
+   ],
+   "tpl": "\\overset{#a}{#b}"
+  },
+  {
+   "id": "text_in",
+   "s": "layout",
+   "n": {
+    "en": "Words inside a formula",
+    "ru": "Слова внутри формулы",
+    "es": "Texto dentro de la fórmula"
+   },
+   "k": {
+    "en": "text words inside formula upright",
+    "ru": "текст слова внутри формулы прямой шрифт",
+    "es": "texto palabras dentro de la fórmula"
+   },
+   "f": [
+    {
+     "id": "t",
+     "t": "text",
+     "l": "text",
+     "d": "if"
+    }
+   ],
+   "tpl": "\\text{#t}"
+  },
+  {
+   "id": "op_name",
+   "s": "layout",
+   "n": {
+    "en": "Custom operator",
+    "ru": "Своё обозначение",
+    "es": "Operador propio"
+   },
+   "k": {
+    "en": "operator name custom upright function",
+    "ru": "своё обозначение оператор прямым шрифтом название функции",
+    "es": "operador propio nombre"
+   },
+   "f": [
+    {
+     "id": "t",
+     "t": "text",
+     "l": "name",
+     "d": "grad"
+    }
+   ],
+   "tpl": "\\operatorname{#t}"
+  },
+  {
+   "id": "color",
+   "s": "layout",
+   "n": {
+    "en": "Colour",
+    "ru": "Цвет",
+    "es": "Color"
+   },
+   "k": {
+    "en": "colour highlight red blue",
+    "ru": "цвет выделить красным синим",
+    "es": "color resaltar rojo azul"
+   },
+   "f": [
+    {
+     "id": "c",
+     "t": "choice",
+     "l": "color",
+     "o": [
+      {
+       "v": "red",
+       "n": {
+        "en": "red",
+        "ru": "красный",
+        "es": "rojo"
+       }
+      },
+      {
+       "v": "blue",
+       "n": {
+        "en": "blue",
+        "ru": "синий",
+        "es": "azul"
+       }
+      },
+      {
+       "v": "green",
+       "n": {
+        "en": "green",
+        "ru": "зелёный",
+        "es": "verde"
+       }
+      },
+      {
+       "v": "orange",
+       "n": {
+        "en": "orange",
+        "ru": "оранжевый",
+        "es": "naranja"
+       }
+      },
+      {
+       "v": "purple",
+       "n": {
+        "en": "purple",
+        "ru": "фиолетовый",
+        "es": "morado"
+       }
+      },
+      {
+       "v": "gray",
+       "n": {
+        "en": "grey",
+        "ru": "серый",
+        "es": "gris"
+       }
+      }
+     ],
+     "d": "red"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\color{#c}{#a}"
+  },
+  {
+   "id": "boxed",
+   "s": "layout",
+   "n": {
+    "en": "Boxed answer",
+    "ru": "Ответ в рамке",
+    "es": "Respuesta enmarcada"
+   },
+   "k": {
+    "en": "boxed frame answer highlight",
+    "ru": "рамка ответ выделить в рамке",
+    "es": "recuadro respuesta enmarcada"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "x = 2"
+    }
+   ],
+   "tpl": "\\boxed{#a}"
+  },
+  {
+   "id": "font",
+   "s": "layout",
+   "n": {
+    "en": "Font",
+    "ru": "Начертание",
+    "es": "Tipografía"
+   },
+   "k": {
+    "en": "font bold italic calligraphic fraktur roman",
+    "ru": "начертание жирный курсив каллиграфический готический прямой",
+    "es": "tipografía negrita cursiva caligráfica"
+   },
+   "f": [
+    {
+     "id": "m",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "\\mathbf",
+       "n": {
+        "en": "bold",
+        "ru": "жирный",
+        "es": "negrita"
+       }
+      },
+      {
+       "v": "\\mathit",
+       "n": {
+        "en": "italic",
+        "ru": "курсив",
+        "es": "cursiva"
+       }
+      },
+      {
+       "v": "\\mathrm",
+       "n": {
+        "en": "upright",
+        "ru": "прямой",
+        "es": "redonda"
+       }
+      },
+      {
+       "v": "\\mathcal",
+       "n": {
+        "en": "calligraphic",
+        "ru": "каллиграфический",
+        "es": "caligráfica"
+       }
+      },
+      {
+       "v": "\\mathbb",
+       "n": {
+        "en": "blackboard",
+        "ru": "контурный",
+        "es": "pizarra"
+       }
+      },
+      {
+       "v": "\\mathfrak",
+       "n": {
+        "en": "fraktur",
+        "ru": "готический",
+        "es": "fraktur"
+       }
+      },
+      {
+       "v": "\\mathsf",
+       "n": {
+        "en": "sans serif",
+        "ru": "рубленый",
+        "es": "de palo seco"
+       }
+      }
+     ],
+     "d": "\\mathbf"
+    },
+    {
+     "id": "a",
+     "t": "text",
+     "l": "a",
+     "d": "A"
+    }
+   ],
+   "tpl": "#m{#a}"
+  },
+  {
+   "id": "array",
+   "s": "layout",
+   "n": {
+    "en": "Table",
+    "ru": "Таблица",
+    "es": "Tabla"
+   },
+   "k": {
+    "en": "table array columns alignment grid",
+    "ru": "таблица массив столбцы выравнивание",
+    "es": "tabla arreglo columnas alineación"
+   },
+   "f": [
+    {
+     "id": "r",
+     "t": "int",
+     "l": "rows",
+     "d": 2,
+     "lo": 1,
+     "hi": 12
+    },
+    {
+     "id": "c",
+     "t": "int",
+     "l": "cols",
+     "d": 2,
+     "lo": 1,
+     "hi": 10
+    },
+    {
+     "id": "al",
+     "t": "choice",
+     "l": "op",
+     "o": [
+      {
+       "v": "c",
+       "n": {
+        "en": "centre",
+        "ru": "по центру",
+        "es": "centrado"
+       }
+      },
+      {
+       "v": "l",
+       "n": {
+        "en": "left",
+        "ru": "влево",
+        "es": "izquierda"
+       }
+      },
+      {
+       "v": "r",
+       "n": {
+        "en": "right",
+        "ru": "вправо",
+        "es": "derecha"
+       }
+      }
+     ],
+     "d": "c"
+    },
+    {
+     "id": "cells",
+     "t": "grid",
+     "l": "cells",
+     "rows": "r",
+     "cols": "c"
+    }
+   ],
+   "tpl": "\\begin{array}{#alspec}#cells\\end{array}",
+   "d": true
+  },
+  {
+   "id": "phantom",
+   "s": "layout",
+   "n": {
+    "en": "Invisible spacer",
+    "ru": "Невидимая распорка",
+    "es": "Espacio invisible"
+   },
+   "k": {
+    "en": "phantom invisible align spacer",
+    "ru": "фантом невидимый выравнивание распорка",
+    "es": "fantasma invisible alineación"
+   },
+   "f": [
+    {
+     "id": "a",
+     "t": "text",
+     "l": "expr",
+     "d": "x"
+    }
+   ],
+   "tpl": "\\phantom{#a}"
+  }
+ ]
+}

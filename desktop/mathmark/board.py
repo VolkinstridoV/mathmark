@@ -75,6 +75,11 @@ class BoardWindow(Adw.ApplicationWindow):
         menu.append(t("board.clear"), "win.board-clear")
         head.pack_end(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu))
 
+        write = Gtk.Button(icon_name="accessories-dictionary-symbolic",
+                           tooltip_text=t("write.title") + "  (Ctrl+M)")
+        write.connect("clicked", lambda *_: self.get_application().open_writer(self))
+        head.pack_end(write)
+
         save = Gtk.Button(icon_name="document-save-symbolic", tooltip_text=t("edit.save"))
         save.connect("clicked", lambda *_: self.save())
         head.pack_end(save)

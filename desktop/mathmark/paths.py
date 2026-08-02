@@ -39,6 +39,19 @@ def board_html() -> Path:
     return share_dir() / "board" / "board.html"
 
 
+def write_html() -> Path:
+    return share_dir() / "write" / "write.html"
+
+
+def write_catalog() -> dict:
+    """Каталог записи математики. Нет файла — пустой каталог, окно не падает."""
+    import json
+    try:
+        return json.loads((share_dir() / "write" / "catalog.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"version": 1, "labels": {}, "sections": [], "items": []}
+
+
 def links() -> dict:
     """Ссылки наружу — общий файл на обе версии."""
     import json

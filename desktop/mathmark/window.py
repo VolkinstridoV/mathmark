@@ -245,6 +245,12 @@ class MathMarkWindow(Adw.ApplicationWindow):
         self.board_btn.connect("clicked", lambda *_: self.get_application().open_board(self))
         head.pack_end(self.board_btn)
 
+        self.write_btn = Gtk.Button(icon_name="accessories-dictionary-symbolic",
+                                    tooltip_text=t("write.title") + "  (Ctrl+M)",
+                                    valign=Gtk.Align.CENTER)
+        self.write_btn.connect("clicked", lambda *_: self.get_application().open_writer(self))
+        head.pack_end(self.write_btn)
+
         self.toggle = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", tooltip_text=t("desk.fileList"))
         self.toggle.set_active(self.st.sidebar)
         self.toggle.connect("toggled", lambda b: self.split.set_show_sidebar(b.get_active()))
