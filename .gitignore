@@ -4,6 +4,13 @@ android/app/build/
 android/.gradle/
 android/local.properties
 
+__pycache__/
+*.pyc
+.pytest_cache/
+.flatpak-builder/
+repo/
+build/
+
 # среды разработки
 .idea/
 *.iml
