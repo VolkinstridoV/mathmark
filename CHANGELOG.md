@@ -6,6 +6,14 @@ Every version and what appeared in it. The same lists are shown inside the app
 after an update.
 
 
+## 1.1 — 2026-08-02
+
+- Board: an endless dotted sheet in a window of its own — pen, highlighter, shapes, labels, Ctrl+D. Only on the desktop
+- How to write it: pick a fraction, an integral, a matrix, fill the boxes and copy the LaTeX — 115 entries in 18 sections, Ctrl+M
+- The catalogue is searched in English, Russian and Spanish at once, by name and by keywords
+- The board and the writing helper were missing from the Arch and Flatpak packages — fixed
+
+
 ## 1.0.2 — 2026-07-31
 
 - Edit files right in the app: plain text with colours, live checking, insert buttons and slash commands

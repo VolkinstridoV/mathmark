@@ -1,0 +1,20 @@
+{
+  "en": [
+    "Board: an endless dotted sheet in a window of its own — pen, highlighter, shapes, labels, Ctrl+D. Only on the desktop",
+    "How to write it: pick a fraction, an integral, a matrix, fill the boxes and copy the LaTeX — 115 entries in 18 sections, Ctrl+M",
+    "The catalogue is searched in English, Russian and Spanish at once, by name and by keywords",
+    "The board and the writing helper were missing from the Arch and Flatpak packages — fixed"
+  ],
+  "ru": [
+    "Доска: бесконечный лист в точку отдельным окном — перо, выделитель, фигуры, надписи, Ctrl+D. Только на компьютере",
+    "«Как это записать»: выбрал дробь, интеграл, матрицу, заполнил квадратики и скопировал готовый LaTeX — 115 записей в 18 разделах, Ctrl+M",
+    "Каталог ищется на английском, русском и испанском сразу, по названию и по ключевым словам",
+    "Доска и помогалка не попадали в пакеты Arch и Flatpak — починено"
+  ],
+  "es": [
+    "Pizarra: una hoja punteada infinita en su propia ventana — pluma, marcador, figuras, rótulos, Ctrl+D. Solo en el escritorio",
+    "«Cómo se escribe»: eliges una fracción, una integral, una matriz, rellenas las casillas y copias el LaTeX — 115 entradas en 18 secciones, Ctrl+M",
+    "El catálogo se busca en inglés, ruso y español a la vez, por nombre y por palabras clave",
+    "La pizarra y el asistente de escritura no llegaban a los paquetes de Arch y Flatpak — corregido"
+  ]
+}

@@ -6,6 +6,14 @@ Todas las versiones y lo que apareció en cada una. Las mismas listas se ven
 dentro de la aplicación tras actualizar.
 
 
+## 1.1 — 2026-08-02
+
+- Pizarra: una hoja punteada infinita en su propia ventana — pluma, marcador, figuras, rótulos, Ctrl+D. Solo en el escritorio
+- «Cómo se escribe»: eliges una fracción, una integral, una matriz, rellenas las casillas y copias el LaTeX — 115 entradas en 18 secciones, Ctrl+M
+- El catálogo se busca en inglés, ruso y español a la vez, por nombre y por palabras clave
+- La pizarra y el asistente de escritura no llegaban a los paquetes de Arch y Flatpak — corregido
+
+
 ## 1.0.2 — 2026-07-31
 
 - Edición del archivo dentro de la aplicación: texto plano con colores, comprobación al vuelo, botones e instrucciones con barra
