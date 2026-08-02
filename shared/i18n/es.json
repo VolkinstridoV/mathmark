@@ -171,6 +171,7 @@
   "sync.conflicts": "Conflictos: %1$s — al lado de cada uno se guardó la otra versión",
   "sync.done": "Enviados %1$s, recibidos %2$s, combinados %3$s",
   "sync.enabled": "Activar la sincronización",
+  "sync.frozen": "La sincronización está en pruebas y por ahora está desactivada",
   "sync.httpError": "GitHub respondió %1$s",
   "sync.noNetwork": "sin conexión: %1$s",
   "sync.noRepo": "no se encontró el repositorio, o la clave no da acceso",

@@ -26,7 +26,7 @@ from .files import Entry, FilesRepo  # noqa: E402
 from .i18n import subtitle, sync_message, t  # noqa: E402
 from . import reminders as rem  # noqa: E402
 from .stats import record  # noqa: E402
-from .sync import GitHub, Sync  # noqa: E402
+from .sync import FROZEN, GitHub, Sync  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
 from .settings import Settings  # noqa: E402
 
@@ -276,8 +276,10 @@ class MathMarkWindow(Adw.ApplicationWindow):
         head.pack_end(prn)
 
         self.sync_btn = Gtk.Button(icon_name="view-refresh-symbolic",
-                                   tooltip_text=t("sync.button"))
+                                   tooltip_text=t("sync.frozen") if FROZEN else t("sync.button"))
         self.sync_btn.connect("clicked", lambda *_: self.do_sync())
+        # кнопка остаётся видимой и нажимаемой: молча погасшая кнопка
+        # выглядит поломкой, а нажатие объясняет, что происходит.
         head.pack_end(self.sync_btn)
 
         view.add_top_bar(head)
@@ -675,6 +677,9 @@ class MathMarkWindow(Adw.ApplicationWindow):
         обращения к сети. Обратно в окно возвращаемся через GLib.idle_add,
         трогать виджеты из чужой нити нельзя.
         """
+        if FROZEN:
+            self.toast(t("sync.frozen"))
+            return
         if self._syncing:
             return
         if not self.st.sync_ready:

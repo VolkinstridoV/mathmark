@@ -88,7 +88,7 @@ You never declare what a file is. The app counts the lines and picks the icon it
 - **Table of contents** built from `##` headings — how you navigate a long cheat sheet.
 - **Progress.** What you closed today, this week, this month, how many days in a row, and a thirty-day chart. Counted from a journal of marks, so it records *when you solved it*, not when you happened to sync.
 - **Reminders** attached to a file, never written into it. Your own wording, daily / weekly / once. Tapping the notification opens that file.
-- **Sync through GitHub**, one button. Marks made on two devices merge, and the more advanced state wins. A genuine text conflict is never resolved behind your back: your version stays, theirs is saved beside it.
+- **Sync through GitHub**, one button — *being tested, switched off for now.* Marks made on two devices merge, and the more advanced state wins. A genuine text conflict is never resolved behind your back: your version stays, theirs is saved beside it. The code is written and covered by tests, but it has never been run against a live network, and a mistake here would damage your own files — so the button stays visible and explains itself instead of pretending to work.
 - **Diagrams** as inline `<svg>`, so a plot travels inside the file itself.
 - **A board and a writing helper** — an endless dotted sheet to think on, and a builder that types the LaTeX for you: pick a matrix, fill the boxes, copy. Desktop only, [described below](#the-board).
 - **Three interface languages**: English, Русский, Español.

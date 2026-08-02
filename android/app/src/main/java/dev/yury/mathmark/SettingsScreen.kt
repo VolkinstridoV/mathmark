@@ -140,7 +140,11 @@ fun SettingsScreen(
                     Text(L["sync.enabled"], color = colors.text,
                          style = MaterialTheme.typography.titleSmall)
                     Text(
-                        if (settings.syncReady) settings.syncRepo else L["sync.notSet"],
+                        when {
+                            SYNC_FROZEN -> L["sync.frozen"]
+                            settings.syncReady -> settings.syncRepo
+                            else -> L["sync.notSet"]
+                        },
                         color = colors.dim, style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -158,7 +162,9 @@ fun SettingsScreen(
                 colors,
             ) { editing = "token" }
             Item(L["sync.check"], L["sync.checkHint"], colors) {
-                if (!settings.syncReady) {
+                if (SYNC_FROZEN) {
+                    Toast.makeText(ctx, L["sync.frozen"], Toast.LENGTH_LONG).show()
+                } else if (!settings.syncReady) {
                     Toast.makeText(ctx, L["sync.notSet"], Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(ctx, L["sync.running"], Toast.LENGTH_SHORT).show()

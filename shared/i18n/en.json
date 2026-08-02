@@ -171,6 +171,7 @@
   "sync.conflicts": "Disputes: %1$s — a second copy is saved next to each",
   "sync.done": "Sent %1$s, received %2$s, merged %3$s",
   "sync.enabled": "Turn syncing on",
+  "sync.frozen": "Sync is being tested and is switched off for now",
   "sync.httpError": "GitHub answered %1$s",
   "sync.noNetwork": "no connection: %1$s",
   "sync.noRepo": "repository not found, or the key gives no access to it",

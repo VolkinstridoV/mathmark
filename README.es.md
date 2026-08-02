@@ -88,7 +88,7 @@ Nunca declaras qué es un archivo. La aplicación cuenta las líneas y elige el 
 - **Índice** a partir de los títulos `##` — así se recorre una chuleta larga.
 - **Progreso.** Cuánto cerraste hoy, esta semana, este mes, cuántos días seguidos, y un gráfico de treinta días. Se cuenta desde un diario de marcas, así que registra **cuándo lo resolviste**, no cuándo sincronizaste.
 - **Recordatorios** colgados de un archivo, nunca escritos dentro de él. Tu propio texto, cada día / cada semana / una vez. Al tocar la notificación se abre ese archivo.
-- **Sincronización por GitHub**, con un botón. Las marcas hechas en dos dispositivos se combinan y gana el estado más avanzado. Un conflicto real de texto nunca se resuelve a tus espaldas: tu versión se queda y la otra se guarda al lado.
+- **Sincronización por GitHub**, con un botón — *en pruebas, desactivada por ahora.* Las marcas hechas en dos dispositivos se combinan y gana el estado más avanzado. Un conflicto real de texto nunca se resuelve a tus espaldas: tu versión se queda y la otra se guarda al lado. El código está escrito y cubierto por pruebas, pero nunca se ha ejecutado contra una red real, y un fallo aquí dañaría tus propios archivos — por eso el botón sigue visible y se explica en vez de fingir que funciona.
 - **Dibujos** como `<svg>` incrustado, para que la gráfica viaje dentro del propio archivo.
 - **Una pizarra y un asistente de escritura** — una hoja punteada infinita sobre la que pensar y un constructor que teclea el LaTeX por ti: eliges una matriz, rellenas las casillas, copias. Solo en el escritorio, [descrito más abajo](#la-pizarra).
 - **Tres idiomas**: English, Русский, Español.

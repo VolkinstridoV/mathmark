@@ -99,6 +99,10 @@ private fun App() {
 
         /** Синхронизация идёт в стороне от рисования — иначе окно замирает. */
         fun doSync() {
+            if (SYNC_FROZEN) {
+                android.widget.Toast.makeText(ctx, L["sync.frozen"], android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
             if (syncing) return
             if (!settings.syncReady) {
                 android.widget.Toast.makeText(ctx, L["sync.notSet"], android.widget.Toast.LENGTH_LONG).show()

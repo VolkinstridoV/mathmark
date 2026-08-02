@@ -20,6 +20,7 @@ from .i18n import t  # noqa: E402
 from .board import BoardWindow, boards_in  # noqa: E402
 from .writer import WriterWindow  # noqa: E402
 from .settings import Settings  # noqa: E402
+from .sync import FROZEN  # noqa: E402
 from .window import CSS, MathMarkWindow  # noqa: E402
 
 APP_ID = "io.github.volkinstridov.MathMark"
@@ -286,6 +287,11 @@ class MathMarkApp(Adw.Application):
         page.add(look)
 
         sync_group = Adw.PreferencesGroup(title=t("sync.title"))
+        if FROZEN:
+            # Раздел на месте, но не работает: так видно, что возможность есть
+            # и она готовится, а не исчезла между версиями.
+            sync_group.set_description(t("sync.frozen"))
+            sync_group.set_sensitive(False)
 
         on_row = Adw.SwitchRow(title=t("sync.enabled"), active=win.st.sync_on)
 
