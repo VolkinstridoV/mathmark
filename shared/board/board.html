@@ -74,10 +74,44 @@
                color:var(--ink); cursor:pointer; font-size:17px}
   #zoom button:hover{background:var(--rule)}
   #zoom span{min-width:52px; text-align:center; font-size:12.5px; color:var(--soft)}
+
+  /* ——— бумажки, вырезанные из конспекта ———
+     Они живут не на холсте, а слоем поверх него: содержимое настоящее —
+     текст и формулы, — а такое на холсте не нарисовать. Слой едет и
+     масштабируется вместе с видом, поэтому бумажка держится своего места. */
+  #notes{position:absolute; left:0; top:0; width:0; height:0;
+         transform-origin:0 0; pointer-events:none}
+  .note{position:absolute; pointer-events:auto; border-radius:10px; padding:12px 14px 14px;
+        background:var(--note-bg); border:1px solid var(--note-line);
+        border-left:4px solid var(--note-edge);
+        box-shadow:0 6px 18px rgba(0,0,0,.13); overflow:hidden;
+        user-select:text; cursor:default}
+  .note.sel{box-shadow:0 0 0 2px var(--accent), 0 6px 18px rgba(0,0,0,.13)}
+  .note .body{font-size:15px; line-height:1.5; color:var(--ink)}
+  .note .body h1,.note .body h2,.note .body h3{margin:.2em 0 .35em; font-size:1.08em}
+  .note .body p{margin:.35em 0}
+  .note .body ul{margin:.3em 0; padding-left:1.1em}
+  .note .body .disp{overflow-x:auto; margin:.45em 0}
+  .note .body .hide{background:var(--note-edge); border-radius:4px; color:transparent}
+  .note .body .hide.open{background:none; color:inherit}
+  .note .head{display:flex; align-items:center; gap:8px; margin-bottom:6px;
+              font-size:11.5px; color:var(--soft)}
+  .note .head .src{cursor:pointer; text-decoration:underline dotted; flex:1;
+                   overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .note .head .edited{font-style:italic; opacity:.75}
+  .note .grip{position:absolute; right:2px; bottom:2px; width:14px; height:14px;
+              cursor:nwse-resize; opacity:.45}
+  .note .grip::after{content:''; position:absolute; right:3px; bottom:3px;
+                     width:7px; height:7px; border-right:2px solid var(--soft);
+                     border-bottom:2px solid var(--soft)}
 </style>
+<link rel="stylesheet" href="../reader/katex/katex.min.css">
+<script defer src="../reader/katex/katex.min.js"></script>
+<script defer src="../reader/reader.js"></script>
 </head>
 <body data-tool="pen">
 <canvas id="c"></canvas>
+<div id="notes"></div>
 
 <textarea id="typing" spellcheck="false"></textarea>
 

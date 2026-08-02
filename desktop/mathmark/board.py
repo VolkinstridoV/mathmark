@@ -80,6 +80,11 @@ class BoardWindow(Adw.ApplicationWindow):
         write.connect("clicked", lambda *_: self.get_application().open_writer(self))
         head.pack_end(write)
 
+        cut = Gtk.Button(icon_name="edit-cut-symbolic",
+                         tooltip_text=t("cut.open") + "  (Ctrl+T)")
+        cut.connect("clicked", lambda *_: self.open_cutter())
+        head.pack_end(cut)
+
         save = Gtk.Button(icon_name="document-save-symbolic", tooltip_text=t("edit.save"))
         save.connect("clicked", lambda *_: self.save())
         head.pack_end(save)
@@ -126,8 +131,11 @@ class BoardWindow(Adw.ApplicationWindow):
         keys = ("board.select", "board.hand", "board.text", "board.pen", "board.marker", "board.eraser",
                 "board.line", "board.arrow", "board.rect", "board.ellipse", "board.triangle",
                 "board.undo", "board.redo", "board.fit", "board.zoomIn", "board.zoomOut")
-        out = {k.split(".", 1)[1]: t(k) for k in keys}
-        return json.dumps({"board." + k: v for k, v in out.items()})
+        out = {"board." + k.split(".", 1)[1]: t(k) for k in keys}
+        # бумажки подписаны своими строками, не из набора инструментов
+        out["note.source"] = t("note.source")
+        out["note.edited"] = t("note.edited")
+        return json.dumps(out)
 
     def _on_load(self, _web, event) -> None:
         if event != WebKit.LoadEvent.FINISHED:
@@ -149,6 +157,50 @@ class BoardWindow(Adw.ApplicationWindow):
             self._mark_dirty(True)
         elif name == "onSave":
             self._write(payload)
+        elif name == "onSource":
+            self._show_source(payload)
+
+    # ——— вырезание куска конспекта ———
+
+    def open_cutter(self, path: Path | None = None) -> None:
+        """
+        Окно вырезания одно на доску: второй раз — поднимаем прежнее, чтобы
+        не разводить одинаковые окна. Открытое на источнике списка не
+        показывает — это разные входы в одно и то же окно.
+        """
+        from .cutter import CutWindow
+
+        old = getattr(self, "_cutter", None)
+        if old is not None and path is None:
+            old.present()
+            return
+        if old is not None:
+            old.close()
+
+        win = CutWindow(self.get_application(), self.st, Path(self.folder),
+                        on_cut=self._take_note, path=path)
+
+        def gone(*_):
+            self._cutter = None
+            return False
+
+        win.connect("close-request", gone)
+        self._cutter = win
+        win.present()
+
+    def _take_note(self, payload: dict) -> None:
+        self._js(f"Board.addNote({json.dumps(json.dumps(payload))});")
+
+    def _show_source(self, payload: str) -> None:
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return
+        path = Path(data.get("file") or "")
+        if not path.is_file():
+            self.toasts.add_toast(Adw.Toast(title=t("note.gone")))
+            return
+        self.open_cutter(path)
 
     # ——— файлы ———
 

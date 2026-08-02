@@ -111,6 +111,7 @@
     ctx.restore();
 
     pctLabel.textContent = Math.round(view.z * 100) + '%';
+    syncNotes();
   }
 
   function drawItem(it, isSelected) {
@@ -587,7 +588,199 @@
   B.setLabels = function (map) { for (var k in map) labels[k] = map[k]; buildTools(); };
   B.setTheme = function (dark) {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    notesSig = '';
     draw();
+  };
+
+  /* ——— Бумажки, вырезанные из конспекта ———
+
+     На холсте их не нарисовать: внутри настоящий текст с формулами, а холст
+     умеет только точки и линии. Поэтому бумажки живут слоем поверх холста и
+     едут вместе с видом. Рисует их та же страница чтения, что и читалку, —
+     движок один, разойтись не могут.
+
+     Содержимое — исходный markdown. Бумажка это копия, а не окно в файл:
+     правь сколько хочешь, файл не тронется. Откуда она пришла, помнит поле
+     `file`, и «Показать источник» открывает тот файл. */
+
+  var notesLayer = document.getElementById('notes');
+  var noteTints = {
+    blue:   ['#EAF1FE', '#BFD4F7', '#2563EB'],
+    violet: ['#F1EBFE', '#D6C6F8', '#7C3AED'],
+    green:  ['#E7F6EE', '#BEE3CE', '#0F9D58'],
+    amber:  ['#FBF1E0', '#EDD9AE', '#B4690E'],
+    red:    ['#FDECEC', '#F5C6C6', '#DC2626'],
+    slate:  ['#EDF0F4', '#CBD3DE', '#334155'],
+  };
+  var darkTints = {
+    blue:   ['#16203A', '#2C3E63', '#7BA5F2'],
+    violet: ['#221A38', '#3A2C5C', '#B79CF7'],
+    green:  ['#14261D', '#254435', '#63C99A'],
+    amber:  ['#2A2114', '#4A3A1E', '#DDAA5E'],
+    red:    ['#2E1919', '#4E2A2A', '#EE8A8A'],
+    slate:  ['#1B2029', '#333C4A', '#9FB0C6'],
+  };
+
+  function isDark() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  function noteBody(md) {
+    if (!window.MathMark || !MathMark.toHtml) return '';
+    var html = MathMark.toHtml(md).html;
+    /* Отметки на бумажке не ведут в файл: это копия, и писать некуда.
+       Убираем адреса, тогда нажатие просто ничего не делает. */
+    return html.replace(/ data-off="\d+"/g, '');
+  }
+
+  function placeNotes() {
+    notesLayer.style.transform =
+      'translate(' + view.x + 'px,' + view.y + 'px) scale(' + view.z + ')';
+  }
+
+  /* Слой перекладывается на каждой отрисовке — это дёшево, там одно
+     преобразование. А заново собирать разметку бумажек дорого, поэтому это
+     делается только когда они правда изменились. */
+  var notesSig = '';
+  function syncNotes() {
+    var mine = [];
+    for (var i = 0; i < items.length; i++) if (items[i].t === 'note') mine.push(items[i]);
+    var sig = JSON.stringify(mine) + '|' + selected + '|' + isDark();
+    if (sig !== notesSig) { notesSig = sig; renderNotes(); }
+    placeNotes();
+  }
+
+  function renderNotes() {
+    notesLayer.innerHTML = '';
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].t === 'note') notesLayer.appendChild(noteEl(items[i], i));
+    }
+    placeNotes();
+  }
+
+  function noteEl(it, index) {
+    var tint = (isDark() ? darkTints : noteTints)[it.color] || noteTints.blue;
+    var el = document.createElement('div');
+    el.className = 'note' + (index === selected ? ' sel' : '');
+    el.style.left = it.x + 'px';
+    el.style.top = it.y + 'px';
+    el.style.width = (it.w || 360) + 'px';
+    if (it.h) el.style.minHeight = it.h + 'px';
+    el.style.setProperty('--note-bg', tint[0]);
+    el.style.setProperty('--note-line', tint[1]);
+    el.style.setProperty('--note-edge', tint[2]);
+
+    var head = document.createElement('div');
+    head.className = 'head';
+    var src = document.createElement('span');
+    src.className = 'src';
+    src.textContent = (labels['note.source'] || 'Показать источник') +
+                      (it.heading ? ' · ' + it.heading : '');
+    src.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    src.addEventListener('click', function (e) {
+      e.stopPropagation();
+      send('onSource', JSON.stringify({ file: it.file || '', heading: it.heading || '' }));
+    });
+    head.appendChild(src);
+    if (it.edited) {
+      var ed = document.createElement('span');
+      ed.className = 'edited';
+      ed.textContent = labels['note.edited'] || 'изменено';
+      head.appendChild(ed);
+    }
+    el.appendChild(head);
+
+    var body = document.createElement('div');
+    body.className = 'body';
+    body.innerHTML = noteBody(it.md || '');
+    el.appendChild(body);
+
+    var grip = document.createElement('div');
+    grip.className = 'grip';
+    el.appendChild(grip);
+
+    /* Перетаскивание за бумажку, растягивание за уголок. Ширину задаём мы,
+       высоту считает содержимое: текст перетекает, как в читалке. */
+    var drag = null;
+    el.addEventListener('pointerdown', function (e) {
+      if (el.classList.contains('editing')) return;
+      selected = index;
+      // пересобирать разметку нельзя: пропал бы захват указателя и таскать
+      // бумажку стало бы невозможно. Просто помечаем выбранную.
+      var sibs = notesLayer.children;
+      for (var s2 = 0; s2 < sibs.length; s2++) sibs[s2].classList.remove('sel');
+      el.classList.add('sel');
+      notesSig = '';
+      var onGrip = e.target === grip;
+      drag = { onGrip: onGrip, sx: e.clientX, sy: e.clientY, x: it.x, y: it.y, w: it.w || 360 };
+      el.setPointerCapture(e.pointerId);
+      e.stopPropagation();
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = (e.clientX - drag.sx) / view.z, dy = (e.clientY - drag.sy) / view.z;
+      if (drag.onGrip) {
+        it.w = Math.max(160, Math.round(drag.w + dx));
+        el.style.width = it.w + 'px';
+      } else {
+        it.x = Math.round(drag.x + dx);
+        it.y = Math.round(drag.y + dy);
+        el.style.left = it.x + 'px';
+        el.style.top = it.y + 'px';
+      }
+      e.stopPropagation();
+    });
+    el.addEventListener('pointerup', function (e) {
+      if (drag) { drag = null; markDirty(); e.stopPropagation(); }
+    });
+
+    /* Двойное нажатие — правка: показываем исходный markdown как есть,
+       уходишь — снова рисуется. Ровно как кнопка правки в читалке. */
+    el.addEventListener('dblclick', function (e) {
+      if (el.classList.contains('editing')) return;
+      e.stopPropagation();
+      push();
+      el.classList.add('editing');
+      body.textContent = it.md || '';
+      body.style.whiteSpace = 'pre-wrap';
+      body.style.fontFamily = 'ui-monospace,SFMono-Regular,Menlo,monospace';
+      body.contentEditable = 'true';
+      body.focus();
+      body.addEventListener('blur', function done() {
+        body.removeEventListener('blur', done);
+        var next = body.textContent;
+        el.classList.remove('editing');
+        body.contentEditable = 'false';
+        body.style.whiteSpace = '';
+        body.style.fontFamily = '';
+        if (next !== it.md) { it.md = next; it.edited = true; }
+        markDirty();
+        renderNotes();
+      });
+    });
+    return el;
+  }
+
+  /** Кусок, вырезанный из конспекта, ложится в середину видимой части доски. */
+  B.addNote = function (payload) {
+    var d = typeof payload === 'string' ? JSON.parse(payload) : payload;
+    if (!d || !d.md) return;
+    push();
+    items.push({
+      t: 'note',
+      x: round((cv.clientWidth / 2 - view.x) / view.z - 180),
+      y: round((cv.clientHeight / 2 - view.y) / view.z - 60),
+      w: 360,
+      color: d.color || 'blue',
+      md: d.md,
+      file: d.file || '',
+      heading: d.heading || '',
+      edited: false,
+    });
+    selected = items.length - 1;
+    markDirty();
+    draw();
+    renderNotes();
   };
 
   /** Доска в текст: обычный JSON, который можно прочитать и поправить руками. */
@@ -603,6 +796,7 @@
     if (data && data.view) view = { x: data.view.x, y: data.view.y, z: data.view.z || 1 };
     else view = { x: cv.clientWidth / 2, y: cv.clientHeight / 2, z: 1 };
     history = []; undone = []; selected = -1; dirty = false;
+    notesSig = '';
     draw();
   };
 

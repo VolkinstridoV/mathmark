@@ -90,6 +90,10 @@
   .hide.open{background:none; color:inherit; cursor:text; user-select:text}
   .hide.open > *{opacity:1}
   .hide:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  /* В окне вырезания закрашенное выделяется наравне со всем: иначе кусок,
+     пойманный поверх скрытого места, приехал бы на доску без него. Читать
+     содержимое всё равно нельзя — оно остаётся закрашенным. */
+  html[data-cut] .hide{-webkit-user-select:text; user-select:text}
 
   .empty{padding:56px 20px; text-align:center; color:var(--soft)}
 

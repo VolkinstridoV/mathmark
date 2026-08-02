@@ -89,7 +89,10 @@
 
   function pairs(o, c) { return (o === '[' && c === ']') || (o === '(' && c === ')'); }
 
-  MathMark.render = function (src) {
+  /* Разметка в готовый кусок страницы. Отдельно от render, потому что тем же
+     самым рисуются бумажки на доске: движок обязан быть один, иначе доска и
+     читалка со временем начнут показывать одно и то же по-разному. */
+  MathMark.toHtml = function (src) {
     var slots = [];
     function hold(html) { return '@@' + (slots.push(html) - 1) + '@@'; }
 
@@ -199,11 +202,17 @@
       out.push(/^@@\d+@@$/.test(text) ? text : '<p>' + inlineFmt(text) + '</p>');
     }
 
-    var html = out.join('\n').replace(/@@(\d+)@@/g, function (_, n) { return slots[+n]; });
-    document.getElementById('doc').innerHTML =
-      html || '<div class="empty">' + esc(labels.empty) + '</div>';
+    return {
+      html: out.join('\n').replace(/@@(\d+)@@/g, function (_, n) { return slots[+n]; }),
+      toc: toc,
+    };
+  };
 
-    send('onToc', JSON.stringify(toc));
+  MathMark.render = function (src) {
+    var r = MathMark.toHtml(src);
+    document.getElementById('doc').innerHTML =
+      r.html || '<div class="empty">' + esc(labels.empty) + '</div>';
+    send('onToc', JSON.stringify(r.toc));
   };
 
   /* Точечное обновление после отметки: перерисовывать весь файл незачем,
@@ -338,6 +347,12 @@
     }
     return best;
   }
+
+  /** Окно вырезания просит разрешить выделять закрашенные куски. */
+  MathMark.cutMode = function (on) {
+    if (on) document.documentElement.setAttribute('data-cut', '1');
+    else document.documentElement.removeAttribute('data-cut');
+  };
 
   MathMark.hasSelection = function () {
     var s = window.getSelection();
