@@ -11,8 +11,8 @@ android {
         applicationId = "dev.yury.mathmark"
         minSdk = 30
         targetSdk = 37
-        versionCode = 4
-        versionName = "1.1"
+        versionCode = 5
+        versionName = "1.2"
     }
 
     buildTypes {

@@ -1,0 +1,20 @@
+{
+  "en": [
+    "Cut a piece of your notes onto the board: pick a file, select with the cursor, choose a colour — it lands as a note (Ctrl+T)",
+    "The note keeps the original markdown, formulas and all; edit it freely, the file is never touched",
+    "«Show source» on a note reopens the file it came from",
+    "Sync is being tested and is switched off for now"
+  ],
+  "ru": [
+    "Вырезание куска конспекта на доску: выбрал файл, выделил курсором, выбрал цвет — кусок лёг бумажкой (Ctrl+T)",
+    "Бумажка хранит исходный markdown вместе с формулами; правь сколько хочешь, файл не тронется",
+    "«Показать источник» на бумажке открывает тот файл, откуда она пришла",
+    "Синхронизация проходит проверку и пока отключена"
+  ],
+  "es": [
+    "Recortar un trozo de tus apuntes a la pizarra: eliges archivo, seleccionas con el cursor, eliges color — cae como un papel (Ctrl+T)",
+    "El papel guarda el markdown original con sus fórmulas; edítalo cuanto quieras, el archivo no se toca",
+    "«Ver el origen» en el papel reabre el archivo del que salió",
+    "La sincronización está en pruebas y por ahora está desactivada"
+  ]
+}

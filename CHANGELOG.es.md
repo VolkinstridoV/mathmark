@@ -6,6 +6,14 @@ Todas las versiones y lo que apareció en cada una. Las mismas listas se ven
 dentro de la aplicación tras actualizar.
 
 
+## 1.2 — 2026-08-02
+
+- Recortar un trozo de tus apuntes a la pizarra: eliges archivo, seleccionas con el cursor, eliges color — cae como un papel (Ctrl+T)
+- El papel guarda el markdown original con sus fórmulas; edítalo cuanto quieras, el archivo no se toca
+- «Ver el origen» en el papel reabre el archivo del que salió
+- La sincronización está en pruebas y por ahora está desactivada
+
+
 ## 1.1 — 2026-08-02
 
 - Pizarra: una hoja punteada infinita en su propia ventana — pluma, marcador, figuras, rótulos, Ctrl+D. Solo en el escritorio

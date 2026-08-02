@@ -61,11 +61,19 @@ class CutWindow(Adw.ApplicationWindow):
         self.set_size_request(520, 420)
 
         self._build()
+
+        # Выделил — и сразу Ctrl+Enter, не отрывая рук от текста.
+        keys = Gtk.EventControllerKey()
+        keys.connect("key-pressed", self._on_key)
+        self.add_controller(keys)
+
         if self.source_mode:
             self.set_title(t("cut.source"))
             self.open(path)
         else:
             self.refresh()
+            # Открылось — сразу можно ходить стрелками по списку, без мыши.
+            self._focus_list()
 
     # ——— сборка ———
 
@@ -140,7 +148,8 @@ class CutWindow(Adw.ApplicationWindow):
             self._paint_dot(btn, hexv, name == self.color)
         bar.append(dots)
 
-        self.take_btn = Gtk.Button(label=t("cut.take"), valign=Gtk.Align.CENTER)
+        self.take_btn = Gtk.Button(label=t("cut.take") + "  (Ctrl+Enter)",
+                                   valign=Gtk.Align.CENTER)
         self.take_btn.add_css_class("suggested-action")
         self.take_btn.set_sensitive(False)
         self.take_btn.connect("clicked", lambda *_: self._take())
@@ -155,6 +164,32 @@ class CutWindow(Adw.ApplicationWindow):
             ("button{min-width:18px;min-height:18px;padding:0;border-radius:999px;"
              "background:%s;border:1px solid rgba(0,0,0,.18);%s}" % (hexv, ring)).encode())
         btn.get_style_context().add_provider(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+    def _on_key(self, _c, keyval, _code, state) -> bool:
+        from gi.repository import Gdk as _Gdk
+
+        ctrl = state & _Gdk.ModifierType.CONTROL_MASK
+        if ctrl and keyval in (_Gdk.KEY_Return, _Gdk.KEY_KP_Enter):
+            self._take()
+            return True
+        if keyval == _Gdk.KEY_Escape:
+            self.close()
+            return True
+        if keyval == _Gdk.KEY_BackSpace and not self.source_mode:
+            self._go_up()
+            return True
+        # Enter на выбранной строке открывает её: сам ListBox этого не делает,
+        # пока по строке не щёлкнули мышью.
+        if keyval in (_Gdk.KEY_Return, _Gdk.KEY_KP_Enter) and not self.source_mode:
+            row = self.listbox.get_selected_row()
+            # focus сидит на самой строке, а не на списке, поэтому спрашиваем
+            # про предка: has_focus() у списка всегда ложь, и Enter пропадал.
+            here = self.get_focus()
+            in_list = here is not None and (here is self.listbox or here.is_ancestor(self.listbox))
+            if row is not None and in_list:
+                self._row_activated(self.listbox, row)
+                return True
+        return False
 
     def _pick(self, name: str) -> None:
         self.color = name
@@ -198,12 +233,21 @@ class CutWindow(Adw.ApplicationWindow):
         if entry.is_folder:
             self.repo.enter(entry.path)
             self.refresh()
+            self._focus_list()
         else:
             self.open(entry.path)
+
+    def _focus_list(self) -> None:
+        """После перехода по папкам список снова под стрелками, а не мимо."""
+        self.listbox.grab_focus()
+        first = self.listbox.get_row_at_index(0)
+        if first is not None:
+            self.listbox.select_row(first)
 
     def _go_up(self) -> None:
         if self.repo.up():
             self.refresh()
+            self._focus_list()
 
     # ——— файл ———
 
@@ -211,6 +255,8 @@ class CutWindow(Adw.ApplicationWindow):
         self.current = Path(path)
         text = FilesRepo.read(self.current)
         self.title_widget.set_subtitle(self.current.name)
+        # Открыл файл — можно сразу выделять, курсор уже в тексте.
+        self.web.grab_focus()
         if self._ready:
             self._render(text)
         else:

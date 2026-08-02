@@ -6,6 +6,14 @@ Every version and what appeared in it. The same lists are shown inside the app
 after an update.
 
 
+## 1.2 — 2026-08-02
+
+- Cut a piece of your notes onto the board: pick a file, select with the cursor, choose a colour — it lands as a note (Ctrl+T)
+- The note keeps the original markdown, formulas and all; edit it freely, the file is never touched
+- «Show source» on a note reopens the file it came from
+- Sync is being tested and is switched off for now
+
+
 ## 1.1 — 2026-08-02
 
 - Board: an endless dotted sheet in a window of its own — pen, highlighter, shapes, labels, Ctrl+D. Only on the desktop

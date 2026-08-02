@@ -17,7 +17,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 NEWS = ROOT / "shared" / "whatsnew"
 
 DATES = {"1.0": "2026-07-31", "1.0.1": "2026-07-31", "1.0.2": "2026-07-31",
-         "1.1": "2026-08-02"}
+         "1.1": "2026-08-02",
+         "1.2": "2026-08-02"}
 
 HEAD = {
     "en": ("# Changelog\n\n[Русский](CHANGELOG.ru.md) · [Español](CHANGELOG.es.md)\n\n"

@@ -143,6 +143,14 @@ Una segunda ventana (`Ctrl+D`): una hoja infinita punteada — el papel sobre el
 
 La pizarra se guarda como JSON legible en la misma carpeta que tus apuntes, con un nombre acabado en `.board`. La misma regla que rige todo aquí: nada queda encerrado dentro del programa.
 
+### Recortar un trozo de tus apuntes
+
+La pizarra empieza vacía, pero el material ya está escrito — en tus propios archivos. `Ctrl+T` abre una ventana: carpetas y archivos a la izquierda, el archivo elegido dibujado a la derecha. Seleccionas con el cursor lo que necesitas, eliges un color y pulsas Sacar (`Ctrl+Enter`) — y cae en la pizarra como un papel.
+
+Lo que viaja es el **markdown original**, no lo que se ve en pantalla: cada fórmula dibujada lleva consigo su LaTeX, así que una integral seleccionada llega como integral y no como una fila de signos. No existe media fórmula — la selección se ensancha sola hasta sus bordes.
+
+El papel es una copia, no una ventana al archivo. Arrástralo, cámbiale el tamaño, edítalo con doble clic: el archivo no se toca, y en la esquina aparece una discreta marca «editado». **Ver el origen** arriba reabre el archivo del que salió — y desde ahí puedes recortar otro trozo.
+
 ### «Cómo se escribe»
 
 <div align="center"><img src="shots/28-desktop-write.png" width="750"></div>

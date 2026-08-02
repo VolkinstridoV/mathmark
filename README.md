@@ -143,6 +143,14 @@ A second window (`Ctrl+D`): an endless sheet ruled in dots — the paper you thi
 
 A board is saved as plain readable JSON in the same folder as your notes, under a `.board` name. Same rule as everywhere else here: nothing is locked inside the program.
 
+### Cut a piece of your notes
+
+The board starts empty, but the material is already written — in your own files. `Ctrl+T` opens a window: folders and files on the left, the chosen file rendered on the right. Select what you need with the cursor, pick a colour, press Take it (`Ctrl+Enter`) — and it lands on the board as a note.
+
+What travels is the **original markdown**, not what is on screen: every rendered formula carries its own LaTeX, so a selected integral arrives as an integral and not as a row of glyphs. There is no half a formula — the selection widens to its edges by itself.
+
+A note is a copy, not a window into the file. Drag it, resize it, edit it with a double click: the file is never touched, and a quiet «edited» mark appears in the corner. **Show source** at the top reopens the file it came from — and you can cut another piece straight from there.
+
 ### How to write it
 
 <div align="center"><img src="shots/28-desktop-write.png" width="750"></div>

@@ -1,6 +1,6 @@
 # Maintainer: VolkinstridoV <246958375+VolkinstridoV@users.noreply.github.com>
 pkgname=mathmark
-pkgver=1.1
+pkgver=1.2
 pkgrel=1
 pkgdesc="Reader for maths written in Markdown: formulas as in textbooks, marking changes one byte"
 arch=('any')
