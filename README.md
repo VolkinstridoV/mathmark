@@ -37,9 +37,9 @@ MathMark does two things and refuses to do more: **show the maths properly, and 
 
 | | |
 |---|---|
-| **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
+| **Android** | [Releases](../../releases) → the `.apk` file |
 | **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
-| **Any Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, one file, installs with `flatpak install ./mathmark-1.0.flatpak` |
+| **Any Linux** | [Releases](../../releases) → the `.flatpak` file, just the one, installs with `flatpak install ./mathmark-*.flatpak` |
 | **From source** | see [Desktop](#desktop) below |
 
 No account, no network, no telemetry. The formula engine ships inside the app.
@@ -90,6 +90,7 @@ You never declare what a file is. The app counts the lines and picks the icon it
 - **Reminders** attached to a file, never written into it. Your own wording, daily / weekly / once. Tapping the notification opens that file.
 - **Sync through GitHub**, one button. Marks made on two devices merge, and the more advanced state wins. A genuine text conflict is never resolved behind your back: your version stays, theirs is saved beside it.
 - **Diagrams** as inline `<svg>`, so a plot travels inside the file itself.
+- **A board and a writing helper** — an endless dotted sheet to think on, and a builder that types the LaTeX for you: pick a matrix, fill the boxes, copy. Desktop only, [described below](#the-board).
 - **Three interface languages**: English, Русский, Español.
 
 ## The rule that shapes everything
@@ -133,6 +134,24 @@ On the desktop the same text sits under a button in the settings. It explains th
 The desktop build is the same program, and it draws through the very same page as the phone: `shared/reader/` is used by both, so the two cannot drift apart.
 
 What the bigger screen adds: two panes, search across all files, keyboard navigation (`j`/`k` or arrows to move, space to mark), printing and saving a cheat sheet as PDF, and a folder watcher — edit a file in your editor and the window updates on its own. The text column keeps a readable width: widen the window and the margins grow, not the line.
+
+### The board
+
+<div align="center"><img src="shots/27-desktop-board.png" width="750"></div>
+
+A second window (`Ctrl+D`): an endless sheet ruled in dots — the paper you think on, not the page you read. Pen, highlighter, eraser, straight lines, arrows, rectangles, ellipses, triangles. Double-click anywhere and type a label; double-click it again to change it. Copy, paste, duplicate, undo. Pan and zoom, and the dot grid steps its density so the dots neither clot nor drift apart.
+
+A board is saved as plain readable JSON in the same folder as your notes, under a `.board` name. Same rule as everywhere else here: nothing is locked inside the program.
+
+### How to write it
+
+<div align="center"><img src="shots/28-desktop-write.png" width="750"></div>
+
+The one question that stops people is not *what* to write but *how do I type that?* Press `Ctrl+M`: pick a fraction, an integral, a matrix, a system — **115 entries in 18 sections** — and it appears already drawn, with empty boxes where your numbers go. Fill the boxes, press Copy, paste it anywhere.
+
+Every entry carries its own settings: a matrix asks for brackets, rows and columns and gives you a grid of fields; a vector asks for its dimension and whether it lies in a row or a column; an integral asks for its limits and variable. Search runs in English, Russian and Spanish at once, over names and keywords alike. A second button copies the LaTeX without the dollar signs, for pasting inside a formula you already have.
+
+Both the board and the helper are desktop-only, on purpose.
 
 On Arch it is one command:
 

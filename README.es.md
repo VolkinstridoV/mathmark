@@ -37,9 +37,9 @@ MathMark hace dos cosas y se niega a hacer más: **mostrar las matemáticas como
 
 | | |
 |---|---|
-| **Android** | [Releases](../../releases) → `mathmark-1.0.apk` |
+| **Android** | [Releases](../../releases) → el archivo `.apk` |
 | **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
-| **Cualquier Linux** | [Releases](../../releases) → `mathmark-1.0.flatpak`, un archivo, se instala con `flatpak install ./mathmark-1.0.flatpak` |
+| **Cualquier Linux** | [Releases](../../releases) → el archivo `.flatpak`, es el único, se instala con `flatpak install ./mathmark-*.flatpak` |
 | **Desde el código** | ver [Escritorio](#escritorio) |
 
 Sin cuenta, sin red, sin telemetría. El motor de fórmulas viaja dentro de la aplicación.
@@ -90,6 +90,7 @@ Nunca declaras qué es un archivo. La aplicación cuenta las líneas y elige el 
 - **Recordatorios** colgados de un archivo, nunca escritos dentro de él. Tu propio texto, cada día / cada semana / una vez. Al tocar la notificación se abre ese archivo.
 - **Sincronización por GitHub**, con un botón. Las marcas hechas en dos dispositivos se combinan y gana el estado más avanzado. Un conflicto real de texto nunca se resuelve a tus espaldas: tu versión se queda y la otra se guarda al lado.
 - **Dibujos** como `<svg>` incrustado, para que la gráfica viaje dentro del propio archivo.
+- **Una pizarra y un asistente de escritura** — una hoja punteada infinita sobre la que pensar y un constructor que teclea el LaTeX por ti: eliges una matriz, rellenas las casillas, copias. Solo en el escritorio, [descrito más abajo](#la-pizarra).
 - **Tres idiomas**: English, Русский, Español.
 
 ## La regla de la que nace todo lo demás
@@ -133,6 +134,24 @@ En el escritorio ese mismo texto está bajo un botón en los ajustes. Explica lo
 La versión de escritorio es el mismo programa y dibuja **con la misma página** que el móvil: `shared/reader/` lo usan las dos, así que no pueden separarse.
 
 Lo que añade la pantalla grande: dos paneles, búsqueda en todos los archivos, teclado (`j`/`k` o flechas para moverse, espacio para marcar), impresión y guardado de una chuleta en PDF, y vigilancia de la carpeta — editas un archivo en tu editor y la ventana se actualiza sola. La columna de texto mantiene un ancho legible: al ensanchar la ventana crecen los márgenes, no la línea.
+
+### La pizarra
+
+<div align="center"><img src="shots/27-desktop-board.png" width="750"></div>
+
+Una segunda ventana (`Ctrl+D`): una hoja infinita punteada — el papel sobre el que se piensa, no la página que se lee. Pluma, marcador, goma, rectas, flechas, rectángulos, elipses, triángulos. Doble clic en cualquier sitio y escribes un rótulo; doble clic encima y lo corriges. Copiar, pegar, duplicar, deshacer. La hoja se desplaza y se acerca, y la retícula de puntos cambia de densidad por escalones: al alejarse los puntos no se apelmazan y al acercarse no se separan.
+
+La pizarra se guarda como JSON legible en la misma carpeta que tus apuntes, con un nombre acabado en `.board`. La misma regla que rige todo aquí: nada queda encerrado dentro del programa.
+
+### «Cómo se escribe»
+
+<div align="center"><img src="shots/28-desktop-write.png" width="750"></div>
+
+Lo que detiene a la gente no es *qué* escribir, sino *cómo se teclea eso*. Pulsa `Ctrl+M`: eliges una fracción, una integral, una matriz, un sistema — **115 entradas en 18 secciones** — y aparece ya dibujada, con casillas vacías donde van tus números. Rellenas las casillas, pulsas Copiar y lo pegas donde haga falta.
+
+Cada entrada trae sus propios ajustes: la matriz pide corchetes, filas y columnas, y ofrece una rejilla de campos para los valores; el vector, su dimensión y si va en fila o en columna; la integral, sus límites y su variable. La búsqueda funciona en inglés, ruso y español a la vez, tanto por nombre como por palabras clave. Un segundo botón copia el LaTeX sin los signos de dólar, para pegarlo dentro de una fórmula que ya tengas.
+
+Tanto la pizarra como el asistente existen solo en el escritorio, a propósito.
 
 En Arch basta un comando:
 
