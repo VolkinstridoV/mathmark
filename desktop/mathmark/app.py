@@ -103,7 +103,18 @@ class MathMarkApp(Adw.Application):
         dlg.present(win)
 
     def open_board(self, parent) -> None:
-        """Доска — отдельное окно. Читалка при этом остаётся открытой."""
+        """
+        Доска — отдельное окно, читалка при этом остаётся открытой.
+
+        Окно одно: раньше каждое нажатие Ctrl+D открывало новое, два окна
+        садились на один файл и по очереди затирали друг друга — чьё
+        сохранение последнее, того и доска.
+        """
+        old = getattr(self, "_board", None)
+        if old is not None:
+            old.present()
+            return
+
         folder = Path(self.st.folder)
         existing = boards_in(folder)
         win = BoardWindow(self, self.st, folder)
@@ -113,6 +124,13 @@ class MathMarkApp(Adw.Application):
             win.open(existing[0])
         else:
             win.create(t("board.title"))
+
+        def gone(*_):
+            self._board = None
+            return False
+
+        win.connect("close-request", gone)
+        self._board = win
         win.present()
 
     def open_writer(self, parent=None) -> None:
@@ -144,6 +162,7 @@ class MathMarkApp(Adw.Application):
         add("board-save", win.save, "<Ctrl>s")
         add("board-clear", win.clear)
         add("board-new", lambda: self._ask_board_name(win))
+        add("board-pick", lambda: win.list_btn.popup())
 
     def _ask_board_name(self, win) -> None:
         dlg = Adw.AlertDialog(heading=t("board.new"))

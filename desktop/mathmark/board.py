@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import gi
@@ -60,6 +61,7 @@ class BoardWindow(Adw.ApplicationWindow):
         self.folder = Path(folder)
         self.path: Path | None = None
         self._dirty = False
+        self._broken = False        # открыт испорченный файл — писать нельзя
 
         self.set_default_size(1180, 800)
         self.set_size_request(560, 420)
@@ -70,6 +72,9 @@ class BoardWindow(Adw.ApplicationWindow):
         if path is not None:
             self.open(path)
 
+        # Автосохранение: доска живёт одним файлом, и час рисования терять не на что.
+        GLib.timeout_add_seconds(60, self._autosave)
+
     # ——— окно ———
 
     def _build(self) -> None:
@@ -79,7 +84,10 @@ class BoardWindow(Adw.ApplicationWindow):
         self.title_widget = Adw.WindowTitle(title=t("board.title"), subtitle="")
         head.set_title_widget(self.title_widget)
 
+        # «Выбрать доску» стоит здесь же, а не отдельной кнопкой слева: искать
+        # её ходят именно в это меню, рядом с «Новая» и «Очистить».
         menu = Gio.Menu()
+        menu.append(t("board.pick"), "win.board-pick")
         menu.append(t("board.new"), "win.board-new")
         menu.append(t("board.clear"), "win.board-clear")
         head.pack_end(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu))
@@ -329,36 +337,122 @@ class BoardWindow(Adw.ApplicationWindow):
         except OSError:
             return ""
 
-    def _write(self, text: str) -> None:
+    def _write(self, text: str, quiet: bool = False) -> None:
+        """
+        Запись через временный файл и переименование.
+
+        Прямая запись сначала обрезает файл до нуля и лишь потом наполняет.
+        Убили программу или кончилось место в этот миг — на диске остаётся
+        обрубок, который в следующий раз не разберётся. Переименование в
+        пределах одного диска атомарно: на месте либо старый файл целиком,
+        либо новый целиком, третьего не бывает.
+
+        Ошибку записи молчать нельзя: человек нажал «Сохранить», ничего не
+        случилось, и он ушёл спокойный, а работа осталась только в окне.
+        """
         if self.path is None:
             return
+        tmp = self.path.with_name(self.path.name + ".пишется")
         try:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.path.write_text(text, encoding="utf-8")
+            with open(tmp, "w", encoding="utf-8") as f:
+                f.write(text)
+                f.flush()
+                os.fsync(f.fileno())
+            self._saving_now = True
+            os.replace(tmp, self.path)
+            GLib.timeout_add(1200, lambda: (setattr(self, "_saving_now", False), False)[1])
             self._mark_dirty(False)
-            self.toasts.add_toast(Adw.Toast(title=t("board.saved"), timeout=2))
-        except OSError:
-            pass
+            if not quiet:
+                self.toasts.add_toast(Adw.Toast(title=t("board.saved"), timeout=2))
+        except OSError as e:
+            tmp.unlink(missing_ok=True)
+            self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", e.strerror or "")))
 
-    def save(self) -> None:
+    def save(self, quiet: bool = False) -> None:
         """Просим страницу отдать содержимое: она хранит всё, окно — ничего."""
-        if self.path is None:
+        if self.path is None or self._broken:
             return
         self.web.evaluate_javascript(
-            "Board.dump()", -1, None, None, None, self._got_dump, None)
+            "Board.dump()", -1, None, None, None, self._got_dump, quiet)
 
-    def _got_dump(self, web, result, *_):
+    def _got_dump(self, web, result, quiet=False):
         try:
             value = web.evaluate_javascript_finish(result)
-            self._write(value.to_string())
+            self._write(value.to_string(), quiet=bool(quiet))
         except GLib.Error:
             pass
 
+    def _autosave(self) -> bool:
+        """Раз в минуту, тихо. Доска — один файл, и терять его не на что."""
+        if self.path is not None and self._dirty and not self._broken:
+            self.save(quiet=True)
+        return True
+
+    def _watch(self) -> None:
+        """
+        Следим за своим файлом. У читалки слежение есть с самого начала, у
+        доски не было: правку `.board` снаружи затирало следующим сохранением.
+        """
+        old = getattr(self, "_monitor", None)
+        if old is not None:
+            old.cancel()
+        self._monitor = None
+        if self.path is None:
+            return
+        try:
+            mon = Gio.File.new_for_path(str(self.path)).monitor_file(
+                Gio.FileMonitorFlags.NONE, None)
+        except GLib.Error:
+            return
+        mon.connect("changed", self._file_changed)
+        self._monitor = mon
+
+    def _file_changed(self, _m, _f, _o, event) -> None:
+        if event != Gio.FileMonitorEvent.CHANGES_DONE_HINT or self.path is None:
+            return
+        if getattr(self, "_saving_now", False):
+            return
+        toast = Adw.Toast(title=t("board.outside"), timeout=10)
+        toast.set_button_label(t("board.reload"))
+        toast.connect("button-clicked", lambda *_: self.open(self.path))
+        self.toasts.add_toast(toast)
+
     def open(self, path: Path) -> None:
-        self.path = Path(path)
-        self.title_widget.set_subtitle(self.path.stem)
+        """
+        Испорченный файл не открывается молча.
+
+        Раньше неразобранный файл давал пустую доску, человек видел чистый
+        лист, закрывал окно — и пустышка ложилась поверх работы. Теперь такой
+        файл откладывается в сторону под своим именем, а доска запирается:
+        сохранять поверх нечего и незачем.
+        """
+        path = Path(path)
+        text = ""
+        self._broken = False
+        try:
+            text = path.read_text(encoding="utf-8")
+            if text.strip():
+                json.loads(text)
+        except OSError as e:
+            self._broken = True
+            self.toasts.add_toast(Adw.Toast(title=t("board.readFailed", e.strerror or "")))
+        except ValueError:
+            self._broken = True
+            spare = path.with_name(path.name + ".битый")
+            try:
+                os.replace(path, spare)
+            except OSError:
+                spare = path
+            self.toasts.add_toast(Adw.Toast(title=t("board.brokenFile", spare.name),
+                                            timeout=12))
+
+        self.path = None if self._broken else path
+        self.title_widget.set_subtitle(path.stem + ("  —  " + t("board.broken")
+                                                    if self._broken else ""))
         self._mark_dirty(False)
-        self._js(f"Board.load({json.dumps(self._read())});")
+        self._js(f"Board.load({json.dumps('' if self._broken else text)});")
+        self._watch()
 
     def create(self, name: str) -> None:
         clean = name.strip().replace("/", "").replace("\\", "")
@@ -404,6 +498,36 @@ class BoardWindow(Adw.ApplicationWindow):
         dlg.present(self)
 
     def _on_close(self, *_):
-        if self._dirty:
-            self.save()
-        return False
+        """
+        Молча сохранять при закрытии нельзя: это лишает человека права
+        передумать. Спрашиваем — и «Отмена» действительно отменяет закрытие.
+        """
+        if not self._dirty or self.path is None or self._broken:
+            return False
+        if getattr(self, "_leaving", False):
+            return False
+
+        dlg = Adw.AlertDialog(heading=t("board.closeAsk"),
+                              body=self.path.stem if self.path else "")
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("no", t("board.dontSave"))
+        dlg.add_response("yes", t("edit.save"))
+        dlg.set_response_appearance("no", Adw.ResponseAppearance.DESTRUCTIVE)
+        dlg.set_response_appearance("yes", Adw.ResponseAppearance.SUGGESTED)
+        dlg.set_default_response("yes")
+        dlg.set_close_response("cancel")
+
+        def answer(_d, r):
+            if r == "cancel":
+                return
+            self._leaving = True
+            if r == "yes":
+                # сохраняем и закрываемся уже после записи, а не до неё
+                self.save()
+                GLib.timeout_add(350, lambda: (self.close(), False)[1])
+            else:
+                self.close()
+
+        dlg.connect("response", answer)
+        dlg.present(self)
+        return True                      # закрытие придержано до ответа

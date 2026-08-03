@@ -198,10 +198,29 @@
       for (var q = 0; q < ls.length; q++) wide = Math.max(wide, ctx.measureText(ls[q]).width);
       return { x: it.x, y: it.y, w: Math.max(12, wide), h: ls.length * it.size * 1.25 };
     }
+    /* Бумажки и карточки лежат отдельным слоем, но границы у них должны
+       быть настоящие: без этого «вписать всё в окно» считало по NaN и
+       ломалось на любой доске, где есть хоть одна карточка. Высоту слой
+       считает сам, поэтому спрашиваем её у разметки. */
+    if (it.t === 'note' || it.t === 'card') {
+      var el = noteNode(it);
+      var h = el ? el.offsetHeight : 200;
+      return { x: it.x, y: it.y, w: it.w || 360, h: h };
+    }
     return {
       x: Math.min(it.x, it.x + it.w2), y: Math.min(it.y, it.y + it.h2),
       w: Math.abs(it.w2), h: Math.abs(it.h2),
     };
+  }
+
+  /** Разметка бумажки по её месту в списке — нужна, чтобы узнать высоту. */
+  function noteNode(it) {
+    var k = 0;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] === it) return notesLayer.children[k] || null;
+      if (items[i].t === 'note' || items[i].t === 'card') k++;
+    }
+    return null;
   }
 
   /* ——————————— ввод ——————————— */
@@ -233,9 +252,13 @@
     }
 
     if (tool === 'eraser') {
+      /* Одна запись истории на весь проход ластиком, а не на каждый стёртый
+         предмет: иначе десяток штрихов съедал десять шагов отмены, и
+         возвращались они по одному. */
+      push();
+      drag = { kind: 'erase', touched: false };
       var i = hit(wpt);
-      if (i >= 0) { push(); items.splice(i, 1); selected = -1; markDirty(); draw(); }
-      drag = { kind: 'erase' };
+      if (i >= 0) { items.splice(i, 1); selected = -1; drag.touched = true; markDirty(); draw(); }
       return;
     }
 
@@ -287,11 +310,13 @@
       draw();
     } else if (drag.kind === 'erase') {
       var j = hit(wpt);
-      if (j >= 0) { push(); items.splice(j, 1); markDirty(); draw(); }
+      if (j >= 0) { items.splice(j, 1); drag.touched = true; markDirty(); draw(); }
     }
   });
 
   function stop() {
+    // ластиком провели, но ничего не задели — лишний шаг истории не нужен
+    if (drag && drag.kind === 'erase' && !drag.touched && history.length) history.pop();
     if (draft) {
       var keep = draft.t === 'stroke'
         ? draft.pts.length > 0
@@ -316,10 +341,22 @@
     }
   });
 
+  /* Отпускание слушаем на всём окне, а не только на холсте. Бумажки и
+     карточки лежат слоем поверх, и отпускание над ними — как и за краем
+     окна — до холста не доходило: предмет продолжал ехать за мышью. */
   cv.addEventListener('pointerup', stop);
   cv.addEventListener('pointercancel', stop);
+  window.addEventListener('pointerup', stop);
+  window.addEventListener('pointercancel', stop);
+  window.addEventListener('blur', stop);
 
-  cv.addEventListener('wheel', function (e) {
+  /* Колесо — тоже на окне. На холсте оно умирало, стоило курсору оказаться
+     над карточкой: событие уходило к ней, а холст его не видел. */
+  window.addEventListener('wheel', function (e) {
+    if (typing.classList.contains('on')) return;
+    // внутри бумажки колесо листает её саму, если ей есть куда листать
+    var inside = e.target.closest && e.target.closest('.note .body, .note .form');
+    if (inside && inside.scrollHeight > inside.clientHeight + 2) return;
     e.preventDefault();
     var p = pos(e);
     zoomAt(p.x, p.y, e.deltaY < 0 ? 1.12 : 1 / 1.12);
@@ -650,12 +687,14 @@
   function syncNotes() {
     var mine = [];
     for (var i = 0; i < items.length; i++) if (items[i].t === 'note') mine.push(items[i]);
+    markStale();
     var sig = JSON.stringify(mine) + '|' + selected + '|' + isDark();
     if (sig !== notesSig) { notesSig = sig; renderNotes(); }
     placeNotes();
   }
 
   function renderNotes() {
+    markStale();
     notesLayer.innerHTML = '';
     for (var i = 0; i < items.length; i++) {
       var t = items[i].t;
@@ -949,12 +988,37 @@
     return k;
   }
 
+  /** Свой номер у карточки: по нему решение узнаёт родителя даже после
+      того, как предметы на доске переставили или что-то удалили. */
+  function nextKey() {
+    var m = 0;
+    for (var i = 0; i < items.length; i++) if (items[i].key > m) m = items[i].key;
+    return m + 1;
+  }
+
+  /* Решение помнит, из каких чисел посчитано. Если в карточке их поменяли —
+     разбор больше не про них, и молчать об этом нельзя: через неделю на доске
+     лежит пяток решений, и непонятно, какое ещё верно. */
+  function markStale() {
+    var cards = {};
+    var i;
+    for (i = 0; i < items.length; i++) {
+      if (items[i].t === 'card' && items[i].key) cards[items[i].key] = items[i];
+    }
+    for (i = 0; i < items.length; i++) {
+      var it = items[i];
+      if (it.t !== 'note' || !it.from || !it.from.key) continue;
+      var src = cards[it.from.key];
+      it.stale = !!src && JSON.stringify(src.vals || {}) !== JSON.stringify(it.from.vals || {});
+    }
+  }
+
   B.addCard = function (id, color) {
     if (!byId[id]) return;
     push();
     var spec = byId[id];
     items.push({
-      t: 'card', card: id, color: color || 'violet',
+      t: 'card', card: id, key: nextKey(), color: color || 'violet',
       x: round((cv.clientWidth / 2 - view.x) / view.z - 170),
       y: round((cv.clientHeight / 2 - view.y) / view.z - 90),
       w: 340, vals: JSON.parse(JSON.stringify(spec['try'] || {})), ready: false,
@@ -973,7 +1037,8 @@
     items.push({
       t: 'note', md: d.md, color: d.color || src.color, w: 380,
       x: round(src.x + 60), y: round(src.y + (d.h || 220)),
-      from: { card: src.card, vals: JSON.parse(JSON.stringify(src.vals || {})) },
+      from: { card: src.card, key: src.key,
+              vals: JSON.parse(JSON.stringify(src.vals || {})) },
       fresh: true,
     });
     selected = items.length - 1;
