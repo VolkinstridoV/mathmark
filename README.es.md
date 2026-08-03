@@ -38,9 +38,16 @@ MathMark hace dos cosas y se niega a hacer más: **mostrar las matemáticas como
 | | |
 |---|---|
 | **Android** | [Releases](../../releases) → el archivo `.apk` |
-| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
+| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark), *de momento en 1.0.2, ver abajo* |
 | **Cualquier Linux** | [Releases](../../releases) → el archivo `.flatpak`, es el único, se instala con `flatpak install ./mathmark-*.flatpak` |
 | **Desde el código** | ver [Escritorio](#escritorio) |
+
+> **El paquete de AUR va con retraso.** Arch ha cerrado las subidas al AUR mientras
+> [resuelven un incidente con paquetes maliciosos](https://archlinux.org/news/active-aur-malicious-packages-incident/),
+> así que ahora mismo nadie puede publicar versiones nuevas. Por eso
+> `yay -S mathmark` instala la 1.0.2. La versión actual está en
+> [Releases](../../releases) y en el Flatpak — ambos se instalan con un comando y
+> funcionan hoy. El paquete se pondrá al día en cuanto el AUR vuelva a abrir.
 
 Sin cuenta, sin red, sin telemetría. El motor de fórmulas viaja dentro de la aplicación.
 

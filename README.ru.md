@@ -38,9 +38,16 @@ MathMark делает две вещи и наотрез отказывается
 | | |
 |---|---|
 | **Android** | [Releases](../../releases) → файл `.apk` |
-| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
+| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark), *там пока 1.0.2, см. ниже* |
 | **Любой Linux** | [Releases](../../releases) → файл `.flatpak`, он там один, ставится `flatpak install ./mathmark-*.flatpak` |
 | **Из исходников** | см. [ниже](#настольная-версия) |
+
+> **Пакет в AUR пока отстаёт.** Arch закрыл отправку обновлений в AUR — у них
+> [идёт разбор со зловредными пакетами](https://archlinux.org/news/active-aur-malicious-packages-incident/),
+> и заливать новые версии сейчас нельзя никому. Поэтому `yay -S mathmark`
+> ставит 1.0.2. Свежая версия лежит в [Releases](../../releases) и во
+> флэтпаке — оба ставятся одной командой и работают уже сейчас. Как только
+> AUR откроют, пакет обновится.
 
 Ни учётной записи, ни интернета, ни слежки. Движок формул лежит внутри приложения.
 

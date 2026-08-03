@@ -38,9 +38,16 @@ MathMark does two things and refuses to do more: **show the maths properly, and 
 | | |
 |---|---|
 | **Android** | [Releases](../../releases) → the `.apk` file |
-| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark) |
+| **Arch Linux** | `yay -S mathmark` — [AUR](https://aur.archlinux.org/packages/mathmark), *stuck at 1.0.2 for now, see below* |
 | **Any Linux** | [Releases](../../releases) → the `.flatpak` file, just the one, installs with `flatpak install ./mathmark-*.flatpak` |
 | **From source** | see [Desktop](#desktop) below |
+
+> **The AUR package is behind.** Arch has closed package updates on the AUR while
+> they [deal with malicious packages](https://archlinux.org/news/active-aur-malicious-packages-incident/),
+> so nobody can push new versions right now. That is why `yay -S mathmark`
+> installs 1.0.2. The current version is in [Releases](../../releases) and in the
+> Flatpak — both install with one command and work today. The package will catch
+> up as soon as the AUR reopens.
 
 No account, no network, no telemetry. The formula engine ships inside the app.
 
