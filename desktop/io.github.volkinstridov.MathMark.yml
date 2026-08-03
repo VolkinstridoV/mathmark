@@ -57,4 +57,4 @@ modules:
     sources:
       - type: archive
         url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.3.tar.gz
-        sha256: 470a076b57a9ce4003fafbe650eadbd169f1d1041285bafafcd855610f1bf0bc
+        sha256: 4a43db02cd3adf5f2b626c654e0c26b43c407bec37958945fb1ebf15cca39513
