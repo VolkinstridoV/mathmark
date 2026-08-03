@@ -6,6 +6,15 @@ Every version and what appeared in it. The same lists are shown inside the app
 after an update.
 
 
+## 1.4 — 2026-08-03
+
+- The board no longer loses a file: writing is atomic, a damaged file is set aside instead of being overwritten, and closing asks instead of saving silently. Plus autosave once a minute
+- Shapes finally have handles: corners resize, a separate handle rotates. Shift keeps a square square, Alt snaps to the dots of the sheet
+- Select several with a rubber band and move, lock or delete them together; Ctrl+L locks so nothing shifts while you draw beside it
+- Search across the board (Ctrl+F) and Save as image — the image now contains the cards and notes, not just the drawing
+- Fixed nineteen faults, among them: the wheel died over a card, an item kept following the mouse after release, and moving or resizing could not be undone at all
+
+
 ## 1.3 — 2026-08-03
 
 - Formula cards: pick from a catalogue of 58, fill the fields, press Solve — a note slides out with the worked steps, in pure mathematics (Ctrl+G)

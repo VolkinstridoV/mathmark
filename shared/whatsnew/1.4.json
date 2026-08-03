@@ -1,0 +1,23 @@
+{
+  "en": [
+    "The board no longer loses a file: writing is atomic, a damaged file is set aside instead of being overwritten, and closing asks instead of saving silently. Plus autosave once a minute",
+    "Shapes finally have handles: corners resize, a separate handle rotates. Shift keeps a square square, Alt snaps to the dots of the sheet",
+    "Select several with a rubber band and move, lock or delete them together; Ctrl+L locks so nothing shifts while you draw beside it",
+    "Search across the board (Ctrl+F) and Save as image — the image now contains the cards and notes, not just the drawing",
+    "Fixed nineteen faults, among them: the wheel died over a card, an item kept following the mouse after release, and moving or resizing could not be undone at all"
+  ],
+  "ru": [
+    "Доска больше не теряет файл: запись атомарная, испорченный файл откладывается вместо затирания, а закрытие спрашивает, а не сохраняет молча. Плюс автосохранение раз в минуту",
+    "У фигур наконец появились ручки: углы тянут размер, отдельная ручка вращает. Shift держит ровный квадрат, Alt прижимает к точкам листа",
+    "Выделение рамкой: несколько предметов двигаются, запираются и удаляются разом; Ctrl+L ставит замок, чтобы ничего не съехало, пока рисуешь рядом",
+    "Поиск по доске (Ctrl+F) и сохранение картинкой — в картинку теперь попадают карточки и бумажки, а не только рисунок",
+    "Починено девятнадцать ошибок, среди них: колесо умирало над карточкой, предмет ехал за мышью после отпускания, а перемещение и размер не отменялись вовсе"
+  ],
+  "es": [
+    "La pizarra ya no pierde el archivo: la escritura es atómica, un archivo dañado se aparta en vez de sobrescribirse y al cerrar se pregunta en lugar de guardar en silencio. Y autoguardado cada minuto",
+    "Las figuras por fin tienen tiradores: las esquinas cambian el tamaño y un tirador aparte las gira. Shift mantiene el cuadrado cuadrado, Alt las ajusta a los puntos de la hoja",
+    "Selección por marco: varios elementos se mueven, se bloquean y se borran a la vez; Ctrl+L pone el candado",
+    "Búsqueda en la pizarra (Ctrl+F) y Guardar como imagen — la imagen ahora incluye las tarjetas y los papeles, no solo el dibujo",
+    "Corregidos diecinueve fallos, entre ellos: la rueda moría sobre una tarjeta, un elemento seguía al ratón tras soltarlo y mover o redimensionar no se podía deshacer"
+  ]
+}

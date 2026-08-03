@@ -33,7 +33,12 @@
   var selected = -1;
   var dirty = false;
 
-  var COLORS = ['#1B1720', '#7C3AED', '#C0392B', '#1E7A5A', '#2B6CB0', '#B7791F'];
+  /* Один набор и один порядок для всего: перо, фигуры, бумажки, карточки.
+     Раньше палитра пера и кружки на карточках шли в разном порядке, и выбрать
+     «тот же самый» цвет глазами было нельзя. */
+  var COLOR_NAMES = ['slate', 'violet', 'red', 'green', 'amber', 'blue'];
+  var COLORS = ['#334155', '#7B3BFF', '#DC2626', '#0F9D58', '#B4690E', '#2563EB'];
+  var mine = [];              // свои цвета, добавленные плюсиком
 
   var ICONS = {
     select: '<svg viewBox="0 0 24 24"><path d="M5 3l6 17 2.5-6.5L20 11z"/></svg>',
@@ -843,7 +848,7 @@
 
   function buildColors() {
     colorsBox.innerHTML = '';
-    COLORS.forEach(function (col) {
+    COLORS.concat(mine).forEach(function (col) {
       var i = document.createElement('i');
       i.style.background = col;
       i.onclick = function () {
@@ -854,7 +859,30 @@
       if (col === color) i.classList.add('on');
       colorsBox.appendChild(i);
     });
+    /* Плюсик остаётся на месте: выбрал свой цвет — он встал в ряд, а плюсик
+       по-прежнему рядом, можно добавить ещё. */
+    var plus = document.createElement('i');
+    plus.className = 'plus';
+    plus.title = labels['board.ownColor'] || '';
+    plus.textContent = '+';
+    plus.onclick = function () { send('onPickColor', color); };
+    colorsBox.appendChild(plus);
   }
+
+  /** Программа вернула выбранный цвет — ставим его и запоминаем. */
+  B.addColor = function (hex) {
+    if (!hex || COLORS.indexOf(hex) >= 0) { color = hex || color; buildColors(); return; }
+    if (mine.indexOf(hex) < 0) mine.push(hex);
+    while (mine.length > 8) mine.shift();
+    color = hex;
+    buildColors();
+    send('onColors', mine.join(','));
+  };
+
+  B.setColors = function (list) {
+    mine = (list || '').split(',').filter(function (c) { return c.charAt(0) === '#'; });
+    buildColors();
+  };
 
   widthInput.oninput = function () { width = +widthInput.value; };
   document.getElementById('in').onclick = function () { zoomAt(cv.clientWidth / 2, cv.clientHeight / 2, 1.25); };
@@ -1025,21 +1053,23 @@
      `file`, и «Показать источник» открывает тот файл. */
 
   var notesLayer = document.getElementById('notes');
+  /* Порядок тот же, что в палитре пера, — иначе «зелёный» на карточке и
+     «зелёный» в палитре стояли на разных местах и путались. */
   var noteTints = {
-    blue:   ['#EAF1FE', '#BFD4F7', '#2563EB'],
-    violet: ['#F1EBFE', '#D6C6F8', '#7C3AED'],
+    slate:  ['#EDF0F4', '#CBD3DE', '#334155'],
+    violet: ['#F1EBFE', '#D6C6F8', '#7B3BFF'],
+    red:    ['#FDECEC', '#F5C6C6', '#DC2626'],
     green:  ['#E7F6EE', '#BEE3CE', '#0F9D58'],
     amber:  ['#FBF1E0', '#EDD9AE', '#B4690E'],
-    red:    ['#FDECEC', '#F5C6C6', '#DC2626'],
-    slate:  ['#EDF0F4', '#CBD3DE', '#334155'],
+    blue:   ['#EAF1FE', '#BFD4F7', '#2563EB'],
   };
   var darkTints = {
-    blue:   ['#16203A', '#2C3E63', '#7BA5F2'],
+    slate:  ['#1B2029', '#333C4A', '#9FB0C6'],
     violet: ['#221A38', '#3A2C5C', '#B79CF7'],
+    red:    ['#2E1919', '#4E2A2A', '#EE8A8A'],
     green:  ['#14261D', '#254435', '#63C99A'],
     amber:  ['#2A2114', '#4A3A1E', '#DDAA5E'],
-    red:    ['#2E1919', '#4E2A2A', '#EE8A8A'],
-    slate:  ['#1B2029', '#333C4A', '#9FB0C6'],
+    blue:   ['#16203A', '#2C3E63', '#7BA5F2'],
   };
 
   function isDark() {

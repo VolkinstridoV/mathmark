@@ -39,6 +39,8 @@ class Settings:
         self.width = 1180
         self.height = 820
         self.sidebar = True
+        # свои цвета доски: список вида «#RRGGBB,#RRGGBB»
+        self.colors: list[str] = []
         self.load()
 
     def load(self) -> None:
@@ -60,6 +62,8 @@ class Settings:
                     self.theme = v
                 elif k == "lang" and v in ("auto", "en", "ru", "es"):
                     self.lang = v
+                elif k == "colors":
+                    self.colors = [c for c in v.split(",") if c.startswith("#")][:8]
                 elif k == "sync":
                     self.sync_on = v not in ("0", "false", "нет")
                 elif k == "repo":
@@ -90,6 +94,7 @@ class Settings:
                 f"scale={self.scale:g}\n"
                 f"theme={self.theme}\n"
                 f"lang={self.lang}\n"
+                f"colors={','.join(self.colors)}\n"
                 f"sync={1 if self.sync_on else 0}\n"
                 f"repo={self.sync_repo}\n"
                 f"token={self.sync_token}\n"

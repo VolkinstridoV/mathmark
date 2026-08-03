@@ -57,6 +57,13 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="1.4" date="2026-08-03">
+      <description>
+        <p>The board grew up: handles that resize and rotate, rubber-band selection,
+           locking, snapping to the sheet, search and Save as image. And it no longer
+           loses a file — writing is atomic, a damaged file is set aside, closing asks.</p>
+      </description>
+    </release>
     <release version="1.3" date="2026-08-03">
       <description>
         <p>Formula cards: pick from a catalogue of 58, fill the fields, press Solve —

@@ -164,6 +164,7 @@ class MathMarkApp(Adw.Application):
         add("board-new", lambda: self._ask_board_name(win))
         add("board-pick", lambda: win.list_btn.popup())
         add("board-png", win.save_png)
+        add("board-rename", win.rename)
         add("board-find", win.find, "<Ctrl>f")
 
     def _ask_board_name(self, win) -> None:

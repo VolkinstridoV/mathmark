@@ -6,6 +6,15 @@ Todas las versiones y lo que apareció en cada una. Las mismas listas se ven
 dentro de la aplicación tras actualizar.
 
 
+## 1.4 — 2026-08-03
+
+- La pizarra ya no pierde el archivo: la escritura es atómica, un archivo dañado se aparta en vez de sobrescribirse y al cerrar se pregunta en lugar de guardar en silencio. Y autoguardado cada minuto
+- Las figuras por fin tienen tiradores: las esquinas cambian el tamaño y un tirador aparte las gira. Shift mantiene el cuadrado cuadrado, Alt las ajusta a los puntos de la hoja
+- Selección por marco: varios elementos se mueven, se bloquean y se borran a la vez; Ctrl+L pone el candado
+- Búsqueda en la pizarra (Ctrl+F) y Guardar como imagen — la imagen ahora incluye las tarjetas y los papeles, no solo el dibujo
+- Corregidos diecinueve fallos, entre ellos: la rueda moría sobre una tarjeta, un elemento seguía al ratón tras soltarlo y mover o redimensionar no se podía deshacer
+
+
 ## 1.3 — 2026-08-03
 
 - Tarjetas de fórmulas: eliges una de 58, rellenas las casillas, pulsas Resolver — sale un papel con el desarrollo paso a paso, en matemática pura (Ctrl+G)

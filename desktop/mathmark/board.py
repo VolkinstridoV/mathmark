@@ -24,7 +24,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 gi.require_version("WebKit", "6.0")
 
-from gi.repository import Adw, Gio, GLib, Gtk, WebKit  # noqa: E402
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
 
 from .i18n import current as i18n_current  # noqa: E402
 from .i18n import t  # noqa: E402
@@ -90,6 +90,7 @@ class BoardWindow(Adw.ApplicationWindow):
         menu.append(t("board.pick"), "win.board-pick")
         menu.append(t("board.new"), "win.board-new")
         menu.append(t("board.clear"), "win.board-clear")
+        menu.append(t("board.rename"), "win.board-rename")
         menu.append(t("board.png"), "win.board-png")
         head.pack_end(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu))
 
@@ -160,6 +161,7 @@ class BoardWindow(Adw.ApplicationWindow):
         dark = Adw.StyleManager.get_default().get_dark()
         self._js(f"Board.setLabels({self._labels()});Board.setTheme({str(dark).lower()});")
         self._js(f"Board.setCards({json.dumps(json.dumps(self._catalog))});")
+        self._js(f"Board.setColors({json.dumps(','.join(self.st.colors))});")
         # без этого нажатия клавиш до страницы не доходят и отмена не работает
         self.web.grab_focus()
         if self.path is not None:
@@ -183,6 +185,64 @@ class BoardWindow(Adw.ApplicationWindow):
             self._card_solve(payload)
         elif name == "onCardForm":
             self._card_form(payload)
+        elif name == "onPickColor":
+            self._pick_color(payload)
+        elif name == "onColors":
+            self.st.colors = [c for c in (payload or "").split(",") if c.startswith("#")]
+            self.st.save()
+
+    def _pick_color(self, current: str) -> None:
+        """Свой цвет: родное окно выбора, а не самодельная палитра в странице."""
+        dialog = Gtk.ColorDialog(title=t("board.ownColor"), with_alpha=False)
+        start = Gdk.RGBA()
+        start.parse(current if (current or "").startswith("#") else "#7B3BFF")
+
+        def done(dlg, res):
+            try:
+                rgba = dlg.choose_rgba_finish(res)
+            except GLib.Error:
+                return
+            hexv = "#%02X%02X%02X" % (round(rgba.red * 255), round(rgba.green * 255),
+                                      round(rgba.blue * 255))
+            self._js(f"Board.addColor({json.dumps(hexv)});")
+
+        dialog.choose_rgba(self, start, None, done)
+
+    def rename(self) -> None:
+        """Переименовать доску. Раньше можно было только завести новую."""
+        if self.path is None:
+            return
+        dlg = Adw.AlertDialog(heading=t("board.rename"))
+        entry = Gtk.Entry(text=self.path.stem)
+        dlg.set_extra_child(entry)
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("common.done"))
+        dlg.set_default_response("ok")
+
+        def done(_d, answer):
+            if answer != "ok":
+                return
+            clean = entry.get_text().strip().replace("/", "").replace("\\", "")
+            if not clean or self.path is None:
+                return
+            target = self.path.with_name(clean + SUFFIX)
+            if target == self.path:
+                return
+            if target.exists():
+                self.toasts.add_toast(Adw.Toast(title=t("board.exists", target.stem)))
+                return
+            try:
+                os.replace(self.path, target)
+            except OSError as e:
+                self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", e.strerror or "")))
+                return
+            self.path = target
+            self.title_widget.set_subtitle(target.stem)
+            self._watch()
+            self.fill_list()
+
+        dlg.connect("response", done)
+        dlg.present(self)
 
     # ——— поиск и картинка ———
 
