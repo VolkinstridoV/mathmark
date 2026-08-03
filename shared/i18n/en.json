@@ -31,6 +31,7 @@
   "board.zoomOut": "Zoom out",
   "card.add": "Add",
   "card.formula": "Show formula",
+  "card.needs": "Formula cards need python-sympy",
   "card.none": "Nothing found",
   "card.open": "Add a formula",
   "card.pick": "Pick a formula to put on the board",

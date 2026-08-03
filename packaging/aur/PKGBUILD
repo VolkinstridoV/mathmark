@@ -6,11 +6,12 @@ pkgdesc="Reader for maths written in Markdown: formulas as in textbooks, marking
 arch=('any')
 url="https://github.com/VolkinstridoV/mathmark"
 license=('MIT')
-depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'webkitgtk-6.0')
+# python-sympy нужен карточкам-скриптам: без него «Решить» считать нечем
+depends=('python' 'python-gobject' 'python-sympy' 'gtk4' 'libadwaita' 'webkitgtk-6.0')
 makedepends=('git')
 optdepends=('python-pytest: for running the test suite')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('7c874c6e01b5dbf051ee40fe12535cd171fa29df930e316acfd6b5eb4fa7aaf9')
+sha256sums=('6819d12dbd150e70fd15cb0bd016a877b0794c5d5be63f9031eedc35842b94c5')
 
 package() {
     cd "$srcdir/$pkgname-$pkgver"

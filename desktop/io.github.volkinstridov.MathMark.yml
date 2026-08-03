@@ -26,6 +26,21 @@ finish-args:
   - --socket=cups
 
 modules:
+  # SymPy в рантайме GNOME нет, а карточкам-скриптам без него нечем считать.
+  # Кладём колёсами: сборщики Flathub в сеть не ходят, поэтому оба файла
+  # объявлены с отпечатками.
+  - name: python-sympy
+    buildsystem: simple
+    build-commands:
+      - pip3 install --no-index --no-deps --prefix=/app mpmath-*.whl sympy-*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/13/f2/abeec3db71d221ccd3cd89d206be1fabf5a3ee7178862f5fba23a59607e0/mpmath-1.4.1-py3-none-any.whl
+        sha256: dc4f0ea2304480d4a9a48a94c1020571558ade522b44a6912efac63a586e140f
+      - type: file
+        url: https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl
+        sha256: e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5
+
   - name: mathmark
     buildsystem: simple
     build-commands:
@@ -41,5 +56,5 @@ modules:
         /app/share/metainfo/io.github.volkinstridov.MathMark.metainfo.xml
     sources:
       - type: archive
-        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.2.tar.gz
-        sha256: 7c874c6e01b5dbf051ee40fe12535cd171fa29df930e316acfd6b5eb4fa7aaf9
+        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.3.tar.gz
+        sha256: 6819d12dbd150e70fd15cb0bd016a877b0794c5d5be63f9031eedc35842b94c5

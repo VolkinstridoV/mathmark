@@ -31,6 +31,7 @@
   "board.zoomOut": "Отдалить",
   "card.add": "Добавить",
   "card.formula": "Показать формулу",
+  "card.needs": "Карточкам нужен python-sympy",
   "card.none": "Ничего не найдено",
   "card.open": "Добавить формулу",
   "card.pick": "Выберите формулу для доски",

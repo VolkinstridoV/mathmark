@@ -31,6 +31,7 @@
   "board.zoomOut": "Alejar",
   "card.add": "Añadir",
   "card.formula": "Ver la fórmula",
+  "card.needs": "Las tarjetas de fórmulas necesitan python-sympy",
   "card.none": "No se encontró nada",
   "card.open": "Añadir una fórmula",
   "card.pick": "Elige una fórmula para la pizarra",

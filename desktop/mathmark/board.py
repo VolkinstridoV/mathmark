@@ -27,7 +27,14 @@ from gi.repository import Adw, Gio, GLib, Gtk, WebKit  # noqa: E402
 
 from .i18n import current as i18n_current  # noqa: E402
 from .i18n import t  # noqa: E402
-from .cards import Card, as_markdown, solve  # noqa: E402
+# Карточкам нужен SymPy. Если его в системе нет, ломаться должна одна кнопка,
+# а не вся программа: читалка, доска и вырезание к нему отношения не имеют.
+try:
+    from .cards import Card, as_markdown, solve  # noqa: E402
+    CARDS_OK = True
+except ImportError:  # pragma: no cover — зависит от того, что стоит в системе
+    Card = as_markdown = solve = None  # type: ignore[assignment]
+    CARDS_OK = False
 from .paths import board_html, cards_catalog, stamped  # noqa: E402
 
 SUFFIX = ".board"
@@ -172,6 +179,8 @@ class BoardWindow(Adw.ApplicationWindow):
 
     @property
     def _catalog(self) -> dict:
+        if not CARDS_OK:
+            return {"version": 1, "sections": [], "items": []}
         if getattr(self, "_cat", None) is None:
             self._cat = cards_catalog()
             self._cards = {c["id"]: Card.of(c) for c in self._cat.get("items", [])}
@@ -180,6 +189,10 @@ class BoardWindow(Adw.ApplicationWindow):
     def open_picker(self) -> None:
         """Выбор формулы. Окно одно: второй раз — поднимаем прежнее."""
         from .picker import PickerWindow
+
+        if not CARDS_OK:
+            self.toasts.add_toast(Adw.Toast(title=t("card.needs")))
+            return
 
         old = getattr(self, "_picker", None)
         if old is not None:
