@@ -47,7 +47,7 @@ modules:
       - install -Dm755 desktop/mathmark-launcher /app/bin/mathmark
       - mkdir -p /app/lib/mathmark /app/share/mathmark
       - cp -r desktop/mathmark/. /app/lib/mathmark/
-      - cp -r shared/reader shared/board shared/write shared/prompt shared/i18n shared/whatsnew shared/meta /app/share/mathmark/
+      - cp -r shared/reader shared/board shared/write shared/cards shared/prompt shared/i18n shared/whatsnew shared/meta /app/share/mathmark/
       - install -Dm644 desktop/io.github.volkinstridov.MathMark.desktop
         /app/share/applications/io.github.volkinstridov.MathMark.desktop
       - install -Dm644 desktop/data/io.github.volkinstridov.MathMark.svg
@@ -57,4 +57,4 @@ modules:
     sources:
       - type: archive
         url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.3.tar.gz
-        sha256: 6819d12dbd150e70fd15cb0bd016a877b0794c5d5be63f9031eedc35842b94c5
+        sha256: 470a076b57a9ce4003fafbe650eadbd169f1d1041285bafafcd855610f1bf0bc
