@@ -73,7 +73,7 @@ class BoardWindow(Adw.ApplicationWindow):
             self.open(path)
 
         # Автосохранение: доска живёт одним файлом, и час рисования терять не на что.
-        GLib.timeout_add_seconds(60, self._autosave)
+        self._tick = GLib.timeout_add_seconds(60, self._autosave)
 
     # ——— окно ———
 
@@ -453,7 +453,14 @@ class BoardWindow(Adw.ApplicationWindow):
             pass
 
     def _autosave(self) -> bool:
-        """Раз в минуту, тихо. Доска — один файл, и терять его не на что."""
+        """
+        Раз в минуту, тихо. Доска — один файл, и терять его не на что.
+
+        Закрылись — снимаем таймер: иначе он продолжал бы будить мёртвое окно
+        до конца работы программы.
+        """
+        if getattr(self, "_gone", False):
+            return False
         if self.path is not None and self._dirty and not self._broken:
             self.save(quiet=True)
         return True
@@ -566,12 +573,21 @@ class BoardWindow(Adw.ApplicationWindow):
         dlg.connect("response", lambda _d, r: r == "ok" and self._js("Board.clear();"))
         dlg.present(self)
 
+    def _shutdown(self) -> None:
+        """Снять таймер и слежение — окно закрылось, будить его больше некого."""
+        self._gone = True
+        mon = getattr(self, "_monitor", None)
+        if mon is not None:
+            mon.cancel()
+            self._monitor = None
+
     def _on_close(self, *_):
         """
         Молча сохранять при закрытии нельзя: это лишает человека права
         передумать. Спрашиваем — и «Отмена» действительно отменяет закрытие.
         """
         if not self._dirty or self.path is None or self._broken:
+            self._shutdown()
             return False
         if getattr(self, "_leaving", False):
             return False
@@ -590,11 +606,13 @@ class BoardWindow(Adw.ApplicationWindow):
             if r == "cancel":
                 return
             self._leaving = True
+            self._gone = True
             if r == "yes":
                 # сохраняем и закрываемся уже после записи, а не до неё
                 self.save()
-                GLib.timeout_add(350, lambda: (self.close(), False)[1])
+                GLib.timeout_add(350, lambda: (self._shutdown(), self.close(), False)[2])
             else:
+                self._shutdown()
                 self.close()
 
         dlg.connect("response", answer)

@@ -158,6 +158,42 @@ class Check:
                 self.problems.append("после поиска на доске стало другое число предметов")
             if d.get("find_none") != "0":
                 self.problems.append("поиск нашёл несуществующее слово")
+            self._undo()
+
+        self._js(code, then)
+
+    def _undo(self) -> None:
+        """
+        Отмена обязана возвращать предмет на место.
+
+        Перемещение, размер и поворот долго не попадали в историю вовсе:
+        Ctrl+Z откатывал куда-то мимо только что сделанного, и заметить это
+        было нечем, потому что отмена всё-таки «работала».
+        """
+        code = """
+        (function () {
+          var d0 = JSON.parse(Board.dump());
+          var was = d0.items.filter(function (x) { return x.t === 'shape'; })[0];
+          Board.nudge(40, 25);
+          var mid = JSON.parse(Board.dump()).items.filter(function (x) { return x.t === 'shape'; })[0];
+          Board.undoOnce();
+          var back = JSON.parse(Board.dump()).items.filter(function (x) { return x.t === 'shape'; })[0];
+          return JSON.stringify({ was: was.x, mid: mid.x, back: back.x });
+        })()
+        """
+        def then(out: str) -> None:
+            try:
+                d = json.loads(out)
+            except (ValueError, TypeError):
+                self.problems.append("не удалось проверить отмену")
+                self._stale()
+                return
+            if d["mid"] == d["was"]:
+                self.problems.append("предмет не сдвинулся — проверять отмену не на чем")
+            elif d["back"] != d["was"]:
+                self.problems.append(
+                    f"отмена не вернула предмет: было {d['was']}, "
+                    f"сдвинули на {d['mid']}, после отмены {d['back']}")
             self._stale()
 
         self._js(code, then)

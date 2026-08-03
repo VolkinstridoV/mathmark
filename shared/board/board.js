@@ -458,8 +458,12 @@
     if (tool === 'select') {
       var handle = handleAt(p);
       if (handle) {
+        /* Записываем состояние ДО правки: без этого ни перемещение, ни
+           размер, ни поворот не отменялись — Ctrl+Z откатывал куда-то в
+           прошлое, мимо только что сделанного. */
+        push();
         drag = { kind: handle.kind, corner: handle.corner, sx: wpt.x, sy: wpt.y,
-                 item: items[selected], snap: clone(items[selected]) };
+                 item: items[selected], snap: clone(items[selected]), moved: false };
         return;
       }
       var hitIdx = hit(wpt);
@@ -481,8 +485,9 @@
         }
         selected = hitIdx;
         if (!items[selected].locked) {
+          push();
           drag = { kind: 'move', sx: wpt.x, sy: wpt.y,
-                   item: items[selected], snap: clone(items[selected]) };
+                   item: items[selected], snap: clone(items[selected]), moved: false };
         }
       } else {
         // щелчок по пустому — сброс. Раньше «выделенное рамкой» переживало
@@ -554,9 +559,11 @@
       chosen = insideBand(band);
       draw();
     } else if (drag.kind === 'size') {
+      drag.moved = true;
       resizeBy(drag, wpt, e.shiftKey);
       markDirty(); draw();
     } else if (drag.kind === 'spin') {
+      drag.moved = true;
       var b0 = bounds(drag.snap);
       var cx = b0.x + b0.w / 2, cy = b0.y + b0.h / 2;
       var ang = Math.atan2(wpt.y - cy, wpt.x - cx);
@@ -564,6 +571,7 @@
       drag.item.a = +ang.toFixed(4);
       markDirty(); draw();
     } else if (drag.kind === 'move') {
+      drag.moved = true;
       var dx = wpt.x - drag.sx, dy = wpt.y - drag.sy;
       if (e.altKey) {            // прижать к точкам листа — они для этого и есть
         var st = dotStep();
@@ -572,6 +580,18 @@
         dy = Math.round((b1.y + dy) / st) * st - b1.y;
       }
       var it = drag.item, s = drag.snap;
+      /* Выделил рамкой пятерых — тащатся все пятеро. Раньше ехал только тот,
+         за который взялись, а остальные оставались. */
+      if (chosen.length > 1 && chosen.indexOf(selected) >= 0) {
+        if (!drag.group) {
+          drag.group = chosen.filter(function (i) { return !items[i].locked; })
+                             .map(function (i) { return { it: items[i], snap: clone(items[i]) }; });
+        }
+        drag.group.forEach(function (g) { shiftTo(g.it, g.snap, dx, dy); });
+        notesSig = '';
+        markDirty(); draw();
+        return;
+      }
       if (it.t === 'stroke') {
         for (var i = 0; i < it.pts.length; i++) {
           it.pts[i][0] = round(s.pts[i][0] + dx);
@@ -587,13 +607,17 @@
   });
 
   function stop() {
+    if (!drag && !draft && !band) return;   // отпускание доходит и с холста, и с окна
     if (band) { band = null; }
     if (drag && (drag.kind === 'size' || drag.kind === 'move') &&
         drag.item && (drag.item.t === 'note' || drag.item.t === 'card')) {
       notesSig = '';                 // теперь можно и пересобрать
     }
     // ластиком провели, но ничего не задели — лишний шаг истории не нужен
+    // щёлкнули и не сдвинули — лишний шаг истории не нужен
     if (drag && drag.kind === 'erase' && !drag.touched && history.length) history.pop();
+    if (drag && (drag.kind === 'move' || drag.kind === 'size' || drag.kind === 'spin') &&
+        !drag.moved && history.length) history.pop();
     if (draft) {
       var keep = draft.t === 'stroke'
         ? draft.pts.length > 0
@@ -762,7 +786,10 @@
     if (!history.length) return;
     undone.push(clone(items));
     items = history.pop();
-    selected = -1;
+    /* Номера в выделенном и найденном после отмены указывают уже не на те
+       предметы — сбрасываем, иначе следующий Delete бьёт наугад. */
+    selected = -1; chosen = []; found = [];
+    notesSig = '';
     markDirty();
     draw();
   }
@@ -771,7 +798,8 @@
     if (!undone.length) return;
     history.push(clone(items));
     items = undone.pop();
-    selected = -1;
+    selected = -1; chosen = []; found = [];
+    notesSig = '';
     markDirty();
     draw();
   }
@@ -957,6 +985,16 @@
   });
 
   /* ——————————— наружу ——————————— */
+
+  /** Поставить предмет туда, где он был, плюс сдвиг. */
+  function shiftTo(it, s, dx, dy) {
+    if (it.t === 'stroke') {
+      for (var i = 0; i < it.pts.length; i++) {
+        it.pts[i][0] = round(s.pts[i][0] + dx);
+        it.pts[i][1] = round(s.pts[i][1] + dy);
+      }
+    } else { it.x = round(s.x + dx); it.y = round(s.y + dy); }
+  }
 
   function shift(it, dx, dy) {
     if (it.t === 'stroke') {
@@ -1425,6 +1463,19 @@
   };
 
   B.fitAll = function () { fit(); };
+
+  /* Две ручки для проверок: сдвинуть первую фигуру и отменить один шаг.
+     Через подставные нажатия это не проверить — они попадают куда угодно. */
+  B.nudge = function (dx, dy) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].t !== 'shape') continue;
+      push();
+      shiftTo(items[i], clone(items[i]), dx, dy);
+      markDirty(); draw();
+      return;
+    }
+  };
+  B.undoOnce = function () { undo(); };
 
   /** Поиск по доске: подсвечиваем то, где встретилось слово. */
   B.find = function (needle) {
