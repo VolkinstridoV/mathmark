@@ -56,5 +56,5 @@ modules:
         /app/share/metainfo/io.github.volkinstridov.MathMark.metainfo.xml
     sources:
       - type: archive
-        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.3.tar.gz
-        sha256: 4a43db02cd3adf5f2b626c654e0c26b43c407bec37958945fb1ebf15cca39513
+        url: https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.4.tar.gz
+        sha256: 73f07538aa27a7cde87edbb15f05679c69accbd872836283a1fe80964cbf9ac9
