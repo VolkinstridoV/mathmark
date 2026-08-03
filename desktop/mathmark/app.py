@@ -37,6 +37,7 @@ SHORTCUTS = [
     ("Ctrl + D", "keys.board"),
     ("Ctrl + M", "keys.write"),
     ("Ctrl + T", "keys.cut"),
+    ("Ctrl + G", "keys.card"),
     ("Ctrl + E", "keys.edit"),
     ("Ctrl + N", "keys.newFile"),
     ("Ctrl + S", "keys.sync"),
@@ -139,6 +140,7 @@ class MathMarkApp(Adw.Application):
 
         add("board-write", lambda: self.open_writer(win), "<Ctrl>m")
         add("board-cut", lambda: win.open_cutter(), "<Ctrl>t")
+        add("board-card", lambda: win.open_picker(), "<Ctrl>g")
         add("board-save", win.save, "<Ctrl>s")
         add("board-clear", win.clear)
         add("board-new", lambda: self._ask_board_name(win))

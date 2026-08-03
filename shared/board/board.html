@@ -99,6 +99,29 @@
   .note .head .src{cursor:pointer; text-decoration:underline dotted; flex:1;
                    overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
   .note .head .edited{font-style:italic; opacity:.75}
+  /* Карточка-скрипт: та же бумажка, но с полями и кнопкой. */
+  .note .form{margin:.2em 0 .5em; overflow-x:auto}
+  .note .rows{display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:center}
+  .note .rows label{font-size:13px; color:var(--soft); text-align:right; white-space:nowrap}
+  .note .rows input{font:inherit; font-size:14px; padding:4px 8px; border-radius:7px;
+                    border:1px solid var(--note-line); background:var(--sheet);
+                    color:var(--ink); width:100%; min-width:0}
+  .note .rows input:focus{outline:2px solid var(--note-edge); outline-offset:-1px}
+  .note .rows input.bad{border-color:#DC2626; background:rgba(220,38,38,.08)}
+  .note .why{margin:.5em 0 0; font-size:13px; color:#B4231F; display:flex;
+             flex-wrap:wrap; gap:4px 14px}
+  html[data-theme=dark] .note .why{color:#F09090}
+  .note .go{margin-top:.7em; display:flex; align-items:center; gap:8px}
+  .note .go button{font:inherit; font-size:14px; padding:5px 14px; border:0;
+                   border-radius:8px; background:var(--note-edge); color:#fff;
+                   cursor:pointer}
+  .note .go button[disabled]{opacity:.4; cursor:default}
+  .note.fresh{animation:pop .28s ease-out}
+  @keyframes pop{
+    from{opacity:0; transform:translate(-14px,-18px) scale(.94)}
+    to{opacity:1; transform:none}
+  }
+
   .note .grip{position:absolute; right:2px; bottom:2px; width:14px; height:14px;
               cursor:nwse-resize; opacity:.45}
   .note .grip::after{content:''; position:absolute; right:3px; bottom:3px;

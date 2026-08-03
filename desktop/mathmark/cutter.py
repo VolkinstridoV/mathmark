@@ -47,12 +47,16 @@ class CutWindow(Adw.ApplicationWindow):
     """Список файлов слева, нарисованный файл справа, «Вытащить» внизу."""
 
     def __init__(self, app, settings, folder: Path, on_cut,
-                 path: Path | None = None) -> None:
+                 path: Path | None = None, text: str | None = None,
+                 heading: str = "") -> None:
         super().__init__(application=app, title=t("cut.title"))
         self.st = settings
         self.repo = FilesRepo(folder)
         self.on_cut = on_cut
-        self.source_mode = path is not None
+        # Третий вход: показать готовый кусок, у которого файла нет вовсе —
+        # так открывается формула решённой карточки. Список тоже не нужен.
+        self.given = text
+        self.source_mode = path is not None or text is not None
         self.current: Path | None = None
         self.color = "blue"
         self._ready = False
@@ -67,7 +71,12 @@ class CutWindow(Adw.ApplicationWindow):
         keys.connect("key-pressed", self._on_key)
         self.add_controller(keys)
 
-        if self.source_mode:
+        if self.given is not None:
+            self.set_title(heading or t("cut.source"))
+            self.title_widget.set_title(heading or t("cut.source"))
+            self.title_widget.set_subtitle("")
+            self._show(self.given)
+        elif self.source_mode:
             self.set_title(t("cut.source"))
             self.open(path)
         else:
@@ -257,6 +266,14 @@ class CutWindow(Adw.ApplicationWindow):
         self.title_widget.set_subtitle(self.current.name)
         # Открыл файл — можно сразу выделять, курсор уже в тексте.
         self.web.grab_focus()
+        if self._ready:
+            self._render(text)
+        else:
+            self._pending = text
+
+    def _show(self, text: str) -> None:
+        """Готовый кусок без файла: вырезать из него можно, источника нет."""
+        self.current = None
         if self._ready:
             self._render(text)
         else:

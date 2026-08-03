@@ -43,6 +43,15 @@ def write_html() -> Path:
     return share_dir() / "write" / "write.html"
 
 
+def cards_catalog() -> dict:
+    """Каталог карточек-скриптов. Нет файла — пустой каталог, доска не падает."""
+    import json
+    try:
+        return json.loads((share_dir() / "cards" / "catalog.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"version": 1, "sections": [], "items": []}
+
+
 def write_catalog() -> dict:
     """Каталог записи математики. Нет файла — пустой каталог, окно не падает."""
     import json

@@ -565,6 +565,11 @@
       return;
     }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); send('onSave', B.dump()); return; }
+    /* Масштаб с клавиатуры: без этого до кнопок внизу справа надо тянуться
+       мышью, а вписать всё в окно хочется постоянно. */
+    if ((e.ctrlKey || e.metaKey) && (e.key === '0')) { e.preventDefault(); fit(); return; }
+    if ((e.ctrlKey || e.metaKey) && (e.key === '-' || e.key === '_')) { e.preventDefault(); zoomAt(cv.clientWidth / 2, cv.clientHeight / 2, 0.8); return; }
+    if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) { e.preventDefault(); zoomAt(cv.clientWidth / 2, cv.clientHeight / 2, 1.25); return; }
     if (e.key === 'Delete' || e.key === 'Backspace') {
       if (selected >= 0) { push(); items.splice(selected, 1); selected = -1; markDirty(); draw(); }
     }
@@ -653,66 +658,28 @@
   function renderNotes() {
     notesLayer.innerHTML = '';
     for (var i = 0; i < items.length; i++) {
-      if (items[i].t === 'note') notesLayer.appendChild(noteEl(items[i], i));
+      var t = items[i].t;
+      if (t === 'note') notesLayer.appendChild(noteEl(items[i], i));
+      else if (t === 'card') notesLayer.appendChild(cardEl(items[i], i));
     }
     placeNotes();
   }
 
-  function noteEl(it, index) {
-    var tint = (isDark() ? darkTints : noteTints)[it.color] || noteTints.blue;
-    var el = document.createElement('div');
-    el.className = 'note' + (index === selected ? ' sel' : '');
-    el.style.left = it.x + 'px';
-    el.style.top = it.y + 'px';
-    el.style.width = (it.w || 360) + 'px';
-    if (it.h) el.style.minHeight = it.h + 'px';
-    el.style.setProperty('--note-bg', tint[0]);
-    el.style.setProperty('--note-line', tint[1]);
-    el.style.setProperty('--note-edge', tint[2]);
-
-    var head = document.createElement('div');
-    head.className = 'head';
-    var src = document.createElement('span');
-    src.className = 'src';
-    src.textContent = (labels['note.source'] || 'Показать источник') +
-                      (it.heading ? ' · ' + it.heading : '');
-    src.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
-    src.addEventListener('click', function (e) {
-      e.stopPropagation();
-      send('onSource', JSON.stringify({ file: it.file || '', heading: it.heading || '' }));
-    });
-    head.appendChild(src);
-    if (it.edited) {
-      var ed = document.createElement('span');
-      ed.className = 'edited';
-      ed.textContent = labels['note.edited'] || 'изменено';
-      head.appendChild(ed);
-    }
-    el.appendChild(head);
-
-    var body = document.createElement('div');
-    body.className = 'body';
-    body.innerHTML = noteBody(it.md || '');
-    el.appendChild(body);
-
-    var grip = document.createElement('div');
-    grip.className = 'grip';
-    el.appendChild(grip);
-
-    /* Перетаскивание за бумажку, растягивание за уголок. Ширину задаём мы,
-       высоту считает содержимое: текст перетекает, как в читалке. */
+  /* Перетаскивание за предмет, растягивание за уголок. Общее для бумажек и
+     карточек: ширину задаём мы, высоту считает содержимое. */
+  function dragging(el, it, index, grip) {
     var drag = null;
     el.addEventListener('pointerdown', function (e) {
       if (el.classList.contains('editing')) return;
       selected = index;
-      // пересобирать разметку нельзя: пропал бы захват указателя и таскать
-      // бумажку стало бы невозможно. Просто помечаем выбранную.
+      // Пересобирать разметку здесь нельзя: пропал бы захват указателя, и
+      // таскать стало бы невозможно. Просто помечаем выбранный предмет.
       var sibs = notesLayer.children;
       for (var s2 = 0; s2 < sibs.length; s2++) sibs[s2].classList.remove('sel');
       el.classList.add('sel');
       notesSig = '';
-      var onGrip = e.target === grip;
-      drag = { onGrip: onGrip, sx: e.clientX, sy: e.clientY, x: it.x, y: it.y, w: it.w || 360 };
+      drag = { onGrip: grip && e.target === grip, sx: e.clientX, sy: e.clientY,
+               x: it.x, y: it.y, w: it.w || 360 };
       el.setPointerCapture(e.pointerId);
       e.stopPropagation();
     });
@@ -733,6 +700,54 @@
     el.addEventListener('pointerup', function (e) {
       if (drag) { drag = null; markDirty(); e.stopPropagation(); }
     });
+  }
+
+  function noteEl(it, index) {
+    var tint = (isDark() ? darkTints : noteTints)[it.color] || noteTints.blue;
+    var el = document.createElement('div');
+    el.className = 'note' + (index === selected ? ' sel' : '');
+    el.style.left = it.x + 'px';
+    el.style.top = it.y + 'px';
+    el.style.width = (it.w || 360) + 'px';
+    if (it.h) el.style.minHeight = it.h + 'px';
+    el.style.setProperty('--note-bg', tint[0]);
+    el.style.setProperty('--note-line', tint[1]);
+    el.style.setProperty('--note-edge', tint[2]);
+
+    var head = document.createElement('div');
+    head.className = 'head';
+    var src = document.createElement('span');
+    src.className = 'src';
+    var fromCard = !!(it.from && it.from.card);
+    src.textContent = fromCard
+      ? (labels['card.formula'] || 'Показать формулу')
+      : (labels['note.source'] || 'Показать источник') + (it.heading ? ' · ' + it.heading : '');
+    src.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    src.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (fromCard) send('onCardForm', JSON.stringify(it.from));
+      else send('onSource', JSON.stringify({ file: it.file || '', heading: it.heading || '' }));
+    });
+    head.appendChild(src);
+    if (it.edited || it.stale) {
+      var ed = document.createElement('span');
+      ed.className = 'edited';
+      ed.textContent = it.stale ? (labels['card.stale'] || 'числа изменились')
+                                : (labels['note.edited'] || 'изменено');
+      head.appendChild(ed);
+    }
+    el.appendChild(head);
+
+    var body = document.createElement('div');
+    body.className = 'body';
+    body.innerHTML = noteBody(it.md || '');
+    el.appendChild(body);
+
+    var grip = document.createElement('div');
+    grip.className = 'grip';
+    el.appendChild(grip);
+
+    dragging(el, it, index, grip);
 
     /* Двойное нажатие — правка: показываем исходный markdown как есть,
        уходишь — снова рисуется. Ровно как кнопка правки в читалке. */
@@ -760,6 +775,173 @@
     });
     return el;
   }
+
+  /* ——— Карточки-скрипты ———
+
+     Та же бумажка, но с полями и кнопкой «Решить». Считает не страница, а
+     программа: там SymPy. Поэтому каждое изменение поля уходит наружу, и
+     оттуда же приходит ответ — годится или нет, и какое условие нарушено.
+     Так кнопка гаснет ровно тогда, когда решать нечего. */
+
+  var catalog = { items: [], sections: [] };
+  var byId = {};
+
+  B.setCards = function (data) {
+    catalog = typeof data === 'string' ? JSON.parse(data) : data;
+    byId = {};
+    for (var i = 0; i < (catalog.items || []).length; i++) byId[catalog.items[i].id] = catalog.items[i];
+    notesSig = '';
+    draw();
+  };
+
+  function tex(el, src, display) {
+    try {
+      el.innerHTML = katex.renderToString(src, {
+        displayMode: !!display, throwOnError: false, strict: false, trust: false,
+      });
+    } catch (e) { el.textContent = src; }
+  }
+
+  function cardEl(it, index) {
+    var spec = byId[it.card] || { f: [], form: '', n: {} };
+    var tint = (isDark() ? darkTints : noteTints)[it.color] || noteTints.violet;
+    var el = document.createElement('div');
+    el.className = 'note' + (index === selected ? ' sel' : '') + (it.fresh ? ' fresh' : '');
+    el.style.left = it.x + 'px';
+    el.style.top = it.y + 'px';
+    el.style.width = (it.w || 340) + 'px';
+    el.style.setProperty('--note-bg', tint[0]);
+    el.style.setProperty('--note-line', tint[1]);
+    el.style.setProperty('--note-edge', tint[2]);
+
+    var head = document.createElement('div');
+    head.className = 'head';
+    var ttl = document.createElement('span');
+    ttl.className = 'src';
+    ttl.style.textDecoration = 'none';
+    ttl.style.cursor = 'default';
+    ttl.textContent = spec.n && (spec.n[lang()] || spec.n.en) || it.card;
+    head.appendChild(ttl);
+    el.appendChild(head);
+
+    var form = document.createElement('div');
+    form.className = 'form';
+    tex(form, spec.form || '', true);
+    el.appendChild(form);
+
+    var rows = document.createElement('div');
+    rows.className = 'rows';
+    it.vals = it.vals || {};
+    var inputs = {};
+    (spec.f || []).forEach(function (f) {
+      var lb = document.createElement('label');
+      tex(lb, f.l || f.id, false);
+      var inp = document.createElement('input');
+      inp.value = it.vals[f.id] !== undefined ? it.vals[f.id] : '';
+      inp.spellcheck = false;
+      inp.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+      inp.addEventListener('input', function () {
+        it.vals[f.id] = inp.value;
+        ask(index, it);
+      });
+      inputs[f.id] = inp;
+      rows.appendChild(lb);
+      rows.appendChild(inp);
+    });
+    el.appendChild(rows);
+
+    var why = document.createElement('div');
+    why.className = 'why';
+    el.appendChild(why);
+
+    var go = document.createElement('div');
+    go.className = 'go';
+    var btn = document.createElement('button');
+    btn.textContent = labels['card.solve'] || 'Решить';
+    btn.disabled = !it.ready;
+    btn.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      send('onCardSolve', JSON.stringify({ i: index, card: it.card, vals: it.vals, color: it.color }));
+    });
+    go.appendChild(btn);
+    el.appendChild(go);
+
+    el._inputs = inputs;
+    el._why = why;
+    el._btn = btn;
+    dragging(el, it, index, null);
+    return el;
+  }
+
+  function lang() { return labels['__lang'] || 'ru'; }
+
+  function ask(index, it) {
+    send('onCardCheck', JSON.stringify({ i: index, card: it.card, vals: it.vals }));
+  }
+
+  /** Ответ программы: годится ввод или нет. Разметку не пересобираем — под
+      руками у человека поля, и перерисовка сбила бы курсор. */
+  B.cardState = function (payload) {
+    var d = typeof payload === 'string' ? JSON.parse(payload) : payload;
+    var it = items[d.i];
+    if (!it || it.t !== 'card') return;
+    it.ready = !!d.ok;
+    var el = notesLayer.children[nodeIndex(d.i)];
+    if (!el || !el._btn) return;
+    el._btn.disabled = !d.ok;
+    for (var k in el._inputs) {
+      el._inputs[k].classList.toggle('bad', (d.bad || []).indexOf(k) >= 0);
+    }
+    el._why.innerHTML = '';
+    (d.blocked || []).forEach(function (cond) {
+      var s = document.createElement('span');
+      tex(s, cond, false);
+      el._why.appendChild(s);
+    });
+  };
+
+  /** Какой по счёту предмет в слое — там лежат только бумажки и карточки. */
+  function nodeIndex(i) {
+    var k = 0;
+    for (var j = 0; j < i && j < items.length; j++) {
+      if (items[j].t === 'note' || items[j].t === 'card') k++;
+    }
+    return k;
+  }
+
+  B.addCard = function (id, color) {
+    if (!byId[id]) return;
+    push();
+    var spec = byId[id];
+    items.push({
+      t: 'card', card: id, color: color || 'violet',
+      x: round((cv.clientWidth / 2 - view.x) / view.z - 170),
+      y: round((cv.clientHeight / 2 - view.y) / view.z - 90),
+      w: 340, vals: JSON.parse(JSON.stringify(spec['try'] || {})), ready: false,
+    });
+    selected = items.length - 1;
+    markDirty(); draw(); renderNotes();
+    ask(items.length - 1, items[items.length - 1]);
+  };
+
+  /** Решение вылетает из своей карточки вниз-вправо, чтобы её не накрыть. */
+  B.addSolution = function (payload) {
+    var d = typeof payload === 'string' ? JSON.parse(payload) : payload;
+    var src = items[d.i];
+    if (!src) return;
+    push();
+    items.push({
+      t: 'note', md: d.md, color: d.color || src.color, w: 380,
+      x: round(src.x + 60), y: round(src.y + (d.h || 220)),
+      from: { card: src.card, vals: JSON.parse(JSON.stringify(src.vals || {})) },
+      fresh: true,
+    });
+    selected = items.length - 1;
+    markDirty(); draw(); renderNotes();
+    var el = notesLayer.children[nodeIndex(items.length - 1)];
+    if (el) setTimeout(function () { el.classList.remove('fresh'); }, 400);
+  };
 
   /** Кусок, вырезанный из конспекта, ложится в середину видимой части доски. */
   B.addNote = function (payload) {

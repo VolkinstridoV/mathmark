@@ -25,8 +25,10 @@ gi.require_version("WebKit", "6.0")
 
 from gi.repository import Adw, Gio, GLib, Gtk, WebKit  # noqa: E402
 
+from .i18n import current as i18n_current  # noqa: E402
 from .i18n import t  # noqa: E402
-from .paths import board_html  # noqa: E402
+from .cards import Card, as_markdown, solve  # noqa: E402
+from .paths import board_html, cards_catalog  # noqa: E402
 
 SUFFIX = ".board"
 
@@ -79,6 +81,11 @@ class BoardWindow(Adw.ApplicationWindow):
                            tooltip_text=t("write.title") + "  (Ctrl+M)")
         write.connect("clicked", lambda *_: self.get_application().open_writer(self))
         head.pack_end(write)
+
+        formula = Gtk.Button(icon_name="list-add-symbolic",
+                             tooltip_text=t("card.open") + "  (Ctrl+G)")
+        formula.connect("clicked", lambda *_: self.open_picker())
+        head.pack_end(formula)
 
         cut = Gtk.Button(icon_name="edit-cut-symbolic",
                          tooltip_text=t("cut.open") + "  (Ctrl+T)")
@@ -133,8 +140,9 @@ class BoardWindow(Adw.ApplicationWindow):
                 "board.undo", "board.redo", "board.fit", "board.zoomIn", "board.zoomOut")
         out = {"board." + k.split(".", 1)[1]: t(k) for k in keys}
         # бумажки подписаны своими строками, не из набора инструментов
-        out["note.source"] = t("note.source")
-        out["note.edited"] = t("note.edited")
+        for k in ("note.source", "note.edited", "card.solve", "card.formula", "card.stale"):
+            out[k] = t(k)
+        out["__lang"] = i18n_current()
         return json.dumps(out)
 
     def _on_load(self, _web, event) -> None:
@@ -142,6 +150,7 @@ class BoardWindow(Adw.ApplicationWindow):
             return
         dark = Adw.StyleManager.get_default().get_dark()
         self._js(f"Board.setLabels({self._labels()});Board.setTheme({str(dark).lower()});")
+        self._js(f"Board.setCards({json.dumps(json.dumps(self._catalog))});")
         # без этого нажатия клавиш до страницы не доходят и отмена не работает
         self.web.grab_focus()
         if self.path is not None:
@@ -159,6 +168,92 @@ class BoardWindow(Adw.ApplicationWindow):
             self._write(payload)
         elif name == "onSource":
             self._show_source(payload)
+        elif name == "onCardCheck":
+            self._card_check(payload)
+        elif name == "onCardSolve":
+            self._card_solve(payload)
+        elif name == "onCardForm":
+            self._card_form(payload)
+
+    # ——— карточки-скрипты ———
+
+    @property
+    def _catalog(self) -> dict:
+        if getattr(self, "_cat", None) is None:
+            self._cat = cards_catalog()
+            self._cards = {c["id"]: Card.of(c) for c in self._cat.get("items", [])}
+        return self._cat
+
+    def open_picker(self) -> None:
+        """Выбор формулы. Окно одно: второй раз — поднимаем прежнее."""
+        from .picker import PickerWindow
+
+        old = getattr(self, "_picker", None)
+        if old is not None:
+            old.present()
+            return
+
+        def pick(card_id: str) -> None:
+            self._js(f"Board.addCard({json.dumps(card_id)});")
+
+        win = PickerWindow(self.get_application(), self._catalog, pick)
+
+        def gone(*_):
+            self._picker = None
+            return False
+
+        win.connect("close-request", gone)
+        self._picker = win
+        win.present()
+
+    def _solve(self, payload: str):
+        try:
+            d = json.loads(payload)
+        except (ValueError, TypeError):
+            return None, None
+        self._catalog  # noqa: B018 — подтягиваем каталог, если ещё не читали
+        card = self._cards.get(d.get("card"))
+        if card is None:
+            return None, None
+        return d, (card, solve(card, d.get("vals") or {}))
+
+    def _card_check(self, payload: str) -> None:
+        """Ответ на каждую правку поля: гасить кнопку или нет и почему."""
+        d, got = self._solve(payload)
+        if not got:
+            return
+        _card, res = got
+        state = {"i": d.get("i"), "ok": res.ok, "bad": res.bad, "blocked": res.blocked}
+        self._js(f"Board.cardState({json.dumps(json.dumps(state))});")
+
+    def _card_solve(self, payload: str) -> None:
+        d, got = self._solve(payload)
+        if not got:
+            return
+        card, res = got
+        if not res.ok:
+            return
+        md = as_markdown(card, d.get("vals") or {}, res)
+        out = {"i": d.get("i"), "md": md, "color": d.get("color"),
+               "h": 150 + 26 * len(res.lines)}
+        self._js(f"Board.addSolution({json.dumps(json.dumps(out))});")
+
+    def _card_form(self, payload: str) -> None:
+        """«Показать формулу» — то же окно, что и «Показать источник»."""
+        try:
+            d = json.loads(payload)
+        except (ValueError, TypeError):
+            return
+        self._catalog  # noqa: B018
+        card = self._cards.get(d.get("card"))
+        if card is None:
+            return
+        text = "$$\n" + card.form + "\n$$\n"
+        for f in card.fields:
+            val = (d.get("vals") or {}).get(f.id)
+            if val:
+                text += f"\n$${f.label} = {val}$$\n"
+        self._show_text(t("card.formula"), text)
 
     # ——— вырезание куска конспекта ———
 
@@ -179,6 +274,24 @@ class BoardWindow(Adw.ApplicationWindow):
 
         win = CutWindow(self.get_application(), self.st, Path(self.folder),
                         on_cut=self._take_note, path=path)
+
+        def gone(*_):
+            self._cutter = None
+            return False
+
+        win.connect("close-request", gone)
+        self._cutter = win
+        win.present()
+
+    def _show_text(self, heading: str, text: str) -> None:
+        """Показать готовый кусок в том же окне, что и источник вырезанного."""
+        from .cutter import CutWindow
+
+        old = getattr(self, "_cutter", None)
+        if old is not None:
+            old.close()
+        win = CutWindow(self.get_application(), self.st, Path(self.folder),
+                        on_cut=self._take_note, text=text, heading=heading)
 
         def gone(*_):
             self._cutter = None
