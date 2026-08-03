@@ -28,7 +28,7 @@ from gi.repository import Adw, GLib, Gtk, WebKit  # noqa: E402
 
 from .files import Entry, FilesRepo  # noqa: E402
 from .i18n import t  # noqa: E402
-from .paths import reader_html  # noqa: E402
+from .paths import reader_html, stamped  # noqa: E402
 
 # Те же цвета, что на доске. Бумажка не заливается ими в лоб: насыщенный
 # красный лист с текстом читать невозможно, поэтому цвет живёт в подложке
@@ -108,7 +108,8 @@ class CutWindow(Adw.ApplicationWindow):
         ucm.connect("script-message-received::mathmark", self._from_page)
         self.web = WebKit.WebView(user_content_manager=ucm, vexpand=True, hexpand=True)
         self.web.connect("load-changed", self._on_load)
-        self.web.load_uri(reader_html().as_uri())
+        page = reader_html()
+        self.web.load_html(stamped(page), page.as_uri())
 
         if self.source_mode:
             body: Gtk.Widget = self.web

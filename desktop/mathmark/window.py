@@ -27,7 +27,7 @@ from .i18n import subtitle, sync_message, t  # noqa: E402
 from . import reminders as rem  # noqa: E402
 from .stats import record  # noqa: E402
 from .sync import FROZEN, GitHub, Sync  # noqa: E402
-from .paths import prompt_text, reader_html  # noqa: E402
+from .paths import prompt_text, reader_html, stamped  # noqa: E402
 from .settings import Settings  # noqa: E402
 
 ACCENT = (0.482, 0.231, 1.000)      # #7B3BFF
@@ -329,7 +329,8 @@ class MathMarkWindow(Adw.ApplicationWindow):
 
         self.web = WebKit.WebView(user_content_manager=ucm, vexpand=True)
         self.web.connect("load-changed", self._on_load)
-        self.web.load_uri(reader_html().as_uri())
+        page = reader_html()
+        self.web.load_html(stamped(page), page.as_uri())
         view.set_content(self.web)
         return view
 

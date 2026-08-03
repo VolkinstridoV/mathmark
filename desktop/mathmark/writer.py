@@ -22,7 +22,7 @@ gi.require_version("WebKit", "6.0")
 from gi.repository import Adw, Gdk, Gtk, WebKit  # noqa: E402
 
 from .i18n import current, t  # noqa: E402
-from .paths import write_catalog, write_html  # noqa: E402
+from .paths import stamped, write_catalog, write_html  # noqa: E402
 
 UI_KEYS = ("write.search", "write.pick", "write.hint", "write.copy",
            "write.copyPlain", "write.copied", "write.none")
@@ -60,10 +60,7 @@ class WriterWindow(Adw.ApplicationWindow):
     def _load_page(self) -> None:
         """Как и у доски: правим ссылку на сценарий, чтобы не подсовывался старый."""
         page = write_html()
-        html = page.read_text(encoding="utf-8")
-        stamp = int((page.parent / "write.js").stat().st_mtime)
-        html = html.replace('src="write.js"', f'src="write.js?v={stamp}"')
-        self.web.load_html(html, page.as_uri())
+        self.web.load_html(stamped(page), page.as_uri())
 
     def _js(self, script: str) -> None:
         self.web.evaluate_javascript(script, -1, None, None, None, None, None)

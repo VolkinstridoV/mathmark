@@ -31,6 +31,37 @@ def share_dir() -> Path:
     )
 
 
+def stamped(page: Path) -> str:
+    """
+    Страница со «штампом» на каждом своём сценарии и стиле.
+
+    WebKit держит `file://`-файлы в кэше и правки до окна не доносит: меняешь
+    вид, перезапускаешь — а на экране прежнее. Обход простой: к именам
+    подставляемых файлов дописывается время их правки, и для WebKit это уже
+    другой адрес. Обход был у доски, из-за чего доска обновлялась, а читалка,
+    помогалка и вырезание — нет.
+    """
+    import re
+
+    html = page.read_text(encoding="utf-8")
+
+    def mark(m: str) -> str:
+        target = (page.parent / m).resolve()
+        try:
+            return f"{m}?v={int(target.stat().st_mtime)}"
+        except OSError:
+            return m
+
+    def sub(match: "re.Match[str]") -> str:
+        src = match.group(2)
+        if "://" in src or src.startswith("data:") or "?" in src:
+            return match.group(0)
+        return match.group(1) + mark(src) + match.group(3)
+
+    html = re.sub(r'(<script[^>]*\ssrc=")([^"]+)(")', sub, html)
+    return re.sub(r'(<link[^>]*\shref=")([^"]+)(")', sub, html)
+
+
 def reader_html() -> Path:
     return share_dir() / "reader" / "reader.html"
 

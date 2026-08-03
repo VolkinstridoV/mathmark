@@ -28,7 +28,7 @@ from gi.repository import Adw, Gio, GLib, Gtk, WebKit  # noqa: E402
 from .i18n import current as i18n_current  # noqa: E402
 from .i18n import t  # noqa: E402
 from .cards import Card, as_markdown, solve  # noqa: E402
-from .paths import board_html, cards_catalog  # noqa: E402
+from .paths import board_html, cards_catalog, stamped  # noqa: E402
 
 SUFFIX = ".board"
 
@@ -118,16 +118,9 @@ class BoardWindow(Adw.ApplicationWindow):
         self.set_content(self.toasts)
 
     def _load_page(self) -> None:
-        """
-        Страницу отдаём разметкой, а не ссылкой на файл: к имени сценария
-        дописывается время его правки. Иначе WebKit держит прежний сценарий
-        в кэше, и правки не доезжают до окна.
-        """
+        """Страница со штампами на сценариях — обход кэша WebKit, см. paths.stamped."""
         page = board_html()
-        html = page.read_text(encoding="utf-8")
-        stamp = int((page.parent / "board.js").stat().st_mtime)
-        html = html.replace('src="board.js"', f'src="board.js?v={stamp}"')
-        self.web.load_html(html, page.as_uri())
+        self.web.load_html(stamped(page), page.as_uri())
 
     # ——— связь со страницей ———
 
