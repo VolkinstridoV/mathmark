@@ -143,6 +143,34 @@ A second window (`Ctrl+D`): an endless sheet ruled in dots — the paper you thi
 
 A board is saved as plain readable JSON in the same folder as your notes, under a `.board` name. Same rule as everywhere else here: nothing is locked inside the program.
 
+### Formula cards
+
+<div align="center"><img src="shots/32-desktop-board-cards.png" width="750"></div>
+
+You do not have to write a derivation out by hand. `Ctrl+G` opens a catalogue of
+**58 formulas** — school, undergraduate, some graduate. Pick the discriminant,
+the variance or Vieta's theorem and a card lands on the board with empty fields.
+Fill them, press Solve, and a note slides out with the **worked steps**.
+
+<div align="center"><img src="shots/33-desktop-formulas.png" width="380"></div>
+
+The derivation is **pure mathematics, without a single word**. Someone who
+reached for the variance formula knows what variance is — they are just tired of
+writing it out. So the steps are not translated into any language.
+
+Fill in something the formula cannot take and the button goes dark, with the
+broken condition lit underneath — again as maths: `a \neq 0`. A field with
+nonsense in it turns red.
+
+The solution note is the same note as a piece cut from your own file: drag it,
+resize it, edit it. Instead of Show source it offers Show formula.
+
+A card is not a separate program but ten lines of description in
+`shared/cards/catalog.json`: which fields to ask for, what to check, what to
+compute, which steps to show. One engine on SymPy does the arithmetic. So anyone
+can add a formula without touching code — and `tools/check_cards.py` will run it
+through real KaTeX along with the rest.
+
 ### Cut a piece of your notes
 
 The board starts empty, but the material is already written — in your own files. `Ctrl+T` opens a window: folders and files on the left, the chosen file rendered on the right. Select what you need with the cursor, pick a colour, press Take it (`Ctrl+Enter`) — and it lands on the board as a note.

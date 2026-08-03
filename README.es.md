@@ -143,6 +143,34 @@ Una segunda ventana (`Ctrl+D`): una hoja infinita punteada — el papel sobre el
 
 La pizarra se guarda como JSON legible en la misma carpeta que tus apuntes, con un nombre acabado en `.board`. La misma regla que rige todo aquí: nada queda encerrado dentro del programa.
 
+### Tarjetas de fórmulas
+
+<div align="center"><img src="shots/32-desktop-board-cards.png" width="750"></div>
+
+No hace falta escribir el desarrollo a mano. `Ctrl+G` abre un catálogo de
+**58 fórmulas** — instituto, grado y parte de posgrado. Eliges el discriminante,
+la varianza o el teorema de Vieta y en la pizarra cae una tarjeta con casillas
+vacías. Las rellenas, pulsas Resolver y de ella sale un papel con el
+**desarrollo paso a paso**.
+
+<div align="center"><img src="shots/33-desktop-formulas.png" width="380"></div>
+
+El desarrollo es **matemática pura, sin una sola palabra**. Quien echa mano de la
+fórmula de la varianza ya sabe qué es la varianza: solo le da pereza escribirla.
+Por eso los pasos no se traducen a ningún idioma.
+
+Si rellenas algo que la fórmula no admite, el botón se apaga y debajo se
+enciende la condición incumplida, también en matemáticas: `a \neq 0`. La casilla
+con basura se pone roja.
+
+El papel con la solución es el mismo papel que un trozo recortado de tus
+apuntes: se arrastra, se redimensiona, se edita. En vez de Ver el origen ofrece
+Ver la fórmula.
+
+Una tarjeta no es un programa aparte, sino diez líneas de descripción en
+`shared/cards/catalog.json`: qué casillas pedir, qué comprobar, qué calcular,
+qué pasos mostrar. Un solo motor sobre SymPy hace las cuentas.
+
 ### Recortar un trozo de tus apuntes
 
 La pizarra empieza vacía, pero el material ya está escrito — en tus propios archivos. `Ctrl+T` abre una ventana: carpetas y archivos a la izquierda, el archivo elegido dibujado a la derecha. Seleccionas con el cursor lo que necesitas, eliges un color y pulsas Sacar (`Ctrl+Enter`) — y cae en la pizarra como un papel.

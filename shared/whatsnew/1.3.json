@@ -1,0 +1,26 @@
+{
+  "en": [
+    "Formula cards: pick from a catalogue of 58, fill the fields, press Solve — a note slides out with the worked steps, in pure mathematics (Ctrl+G)",
+    "Fill in what the formula cannot take and the button goes dark, with the broken condition lit underneath as maths",
+    "«Show formula» on a solution reopens the formula it came from",
+    "New look: everything you press now has height, and a completed mark sinks in instead of just changing colour",
+    "The icon is redrawn and no longer blurs on large screens",
+    "Colour can be chosen on the card and on the note itself"
+  ],
+  "ru": [
+    "Карточки-скрипты: выбрал формулу из 58, заполнил поля, нажал «Решить» — выехал листочек с пошаговым разбором, одной математикой (Ctrl+G)",
+    "Заполнил не тем — кнопка гаснет, а под полем загорается нарушенное условие, тоже математикой",
+    "«Показать формулу» на решении открывает ту формулу, из которой считали",
+    "Новый вид: у всего, на что нажимают, появилась высота, а закрытая отметка вдавливается, а не просто меняет цвет",
+    "Значок перерисован и больше не мылит на крупном экране",
+    "Цвет выбирается прямо на карточке и на самой бумажке"
+  ],
+  "es": [
+    "Tarjetas de fórmulas: eliges una de 58, rellenas las casillas, pulsas Resolver — sale un papel con el desarrollo paso a paso, en matemática pura (Ctrl+G)",
+    "Si rellenas algo que la fórmula no admite, el botón se apaga y debajo se enciende la condición incumplida, también en matemáticas",
+    "«Ver la fórmula» en una solución reabre la fórmula de la que salió",
+    "Nuevo aspecto: todo lo que se pulsa tiene altura, y una marca completada se hunde en vez de solo cambiar de color",
+    "El icono está redibujado y ya no se ve borroso en pantallas grandes",
+    "El color se elige en la propia tarjeta y en el propio papel"
+  ]
+}

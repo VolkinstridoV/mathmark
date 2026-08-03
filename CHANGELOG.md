@@ -6,6 +6,16 @@ Every version and what appeared in it. The same lists are shown inside the app
 after an update.
 
 
+## 1.3 — 2026-08-03
+
+- Formula cards: pick from a catalogue of 58, fill the fields, press Solve — a note slides out with the worked steps, in pure mathematics (Ctrl+G)
+- Fill in what the formula cannot take and the button goes dark, with the broken condition lit underneath as maths
+- «Show formula» on a solution reopens the formula it came from
+- New look: everything you press now has height, and a completed mark sinks in instead of just changing colour
+- The icon is redrawn and no longer blurs on large screens
+- Colour can be chosen on the card and on the note itself
+
+
 ## 1.2 — 2026-08-02
 
 - Cut a piece of your notes onto the board: pick a file, select with the cursor, choose a colour — it lands as a note (Ctrl+T)

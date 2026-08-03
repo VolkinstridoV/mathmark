@@ -6,6 +6,16 @@ Todas las versiones y lo que apareció en cada una. Las mismas listas se ven
 dentro de la aplicación tras actualizar.
 
 
+## 1.3 — 2026-08-03
+
+- Tarjetas de fórmulas: eliges una de 58, rellenas las casillas, pulsas Resolver — sale un papel con el desarrollo paso a paso, en matemática pura (Ctrl+G)
+- Si rellenas algo que la fórmula no admite, el botón se apaga y debajo se enciende la condición incumplida, también en matemáticas
+- «Ver la fórmula» en una solución reabre la fórmula de la que salió
+- Nuevo aspecto: todo lo que se pulsa tiene altura, y una marca completada se hunde en vez de solo cambiar de color
+- El icono está redibujado y ya no se ve borroso en pantallas grandes
+- El color se elige en la propia tarjeta y en el propio papel
+
+
 ## 1.2 — 2026-08-02
 
 - Recortar un trozo de tus apuntes a la pizarra: eliges archivo, seleccionas con el cursor, eliges color — cae como un papel (Ctrl+T)
