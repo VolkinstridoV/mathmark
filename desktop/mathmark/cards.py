@@ -21,6 +21,8 @@
 
     {"tex": "..."}              строка разбора; @имя подставляет значение
     {"set": "D = b**2-4*a*c"}   посчитать и запомнить
+    {"set": "...", "keep": true} посчитать, но не упрощать: разложение на
+                                множители иначе схлопнется обратно в число
     {"when": "D > 0", "steps":[…]}   ветка, если условие верно
     {"else": [...]}             иначе
 
@@ -234,7 +236,10 @@ def _walk(steps: list[dict], env: dict, out: list[str]) -> None:
         if "set" in st:
             name, _, expr = st["set"].partition("=")
             val = _eval(expr.strip(), env)
-            env[name.strip()] = val if isinstance(val, (list, tuple)) else sympy.simplify(val)
+            if st.get("keep") or isinstance(val, (list, tuple)):
+                env[name.strip()] = val
+            else:
+                env[name.strip()] = sympy.simplify(val)
         if "when" in st:
             if _check(st["when"], env):
                 _walk(st.get("steps", []), env, out)
