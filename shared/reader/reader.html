@@ -7,11 +7,19 @@
 <style>
   :root{
     --paper:#FCFBFE; --ink:#1B1720; --soft:#6B6279; --rule:#E7E1F1;
-    --accent:#7C3AED; --accent2:#A855F7; --code:#F3EFFA; --quote:#F1ECFA;
+    --accent:#7B3BFF; --accent2:#A26BFF; --code:#F3EFFA; --quote:#F1ECFA;
+    --chip:#FFFFFF;
+    --chip-up:inset 0 1px 0 rgba(255,255,255,.95), 0 2px 5px -1px rgba(28,18,48,.20),
+              0 0 0 1px rgba(28,18,48,.06);
+    --chip-in:inset 0 2px 5px rgba(46,10,116,.45), 0 0 0 1px rgba(96,40,200,.20);
   }
   html[data-theme=dark]{
     --paper:#131017; --ink:#E4DFEC; --soft:#9A91AC; --rule:#292235;
-    --accent:#7C3AED; --accent2:#9333EA; --code:#1E1828; --quote:#241E30;
+    --accent:#8B5CFF; --accent2:#A97BFF; --code:#1E1828; --quote:#241E30;
+    --chip:#221C30;
+    --chip-up:inset 0 1px 0 rgba(255,255,255,.10), 0 2px 6px -1px rgba(0,0,0,.55),
+              0 0 0 1px rgba(255,255,255,.06);
+    --chip-in:inset 0 2px 6px rgba(0,0,0,.75), 0 0 0 1px rgba(139,92,255,.28);
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
   html,body{margin:0; background:var(--paper); color:var(--ink)}
@@ -49,22 +57,29 @@
   /* отмечаемые строки */
   ul.marks{list-style:none; margin:0 0 1.1em; padding:0}
   ul.marks li{display:flex; gap:.7em; align-items:flex-start; padding:.3em 0}
+  /* Отметка не меняет картинку, а меняет высоту: непройденное лежит выпуклым,
+     пройденное утоплено внутрь. Разницу видно боковым зрением, не вчитываясь. */
   .box{flex:0 0 auto; width:23px; height:23px; margin-top:.15em; position:relative;
-       border:1.8px solid var(--soft); display:grid; place-items:center; cursor:pointer;
-       background:var(--paper); transition:background .12s,border-color .12s}
-  .box.task{border-radius:7px}
-  .box:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+       border:0; display:grid; place-items:center; cursor:pointer;
+       background:var(--chip); color:var(--accent);
+       box-shadow:var(--chip-up);
+       transition:box-shadow .16s ease, background .16s ease, transform .16s ease}
+  .box.task{border-radius:8px}
   .box.topic{border-radius:50%}
+  .box:hover{transform:translateY(-1px)}
+  .box:active{transform:translateY(0)}
+  .box:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
   .box svg{width:13px; height:13px; stroke:#fff; stroke-width:2.6; fill:none;
            stroke-linecap:round; stroke-linejoin:round; opacity:0}
   li[data-mark=half] .box{
-    border-color:var(--accent);
-    background:linear-gradient(90deg,var(--accent) 50%,transparent 50%);
+    background:linear-gradient(150deg,var(--accent2) 48%,var(--chip) 48%);
+    box-shadow:var(--chip-in);
   }
   li[data-mark=done] .box{
-    border-color:transparent;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    background:linear-gradient(150deg,var(--accent2),var(--accent));
+    box-shadow:var(--chip-in);
   }
+  li[data-mark=done] .box:hover, li[data-mark=half] .box:hover{transform:none}
   li[data-mark=done] .box svg{opacity:1}
   li[data-mark=done] .txt{color:var(--soft)}
   /* сделанная задача перечёркивается, пройденная тема — нет, она просто гаснет */
@@ -82,12 +97,15 @@
   /* скрытый текст: плашка ровно того же размера, что и содержимое —
      иначе при открытии страница дёргается, а по ширине видно длину ответа */
   .hide{
-    background:var(--soft); border-radius:5px; cursor:pointer;
-    transition:background .15s; -webkit-user-select:none; user-select:none;
+    background:linear-gradient(150deg,var(--accent2),var(--accent));
+    border-radius:6px; cursor:pointer;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.28);
+    transition:background .15s, box-shadow .15s;
+    -webkit-user-select:none; user-select:none;
   }
   .hide > *{opacity:0; transition:opacity .15s}
   .hide{color:transparent}
-  .hide.open{background:none; color:inherit; cursor:text; user-select:text}
+  .hide.open{background:none; box-shadow:none; color:inherit; cursor:text; user-select:text}
   .hide.open > *{opacity:1}
   .hide:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
   /* В окне вырезания закрашенное выделяется наравне со всем: иначе кусок,

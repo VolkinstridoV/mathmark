@@ -743,6 +743,25 @@
     body.innerHTML = noteBody(it.md || '');
     el.appendChild(body);
 
+    var pick = document.createElement('div');
+    pick.className = 'dots';
+    pick.style.marginTop = '8px';
+    Object.keys(noteTints).forEach(function (name) {
+      var i = document.createElement('i');
+      i.style.background = noteTints[name][2];
+      if (name === it.color) i.classList.add('on');
+      i.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+      i.addEventListener('click', function (e) {
+        e.stopPropagation();
+        it.color = name;
+        notesSig = '';
+        markDirty();
+        renderNotes();
+      });
+      pick.appendChild(i);
+    });
+    el.appendChild(pick);
+
     var grip = document.createElement('div');
     grip.className = 'grip';
     el.appendChild(grip);
@@ -856,6 +875,25 @@
 
     var go = document.createElement('div');
     go.className = 'go';
+
+    var dots = document.createElement('div');
+    dots.className = 'dots';
+    Object.keys(noteTints).forEach(function (name) {
+      var i = document.createElement('i');
+      i.style.background = noteTints[name][2];
+      if (name === it.color) i.classList.add('on');
+      i.title = name;
+      i.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+      i.addEventListener('click', function (e) {
+        e.stopPropagation();
+        it.color = name;
+        notesSig = '';
+        markDirty();
+        renderNotes();
+      });
+      dots.appendChild(i);
+    });
+
     var btn = document.createElement('button');
     btn.textContent = labels['card.solve'] || 'Решить';
     btn.disabled = !it.ready;
@@ -865,6 +903,7 @@
       send('onCardSolve', JSON.stringify({ i: index, card: it.card, vals: it.vals, color: it.color }));
     });
     go.appendChild(btn);
+    go.appendChild(dots);
     el.appendChild(go);
 
     el._inputs = inputs;

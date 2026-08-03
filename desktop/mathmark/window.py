@@ -30,25 +30,64 @@ from .sync import FROZEN, GitHub, Sync  # noqa: E402
 from .paths import prompt_text, reader_html  # noqa: E402
 from .settings import Settings  # noqa: E402
 
-ACCENT = (0.486, 0.227, 0.929)      # #7C3AED
-ACCENT2 = (0.659, 0.333, 0.969)     # #A855F7
-DEEP = (0.298, 0.114, 0.714)        # #4C1D95
+ACCENT = (0.482, 0.231, 1.000)      # #7B3BFF
+ACCENT2 = (0.635, 0.420, 1.000)     # #A26BFF
+DEEP = (0.357, 0.094, 0.863)        # #5B18DC
 
-CSS = b"""
+# Оформление «Слои»: у всего, на что нажимают, есть высота. Свет падает
+# сверху, поэтому светлая грань — по верхнему краю, тень — под низом.
+# Содержимое (текст, формулы) остаётся плоской бумагой: тени под абзацами
+# убили бы чтение, ради которого программа и написана.
+CSS = """
 .mathmark-title { font-weight: 700; }
 .mathmark-dim { opacity: 0.62; font-size: 0.86em; }
-.mathmark-progress trough { min-height: 4px; }
-.mathmark-progress progress { min-height: 4px; background: linear-gradient(90deg, #7C3AED, #A855F7); }
 .mathmark-hit { font-family: monospace; font-size: 0.82em; opacity: 0.7; }
+
+.mathmark-progress trough { min-height: 4px; border-radius: 3px; }
+.mathmark-progress progress {
+  min-height: 4px; border-radius: 3px;
+  background: linear-gradient(90deg, #7B3BFF, #A26BFF);
+}
+
+/* строка списка — плитка, которая поднимается под курсором */
+row.mathmark-row {
+  padding: 8px 6px;
+  margin: 3px 6px;
+  border-radius: 13px;
+  transition: background 140ms ease, box-shadow 140ms ease;
+}
+row.mathmark-row:hover {
+  background: alpha(@window_fg_color, 0.045);
+  box-shadow: 0 6px 16px -8px alpha(@window_fg_color, 0.55);
+}
+row.mathmark-row:selected {
+  background: alpha(#7B3BFF, 0.14);
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.5), 0 8px 18px -10px alpha(#3A0D9E, 0.8);
+}
+
+/* кнопка доски — приподнятая, с бликом сверху */
 .mathmark-board {
-  background: linear-gradient(100deg, #7C3AED, #A855F7);
+  background: linear-gradient(160deg, #A26BFF, #7B3BFF);
   color: #ffffff;
   font-weight: 600;
   border: none;
+  border-radius: 12px;
+  padding: 5px 14px;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.42),
+              0 5px 12px -5px alpha(#4A11C8, 0.85);
 }
-.mathmark-board:hover { background: linear-gradient(100deg, #8B5CF6, #B366FA); }
-row.mathmark-row { padding: 6px 4px; }
-"""
+.mathmark-board:hover { background: linear-gradient(160deg, #B27FFF, #8B4DFF); }
+.mathmark-board:active {
+  background: linear-gradient(160deg, #7B3BFF, #6A22F0);
+  box-shadow: inset 0 2px 5px alpha(#2E0A74, 0.5);
+}
+
+/* кружки выбора цвета на доске и в вырезании — те же плитки, только круглые */
+button.mm-dot {
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.5),
+              0 2px 6px -2px alpha(#1C1230, 0.6);
+}
+""".encode()
 
 
 # ——————————————————————— значки ———————————————————————

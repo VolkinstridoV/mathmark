@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MathMark — три направления оформления</title>
+<link rel="stylesheet" href="../shared/reader/katex/katex.min.css">
+<style>
+  /* ——————————————————————————————————————————————————————————
+     Общее для страницы сравнения. Сама страница нарочно скучная:
+     смотреть надо на образцы, а не на неё.
+     ────────────────────────────────────────────────────────── */
+  :root{
+    --page:#F7F6F9; --ink:#1A1620; --dim:#6C6478; --rule:#E2DEEA;
+    --ui:"Inter","Adwaita Sans",system-ui,sans-serif;
+    --book:"C059","URW Bookman","Noto Serif",Georgia,serif;
+    --hand:"Virgil 3 YOFF","Grape Nuts",cursive;
+    --mono:"JetBrains Mono","Adwaita Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--page); color:var(--ink); font-family:var(--ui);
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px 120px}
+
+  header{padding:64px 0 40px}
+  header h1{font-family:var(--book); font-weight:400; font-size:clamp(30px,4.6vw,52px);
+            letter-spacing:-.015em; margin:0 0 14px; line-height:1.08}
+  header p{max-width:60ch; margin:0; color:var(--dim); font-size:16px; line-height:1.6}
+  .lead{margin-top:26px; display:flex; gap:12px; flex-wrap:wrap}
+  .lead span{font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
+             color:var(--dim); border:1px solid var(--rule); border-radius:999px;
+             padding:6px 13px; background:#fff}
+
+  /* три значка рядом — первое, что видно */
+  .icons{display:flex; gap:34px; flex-wrap:wrap; align-items:flex-end;
+         padding:38px 0 10px; border-top:1px solid var(--rule); margin-top:44px}
+  .icons figure{margin:0; text-align:center}
+  .icons figcaption{margin-top:12px; font-size:13px; color:var(--dim)}
+
+  section.dir{margin-top:86px; scroll-margin-top:20px}
+  .dir > h2{font-family:var(--book); font-weight:400; font-size:31px; margin:0 0 6px;
+            letter-spacing:-.01em}
+  .dir > h2 b{font:inherit; color:var(--dim); font-size:.62em; margin-right:12px;
+              letter-spacing:.1em; text-transform:uppercase; vertical-align:.28em}
+  .thesis{max-width:64ch; color:var(--dim); font-size:15.5px; line-height:1.65; margin:0 0 8px}
+  .risk{max-width:64ch; font-size:14px; line-height:1.6; margin:10px 0 26px;
+        padding-left:14px; border-left:2px solid var(--rule); color:var(--dim)}
+  .risk b{color:var(--ink); font-weight:600}
+
+  .swatches{display:flex; gap:9px; align-items:center; margin:0 0 30px; flex-wrap:wrap}
+  .sw{width:34px; height:34px; border-radius:10px; border:1px solid rgba(0,0,0,.1)}
+  .sw-label{font-family:var(--mono); font-size:11.5px; color:var(--dim)}
+
+  .grid{display:grid; gap:22px; grid-template-columns:repeat(12,1fr)}
+  .cell{grid-column:span 12}
+  @media (min-width:900px){
+    .cell.half{grid-column:span 6}
+    .cell.third{grid-column:span 4}
+    .cell.twothirds{grid-column:span 8}
+  }
+  .cap{font-size:12px; letter-spacing:.07em; text-transform:uppercase;
+       color:var(--dim); margin:0 0 9px}
+
+  .stage{border-radius:18px; overflow:hidden; border:1px solid var(--rule);
+         min-height:120px}
+
+  footer{margin-top:96px; padding-top:34px; border-top:1px solid var(--rule);
+         color:var(--dim); font-size:15px; line-height:1.7; max-width:66ch}
+  footer b{color:var(--ink)}
+  code{font-family:var(--mono); font-size:.92em; background:#fff;
+       border:1px solid var(--rule); border-radius:5px; padding:1px 5px}
+
+  /* ——— общая мелочь образцов ——— */
+  .row{display:flex; align-items:center; gap:12px}
+  .grow{flex:1; min-width:0}
+  .ttl{font-size:14.5px; line-height:1.25}
+  .sub{font-size:12px; opacity:.72; margin-top:3px}
+  .marks{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px}
+  .marks li{display:flex; align-items:center; gap:11px; font-size:15px}
+  .done .txt{opacity:.42; text-decoration:line-through}
+  .topic.done .txt{opacity:.42; text-decoration:none}
+  .katex{font-size:1.02em}
+
+  /* ═══════════════════ 1. ТЕТРАДЬ ═══════════════════
+     Плоско, как страница в точку. Объём только в чернилах. */
+  .n{--v:#6D3BF5; --v2:#8B63FF; --paper:#FDFCFF; --ink1:#171320; --dim1:#7A7288;
+     --rule1:#E6E1F2; --dot:#D6CEEA;
+     background:var(--paper); color:var(--ink1);
+     background-image:radial-gradient(var(--dot) 1.15px, transparent 1.15px);
+     background-size:22px 22px}
+  .n .pane{padding:20px 22px}
+  .n .file{padding:13px 4px; border-bottom:1px solid var(--rule1); display:flex;
+           align-items:center; gap:13px}
+  .n .file:last-child{border-bottom:0}
+  .n .file .ttl{font-family:var(--book); font-size:16px}
+  .n .file .sub{color:var(--dim1); font-family:var(--mono); font-size:11px;
+                letter-spacing:.02em}
+  .n .glyph{width:30px; height:30px; flex:none; color:var(--v)}
+  /* полоса прогресса — та же чернильная линия, что и галочка */
+  .n .ink{height:2px; background:var(--rule1); border-radius:2px; margin-top:7px;
+          overflow:hidden}
+  .n .ink i{display:block; height:100%; background:var(--v)}
+  .n .box{width:24px; height:24px; flex:none; color:var(--v)}
+  .n .doc{font-family:var(--book); font-size:16.5px; line-height:1.66; padding:22px}
+  .n .doc h3{font-family:var(--book); font-weight:400; font-size:20px; margin:0 0 12px}
+  .n .doc .hide{background:var(--v); border-radius:4px; color:transparent}
+  .n .card{background:#fff; border:1.5px solid var(--v); border-radius:14px;
+           padding:16px 17px; box-shadow:3px 4px 0 rgba(109,59,245,.13)}
+  .n .card .name{font-family:var(--book); font-size:13.5px; color:var(--dim1);
+                 margin-bottom:9px}
+  .n .field{display:grid; grid-template-columns:auto 1fr; gap:7px 11px;
+            align-items:center; margin-top:12px}
+  .n .field label{font-family:var(--book); font-style:italic; color:var(--dim1);
+                  text-align:right; font-size:14px}
+  .n .field input{font:inherit; font-size:14px; font-family:var(--mono);
+                  padding:5px 9px; border:1px solid var(--rule1); border-radius:7px;
+                  background:var(--paper); color:inherit; width:100%}
+  .n .btn{margin-top:14px; font-family:var(--book); font-size:15px; padding:7px 18px;
+          border:0; border-radius:9px; background:var(--v); color:#fff; cursor:pointer}
+
+  /* ═══════════════════ 2. СЛОИ ═══════════════════
+     Всё — плитка с настоящей высотой. Отметка вдавливается. */
+  .l{--v:#7B3BFF; --v2:#A26BFF; --paper:#F4F1FB; --tile:#FFFFFF; --ink1:#1B1526;
+     --dim1:#756C88; --rule1:#EAE4F6;
+     background:var(--paper); color:var(--ink1)}
+  .l .pane{padding:16px}
+  .l .file{background:var(--tile); border-radius:15px; padding:13px 15px;
+           display:flex; align-items:center; gap:13px; margin-bottom:10px;
+           box-shadow:0 1px 2px rgba(28,18,48,.05), 0 6px 16px -6px rgba(28,18,48,.16);
+           transition:transform .16s ease, box-shadow .16s ease}
+  .l .file:last-child{margin-bottom:0}
+  .l .file:hover{transform:translateY(-2px);
+                 box-shadow:0 2px 4px rgba(28,18,48,.06), 0 14px 26px -8px rgba(28,18,48,.24)}
+  .l .file .ttl{font-weight:560; letter-spacing:-.005em}
+  .l .file .sub{color:var(--dim1)}
+  .l .glyph{width:38px; height:38px; flex:none; border-radius:12px;
+            display:grid; place-items:center; color:#fff;
+            background:linear-gradient(160deg,var(--v2),var(--v));
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.42),
+                       0 3px 8px -2px rgba(96,40,200,.5)}
+  .l .glyph svg{width:22px; height:22px}
+  .l .chip{width:26px; height:26px; flex:none; border-radius:9px; display:grid;
+           place-items:center; background:var(--tile);
+           box-shadow:inset 0 1px 0 rgba(255,255,255,.9),
+                      0 2px 5px -1px rgba(28,18,48,.18);
+           color:var(--v); transition:all .16s ease}
+  .l li.done .chip, .l li.half .chip{
+      background:linear-gradient(160deg,var(--v2),var(--v)); color:#fff;
+      box-shadow:inset 0 2px 5px rgba(50,10,120,.45), 0 0 0 1px rgba(96,40,200,.18)}
+  .l .doc{background:var(--tile); border-radius:16px; padding:22px; font-size:16px;
+          line-height:1.62; box-shadow:0 8px 24px -12px rgba(28,18,48,.3)}
+  .l .doc h3{font-weight:600; font-size:19px; margin:0 0 12px; letter-spacing:-.01em}
+  .l .doc .hide{background:linear-gradient(160deg,var(--v2),var(--v));
+                border-radius:6px; color:transparent}
+  .l .card{background:var(--tile); border-radius:17px; padding:17px 18px;
+           box-shadow:0 2px 5px rgba(28,18,48,.06), 0 18px 34px -14px rgba(28,18,48,.34)}
+  .l .card .name{font-size:12.5px; color:var(--dim1); margin-bottom:10px;
+                 letter-spacing:.02em}
+  .l .field{display:grid; grid-template-columns:auto 1fr; gap:8px 12px;
+            align-items:center; margin-top:13px}
+  .l .field label{color:var(--dim1); text-align:right; font-size:14px}
+  .l .field input{font:inherit; font-size:14px; padding:7px 11px; border:0;
+                  border-radius:10px; background:var(--paper); color:inherit; width:100%;
+                  box-shadow:inset 0 1px 3px rgba(28,18,48,.12)}
+  .l .btn{margin-top:15px; font:inherit; font-size:14.5px; font-weight:560;
+          padding:9px 20px; border:0; border-radius:12px; color:#fff; cursor:pointer;
+          background:linear-gradient(160deg,var(--v2),var(--v));
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 6px 14px -5px rgba(96,40,200,.7)}
+
+  /* ═══════════════════ 3. СТЕКЛО ═══════════════════
+     Фиолетовое поле светит сквозь оболочку. Лист чтения — непрозрачный. */
+  .g{--v:#7A46FF; --v2:#B48CFF; --ink1:#181328; --dim1:#6E6485; --tile:rgba(255,255,255,.62);
+     color:var(--ink1); position:relative;
+     background:
+       radial-gradient(760px 320px at 12% -10%, #C9AEFF 0%, transparent 62%),
+       radial-gradient(620px 300px at 96% 8%, #9E7BFF 0%, transparent 58%),
+       radial-gradient(560px 420px at 60% 108%, #DCCBFF 0%, transparent 60%),
+       #F3EEFF}
+  .g .pane{padding:18px}
+  .g .file{border-radius:15px; padding:12px 15px; display:flex; align-items:center;
+           gap:13px; margin-bottom:9px; background:var(--tile);
+           -webkit-backdrop-filter:blur(14px) saturate(1.5);
+           backdrop-filter:blur(14px) saturate(1.5);
+           border:1px solid rgba(255,255,255,.8);
+           box-shadow:0 8px 22px -14px rgba(52,20,120,.6)}
+  .g .file:last-child{margin-bottom:0}
+  .g .file.on{background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(255,255,255,.7));
+              border-color:#fff; box-shadow:0 0 0 1.5px rgba(122,70,255,.5),
+                                            0 12px 26px -14px rgba(52,20,120,.7)}
+  .g .file .ttl{font-weight:560}
+  .g .file .sub{color:var(--dim1)}
+  .g .glyph{width:36px; height:36px; flex:none; border-radius:12px; display:grid;
+            place-items:center; color:#fff;
+            background:linear-gradient(150deg,rgba(255,255,255,.55),rgba(255,255,255,0)),
+                       linear-gradient(160deg,var(--v2),var(--v));
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.75),
+                       0 4px 10px -3px rgba(80,30,190,.55)}
+  .g .glyph svg{width:21px; height:21px}
+  .g .chip{width:26px; height:26px; flex:none; border-radius:999px; display:grid;
+           place-items:center; color:var(--v);
+           background:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.9);
+           -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+           box-shadow:0 3px 9px -4px rgba(52,20,120,.55)}
+  .g li.done .chip, .g li.half .chip{
+      color:#fff; border-color:rgba(255,255,255,.75);
+      background:linear-gradient(150deg,rgba(255,255,255,.4),rgba(255,255,255,0)),
+                 linear-gradient(160deg,var(--v2),var(--v))}
+  /* читать сквозь стекло невозможно — сам лист остаётся бумагой */
+  .g .doc{background:#FFFDFF; border-radius:17px; padding:22px; font-size:16px;
+          line-height:1.62; border:1px solid rgba(255,255,255,.9);
+          box-shadow:0 20px 50px -26px rgba(52,20,120,.75)}
+  .g .doc h3{font-weight:600; font-size:19px; margin:0 0 12px}
+  .g .doc .hide{background:linear-gradient(160deg,var(--v2),var(--v));
+                border-radius:6px; color:transparent}
+  .g .card{border-radius:17px; padding:17px 18px; background:var(--tile);
+           -webkit-backdrop-filter:blur(18px) saturate(1.6);
+           backdrop-filter:blur(18px) saturate(1.6);
+           border:1px solid rgba(255,255,255,.85);
+           box-shadow:0 18px 40px -20px rgba(52,20,120,.8)}
+  .g .card .name{font-size:12.5px; color:var(--dim1); margin-bottom:10px}
+  .g .field{display:grid; grid-template-columns:auto 1fr; gap:8px 12px;
+            align-items:center; margin-top:13px}
+  .g .field label{color:var(--dim1); text-align:right; font-size:14px}
+  .g .field input{font:inherit; font-size:14px; padding:7px 11px; width:100%;
+                  border:1px solid rgba(255,255,255,.9); border-radius:10px;
+                  background:rgba(255,255,255,.6); color:inherit}
+  .g .btn{margin-top:15px; font:inherit; font-size:14.5px; font-weight:560;
+          padding:9px 20px; border:1px solid rgba(255,255,255,.7); border-radius:999px;
+          color:#fff; cursor:pointer;
+          background:linear-gradient(150deg,rgba(255,255,255,.45),rgba(255,255,255,0)),
+                     linear-gradient(160deg,var(--v2),var(--v));
+          box-shadow:0 8px 20px -8px rgba(80,30,190,.85)}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Три направления оформления</h1>
+  <p>Одни и те же шесть мест программы, показанные тремя способами. Смотреть надо не на
+     красоту по отдельности, а на то, какое из трёх выглядит одной вещью. Фиолетовый
+     везде яркий, тёмных нет.</p>
+  <div class="lead">
+    <span>значок</span><span>список файлов</span><span>отметки</span>
+    <span>страница чтения</span><span>карточка на доске</span><span>кнопка</span>
+  </div>
+
+  <div class="icons">
+    <figure><div id="ic1"></div><figcaption>1 · Тетрадь</figcaption></figure>
+    <figure><div id="ic2"></div><figcaption>2 · Слои</figcaption></figure>
+    <figure><div id="ic3"></div><figcaption>3 · Стекло</figcaption></figure>
+  </div>
+</header>
+
+<!-- ═══ 1 ═══ -->
+<section class="dir" id="d1">
+  <h2><b>Один</b>Тетрадь</h2>
+  <p class="thesis">Программа притворяется страницей в точку — той самой, на которой
+     математику и делают. Сетка идёт насквозь: она же на доске, она же под списком
+     файлов, она же на полях страницы. Объёма почти нет, вся выразительность — в
+     чернилах: галочка поставлена пером, с перелётом и неровностью.</p>
+  <p class="risk"><b>Риск, на который иду:</b> в интерфейсе стоит книжная антиква
+     C059 — школьная гарнитура, которой набраны задачники. Она роднит оболочку с
+     формулами, набранными Computer Modern, и убирает ощущение «страница учебника,
+     вставленная в окно калькулятора».</p>
+  <div class="swatches" id="sw1"></div>
+  <div class="grid" id="g1"></div>
+</section>
+
+<!-- ═══ 2 ═══ -->
+<section class="dir" id="d2">
+  <h2><b>Два</b>Слои</h2>
+  <p class="thesis">Прямой ответ на то, как сейчас делает Apple: всё — плитка, у
+     плитки есть высота, свет падает сверху. Значок — скруглённый квадрат с градиентом
+     и приподнятым знаком. Читается плотно и дорого.</p>
+  <p class="risk"><b>Что здесь главное:</b> отметка не меняет картинку, а
+     <b>вдавливается</b>. Непройденное лежит выпуклым, пройденное утоплено внутрь —
+     разницу видно боковым зрением, не вчитываясь.</p>
+  <div class="swatches" id="sw2"></div>
+  <div class="grid" id="g2"></div>
+</section>
+
+<!-- ═══ 3 ═══ -->
+<section class="dir" id="d3">
+  <h2><b>Три</b>Стекло</h2>
+  <p class="thesis">Фиолетовое поле живёт под всей программой и светит сквозь оболочку:
+     список, шапки и карточки — матовое стекло. Самое яркое из трёх и самое
+     сегодняшнее.</p>
+  <p class="risk"><b>Граница, которую держу:</b> сквозь стекло нельзя читать. Поэтому
+     лист с текстом остаётся непрозрачной бумагой, положенной поверх поля, — стеклянная
+     только оболочка вокруг.</p>
+  <div class="swatches" id="sw3"></div>
+  <div class="grid" id="g3"></div>
+</section>
+
+<footer>
+  <p>Скажи номер — и я соберу его целиком: значок во всех размерах, оба окна, доска,
+     карточки. Можно и вперемешку: например, <b>сетка от первого, отметки от второго</b>.</p>
+  <p>Оттенок тоже выбирается отдельно — в каждом направлении под заголовком стоит ряд
+     фиолетовых, ткни в тот, который нравится. Слева направо они идут от чернильного к
+     электрическому.</p>
+  <p>Файл лежит в <code>~/Projects/mathmark/docs/дизайн.html</code>, формулы в нём
+     рисует тот же KaTeX, что и в программе.</p>
+</footer>
+
+</div>
+
+<script src="../shared/reader/katex/katex.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ——— рукописная галочка: не ломаная, а залитая фигура переменной ширины,
+         чтобы читалась как поставленная пером, а не набранная шрифтом ——— */
+  var TICK_HAND = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+    '<path d="M3.6 12.2c.5-.5 1.2-.4 1.7.1 1.2 1.2 2.3 2.6 3.2 4 2.8-4.6 6.3-8.8 10.4-12.2' +
+    '.6-.5 1.5.2 1.1.9-3.9 4.2-7.2 9-9.8 14.1-.4.8-1.5.8-2 .1-1.2-1.9-2.6-3.6-4.2-5.2' +
+    '-.5-.5-.6-1.2-.4-1.8z"/></svg>';
+  var TICK_FLAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M5 13l4 4L19 7"/></svg>';
+  var HALF = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path fill="currentColor" d="M12 3a9 9 0 000 18z"/>' +
+    '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  var RING = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  var ROOT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M3 13.4l3.1 6.3L11 4.4h10"/></svg>';
+  var SHEET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg>';
+  var MARKSQ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8.5 12.4l2.4 2.4 4.6-5.2"/></svg>';
+
+  /* значок программы в трёх подачах */
+  function iconNotebook(s) {
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 108 108">' +
+      '<rect x="4" y="4" width="100" height="100" rx="26" fill="#FDFCFF" ' +
+      'stroke="#6D3BF5" stroke-width="3"/>' +
+      '<g fill="#D6CEEA">' + dots() + '</g>' +
+      '<g transform="translate(54 56) scale(2.55) translate(-12 -12)" ' +
+      'fill="none" stroke="#6D3BF5" stroke-width="1.9" stroke-linecap="round" ' +
+      'stroke-linejoin="round"><path d="M3 13.4l3.1 6.3L11 4.4h10"/></g></svg>';
+  }
+  function dots() {
+    var out = '';
+    for (var x = 16; x < 100; x += 12) {
+      for (var y = 16; y < 100; y += 12) out += '<circle cx="' + x + '" cy="' + y + '" r="1.3"/>';
+    }
+    return out;
+  }
+  function iconLayers(s) {
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 108 108">' +
+      '<defs>' +
+      '<linearGradient id="lg" x1="14" y1="8" x2="94" y2="102" gradientUnits="userSpaceOnUse">' +
+      '<stop offset="0" stop-color="#9457FF"/><stop offset="1" stop-color="#5B18DC"/></linearGradient>' +
+      '<linearGradient id="lsheen" x1="0" y1="0" x2="0" y2="108" gradientUnits="userSpaceOnUse">' +
+      '<stop offset="0" stop-color="#fff" stop-opacity=".42"/>' +
+      '<stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<filter id="lsh" x="-40%" y="-40%" width="180%" height="180%">' +
+      '<feDropShadow dx="0" dy="3.4" stdDeviation="3" flood-color="#2C0A70" flood-opacity=".42"/>' +
+      '</filter></defs>' +
+      '<rect x="4" y="4" width="100" height="100" rx="27" fill="url(#lg)"/>' +
+      '<rect x="4" y="4" width="100" height="100" rx="27" fill="url(#lsheen)"/>' +
+      '<g filter="url(#lsh)" transform="translate(54 57) scale(2.7) translate(-12 -12)" ' +
+      'fill="none" stroke="#fff" stroke-width="1.95" stroke-linecap="round" ' +
+      'stroke-linejoin="round"><path d="M3 13.4l3.1 6.3L11 4.4h10"/></g>' +
+      '<rect x="5.4" y="5.4" width="97.2" height="97.2" rx="25.8" fill="none" ' +
+      'stroke="#fff" stroke-opacity=".5" stroke-width="1.4"/></svg>';
+  }
+  function iconGlass(s) {
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 108 108">' +
+      '<defs>' +
+      '<linearGradient id="gg" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">' +
+      '<stop offset="0" stop-color="#C9AEFF"/><stop offset=".5" stop-color="#8B5BFF"/>' +
+      '<stop offset="1" stop-color="#6A22F0"/></linearGradient>' +
+      '<radialGradient id="gglow" cx="30" cy="22" r="62" gradientUnits="userSpaceOnUse">' +
+      '<stop offset="0" stop-color="#fff" stop-opacity=".75"/>' +
+      '<stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>' +
+      '<filter id="gsh" x="-40%" y="-40%" width="180%" height="180%">' +
+      '<feDropShadow dx="0" dy="2.6" stdDeviation="3.4" flood-color="#2C0A70" flood-opacity=".5"/>' +
+      '</filter></defs>' +
+      '<rect x="4" y="4" width="100" height="100" rx="27" fill="url(#gg)"/>' +
+      /* стеклянная пластина поверх поля: видно, что слоёв два и верхний прозрачный */
+      '<rect x="15" y="15" width="78" height="78" rx="22" fill="#fff" fill-opacity=".22" ' +
+      'stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>' +
+      '<path d="M8 74 L74 8 L100 8 L34 74 Z" fill="#fff" fill-opacity=".16"/>' +
+      '<rect x="14" y="15" width="80" height="46" rx="21" fill="url(#gglow)"/>' +
+      '<g filter="url(#gsh)" transform="translate(54 57) scale(2.7) translate(-12 -12)" ' +
+      'fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" ' +
+      'stroke-linejoin="round"><path d="M3 13.4l3.1 6.3L11 4.4h10"/></g>' +
+      '<rect x="5.2" y="5.2" width="97.6" height="97.6" rx="26" fill="none" ' +
+      'stroke="#fff" stroke-opacity=".68" stroke-width="1.6"/></svg>';
+  }
+
+  document.getElementById('ic1').innerHTML = iconNotebook(104);
+  document.getElementById('ic2').innerHTML = iconLayers(104);
+  document.getElementById('ic3').innerHTML = iconGlass(104);
+
+  /* оттенки: слева чернильный, справа электрический */
+  var SHADES = {
+    sw1: ['#5B2FD6', '#6D3BF5', '#7C3AED', '#8B4DFF', '#9A5BFF'],
+    sw2: ['#6A22F0', '#7B3BFF', '#8B5CF6', '#9B6BFF', '#AC7DFF'],
+    sw3: ['#6E2BFF', '#7A46FF', '#8B5BFF', '#9E7BFF', '#B48CFF'],
+  };
+  Object.keys(SHADES).forEach(function (id) {
+    var box = document.getElementById(id);
+    box.innerHTML = '<span class="sw-label">оттенок</span>' +
+      SHADES[id].map(function (c) {
+        return '<span class="sw" style="background:' + c + '" title="' + c + '"></span>';
+      }).join('');
+  });
+
+  /* ——— образцы ——— */
+  var FILES = [
+    { g: SHEET,  t: 'Матан — производные', s: '1 из 3 задач · 0 из 3 тем', p: 0.33 },
+    { g: MARKSQ, t: 'Hilbert &amp; Banach',    s: 'пройдено 2 из 7 тем',      p: 0.29 },
+    { g: SHEET,  t: 'Шпора — интегралы',   s: '5 разделов · вчера',        p: 0 },
+  ];
+
+  function filesHtml(kind) {
+    return FILES.map(function (f, i) {
+      var on = (kind === 'g' && i === 0) ? ' on' : '';
+      var bar = kind === 'n' && f.p
+        ? '<div class="ink"><i style="width:' + Math.round(f.p * 100) + '%"></i></div>' : '';
+      return '<div class="file' + on + '">' +
+        '<span class="glyph">' + f.g + '</span>' +
+        '<span class="grow"><span class="ttl">' + f.t + '</span>' +
+        '<div class="sub">' + f.s + '</div>' + bar + '</span></div>';
+    }).join('');
+  }
+
+  function marksHtml(kind) {
+    var tick = kind === 'n' ? TICK_HAND : TICK_FLAT;
+    var wrap = kind === 'n' ? 'box' : 'chip';
+    function li(cls, mark, txt) {
+      return '<li class="' + cls + '"><span class="' + wrap + '">' + mark + '</span>' +
+             '<span class="txt">' + txt + '</span></li>';
+    }
+    return '<ul class="marks">' +
+      li('task done', tick, 'Вывести производную по определению') +
+      li('task half', HALF, 'Разобрать эпсилон-дельта') +
+      li('task', RING, 'Доказать \\(\\dfrac{\\partial}{\\partial x}(x^{\\top}Ax)=2Ax\\)') +
+      li('topic done', tick, 'Таблица производных') +
+      li('topic', RING, 'Кратные интегралы') +
+      '</ul>';
+  }
+
+  function docHtml() {
+    return '<div class="doc"><h3>Производные</h3>' +
+      '<p>Производная — предел отношения приращений:</p>' +
+      '<p style="text-align:center">' +
+      '\\[f\'(x)=\\lim_{\\Delta x\\to 0}\\frac{f(x+\\Delta x)-f(x)}{\\Delta x}\\]</p>' +
+      '<p>Ответ можно спрятать: <span class="hide">\\(f\'(x)=\\tfrac32\\sqrt{x}\\)</span> — ' +
+      'открывается нажатием.</p></div>';
+  }
+
+  function cardHtml() {
+    return '<div class="card">' +
+      '<div class="name">Квадратное уравнение</div>' +
+      '<div style="text-align:center">\\[ax^2+bx+c=0\\]</div>' +
+      '<div class="field">' +
+      '<label>a</label><input value="1">' +
+      '<label>b</label><input value="−5">' +
+      '<label>c</label><input value="6">' +
+      '</div><button class="btn">Решить</button></div>';
+  }
+
+  function build(gridId, kind) {
+    document.getElementById(gridId).innerHTML =
+      '<div class="cell third"><p class="cap">Список файлов</p>' +
+        '<div class="stage ' + kind + '"><div class="pane">' + filesHtml(kind) + '</div></div></div>' +
+      '<div class="cell third"><p class="cap">Задачи и темы</p>' +
+        '<div class="stage ' + kind + '"><div class="pane">' + marksHtml(kind) + '</div></div></div>' +
+      '<div class="cell third"><p class="cap">Карточка на доске</p>' +
+        '<div class="stage ' + kind + '"><div class="pane">' + cardHtml() + '</div></div></div>' +
+      '<div class="cell twothirds"><p class="cap">Страница чтения</p>' +
+        '<div class="stage ' + kind + '"><div class="pane">' + docHtml() + '</div></div></div>' +
+      '<div class="cell third"><p class="cap">Значок, малые размеры</p>' +
+        '<div class="stage ' + kind + '"><div class="pane" style="display:flex;gap:18px;' +
+        'align-items:center;justify-content:center;min-height:150px">' +
+        icon(kind, 64) + icon(kind, 40) + icon(kind, 24) + '</div></div></div>';
+  }
+  function icon(kind, s) {
+    return kind === 'n' ? iconNotebook(s) : kind === 'l' ? iconLayers(s) : iconGlass(s);
+  }
+
+  build('g1', 'n');
+  build('g2', 'l');
+  build('g3', 'g');
+
+  if (window.renderMathInElement) {
+    window.renderMathInElement(document.body);
+  } else {
+    /* KaTeX без auto-render: рисуем сами по разделителям */
+    document.querySelectorAll('.doc, .marks, .card').forEach(function (root) {
+      root.innerHTML = root.innerHTML
+        .replace(/\\\[([\s\S]+?)\\\]/g, function (_, tex) {
+          try { return katex.renderToString(tex, { displayMode: true, throwOnError: false }); }
+          catch (e) { return tex; }
+        })
+        .replace(/\\\(([\s\S]+?)\\\)/g, function (_, tex) {
+          try { return katex.renderToString(tex, { displayMode: false, throwOnError: false }); }
+          catch (e) { return tex; }
+        });
+    });
+  }
+})();
+</script>
+</body>
+</html>
