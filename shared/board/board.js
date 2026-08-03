@@ -106,12 +106,61 @@
     ctx.save();
     ctx.translate(view.x, view.y);
     ctx.scale(view.z, view.z);
-    for (var i = 0; i < items.length; i++) drawItem(items[i], i === selected);
+    for (var i = 0; i < items.length; i++) {
+      drawItem(items[i], i === selected || chosen.indexOf(i) >= 0);
+    }
     if (draft) drawItem(draft, false);
     ctx.restore();
 
+    drawBand();
+    drawHandles();
     pctLabel.textContent = Math.round(view.z * 100) + '%';
     syncNotes();
+  }
+
+  function drawBand() {
+    if (!band) return;
+    var a = toScreen(band.x, band.y), b = toScreen(band.x + band.w, band.y + band.h);
+    ctx.save();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = css('--accent');
+    ctx.fillStyle = css('--accent');
+    ctx.globalAlpha = 0.10;
+    ctx.fillRect(a.x, a.y, b.x - a.x, b.y - a.y);
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+    ctx.restore();
+  }
+
+  /** Ручки рисуем в экранных координатах: они не должны расти с масштабом. */
+  function drawHandles() {
+    if (selected < 0 || tool !== 'select') return;
+    var it = items[selected];
+    if (!it || it.locked) return;
+    var hs = handles(it);
+    if (!hs.length) return;
+    ctx.save();
+    if (canSpin(it)) {
+      var b = bounds(it), top = toScreen(b.x + b.w / 2, b.y);
+      ctx.strokeStyle = css('--accent');
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(top.x, top.y);
+      ctx.lineTo(top.x, top.y - SPIN_UP);
+      ctx.stroke();
+    }
+    hs.forEach(function (h) {
+      ctx.beginPath();
+      if (h.kind === 'spin') ctx.arc(h.x, h.y, HANDLE / 2 + 1, 0, 6.2832);
+      else ctx.rect(h.x - HANDLE / 2, h.y - HANDLE / 2, HANDLE, HANDLE);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = css('--accent');
+      ctx.stroke();
+    });
+    ctx.restore();
   }
 
   function drawItem(it, isSelected) {
@@ -135,8 +184,22 @@
         ctx.stroke();
       }
     } else if (it.t === 'shape') {
-      shapePath(it);
-      ctx.stroke();
+      /* Поворот делаем через поворот полотна вокруг середины фигуры: так
+         линия остаётся ровной толщины, чего не даёт пересчёт точек. */
+      if (it.a) {
+        var bb = { x: Math.min(it.x, it.x + it.w2), y: Math.min(it.y, it.y + it.h2),
+                   w: Math.abs(it.w2), h: Math.abs(it.h2) };
+        ctx.save();
+        ctx.translate(bb.x + bb.w / 2, bb.y + bb.h / 2);
+        ctx.rotate(it.a);
+        ctx.translate(-(bb.x + bb.w / 2), -(bb.y + bb.h / 2));
+        shapePath(it);
+        ctx.stroke();
+        ctx.restore();
+      } else {
+        shapePath(it);
+        ctx.stroke();
+      }
     } else if (it.t === 'text') {
       ctx.fillStyle = it.color;
       ctx.font = it.size + 'px "Noto Serif", Georgia, serif';
@@ -155,6 +218,11 @@
       ctx.lineWidth = 1.5 / view.z;
       ctx.strokeRect(b.x - 6, b.y - 6, b.w + 12, b.h + 12);
       ctx.setLineDash([]);
+      if (it.locked) {
+        ctx.fillStyle = css('--accent');
+        ctx.font = (13 / view.z) + 'px system-ui, sans-serif';
+        ctx.fillText('\u{1F512}', b.x - 4, b.y - 10);
+      }
     }
   }
 
@@ -223,10 +291,97 @@
     return null;
   }
 
+
+  /* ——————————— ручки: размер и поворот ———————————
+
+     Фигуру раньше можно было только двигать — половина работы с ней
+     отсутствовала. Теперь у выделенного предмета четыре угловые ручки тянут
+     размер, а отдельная ручка сверху вращает. Надписи не вращаем: ты сказал,
+     что это не нужно, и это правда — читать косой текст мучение. */
+
+  var HANDLE = 9;             // сторона ручки на экране, в пикселях
+  var SPIN_UP = 26;           // насколько ручка поворота вынесена вверх
+
+  function canSize(it) {
+    return it && (it.t === 'shape' || it.t === 'note' || it.t === 'card') && !it.locked;
+  }
+  function canSpin(it) { return it && it.t === 'shape' && !it.locked; }
+
+  /** Ручки в экранных координатах — по ним и проверяем попадание. */
+  function handles(it) {
+    var b = bounds(it);
+    var p1 = toScreen(b.x, b.y), p2 = toScreen(b.x + b.w, b.y + b.h);
+    var out = [];
+    if (canSize(it)) {
+      out.push({ kind: 'size', corner: 'nw', x: p1.x, y: p1.y });
+      out.push({ kind: 'size', corner: 'ne', x: p2.x, y: p1.y });
+      out.push({ kind: 'size', corner: 'sw', x: p1.x, y: p2.y });
+      out.push({ kind: 'size', corner: 'se', x: p2.x, y: p2.y });
+    }
+    if (canSpin(it)) {
+      out.push({ kind: 'spin', corner: '', x: (p1.x + p2.x) / 2, y: p1.y - SPIN_UP });
+    }
+    return out;
+  }
+
+  function toScreen(wx, wy) {
+    return { x: wx * view.z + view.x, y: wy * view.z + view.y };
+  }
+
+  function handleAt(p) {
+    if (selected < 0) return null;
+    var hs = handles(items[selected]);
+    for (var i = 0; i < hs.length; i++) {
+      if (Math.abs(p.x - hs[i].x) <= HANDLE && Math.abs(p.y - hs[i].y) <= HANDLE) return hs[i];
+    }
+    return null;
+  }
+
+  function resizeBy(d, wpt, keepRatio) {
+    var it = d.item, s = d.snap;
+    if (it.t === 'note' || it.t === 'card') {
+      // у бумажки тянется только ширина: высоту считает её содержимое
+      var right = d.corner === 'ne' || d.corner === 'se';
+      it.w = Math.max(160, Math.round(right ? (s.w || 360) + (wpt.x - d.sx)
+                                            : (s.w || 360) - (wpt.x - d.sx)));
+      if (!right) it.x = Math.round(s.x + (wpt.x - d.sx));
+      notesSig = '';
+      return;
+    }
+    var x0 = s.x, y0 = s.y, w0 = s.w2, h0 = s.h2;
+    var nw = w0, nh = h0, nx = x0, ny = y0;
+    if (d.corner === 'se') { nw = wpt.x - x0; nh = wpt.y - y0; }
+    else if (d.corner === 'ne') { nw = wpt.x - x0; nh = (y0 + h0) - wpt.y; ny = wpt.y; }
+    else if (d.corner === 'sw') { nw = (x0 + w0) - wpt.x; nh = wpt.y - y0; nx = wpt.x; }
+    else { nw = (x0 + w0) - wpt.x; nh = (y0 + h0) - wpt.y; nx = wpt.x; ny = wpt.y; }
+    if (keepRatio && w0 && h0) {
+      var k = Math.max(Math.abs(nw / w0), Math.abs(nh / h0));
+      nw = w0 * k * (nw < 0 ? -1 : 1) / (w0 < 0 ? -1 : 1);
+      nh = h0 * k * (nh < 0 ? -1 : 1) / (h0 < 0 ? -1 : 1);
+    }
+    it.x = round(nx); it.y = round(ny);
+    it.w2 = round(nw); it.h2 = round(nh);
+  }
+
+  /** Что попало в рамку выделения. */
+  function insideBand(b) {
+    var out = [];
+    for (var i = 0; i < items.length; i++) {
+      var r = bounds(items[i]);
+      if (r.x >= b.x && r.y >= b.y && r.x + r.w <= b.x + b.w && r.y + r.h <= b.y + b.h) {
+        out.push(i);
+      }
+    }
+    return out;
+  }
+
   /* ——————————— ввод ——————————— */
 
   var draft = null;
   var drag = null;
+  var spaceDown = false;      // пробел зажат — лист двигается
+  var band = null;            // рамка выделения
+  var chosen = [];            // выделено рамкой, несколько сразу
 
   function pos(e) {
     var r = cv.getBoundingClientRect();
@@ -238,15 +393,42 @@
     var p = pos(e);
     var wpt = toWorld(p.x, p.y);
 
-    if (tool === 'hand' || e.button === 1 || e.shiftKey) {
+    /* Панорамирование — пробел и средняя кнопка, как в Photoshop и Figma.
+       Shift освободился под удержание пропорций: раньше он двигал лист, и
+       ровный квадрат нарисовать было нечем. */
+    if (tool === 'hand' || e.button === 1 || spaceDown) {
       drag = { kind: 'pan', sx: p.x, sy: p.y, ox: view.x, oy: view.y };
       document.body.classList.add('panning');
       return;
     }
 
     if (tool === 'select') {
-      selected = hit(wpt);
-      if (selected >= 0) drag = { kind: 'move', sx: wpt.x, sy: wpt.y, item: items[selected], snap: clone(items[selected]) };
+      var handle = handleAt(p);
+      if (handle) {
+        drag = { kind: handle.kind, corner: handle.corner, sx: wpt.x, sy: wpt.y,
+                 item: items[selected], snap: clone(items[selected]) };
+        return;
+      }
+      var found = hit(wpt);
+      if (found >= 0) {
+        /* Карточка или бумажка, которой коснулись, выходит вперёд — они
+           ведут себя как окошки. Нарисованное остаётся, где нарисовано:
+           обвёл формулу кружком, и кружок не должен нырять под карточку. */
+        if (items[found].t === 'note' || items[found].t === 'card') {
+          var moved = items.splice(found, 1)[0];
+          items.push(moved);
+          found = items.length - 1;
+          notesSig = '';
+        }
+        selected = found;
+        if (!items[selected].locked) {
+          drag = { kind: 'move', sx: wpt.x, sy: wpt.y,
+                   item: items[selected], snap: clone(items[selected]) };
+        }
+      } else {
+        selected = -1;
+        drag = { kind: 'band', sx: wpt.x, sy: wpt.y, x2: wpt.x, y2: wpt.y };
+      }
       draw();
       return;
     }
@@ -294,11 +476,38 @@
         draw();
       }
     } else if (drag.kind === 'shape') {
-      draft.w2 = wpt.x - draft.x;
-      draft.h2 = wpt.y - draft.y;
+      var w2 = wpt.x - draft.x, h2 = wpt.y - draft.y;
+      if (e.shiftKey) {          // ровный квадрат, круг, равнобедренный
+        var m = Math.max(Math.abs(w2), Math.abs(h2));
+        w2 = m * (w2 < 0 ? -1 : 1);
+        h2 = m * (h2 < 0 ? -1 : 1);
+      }
+      draft.w2 = w2; draft.h2 = h2;
       draw();
+    } else if (drag.kind === 'band') {
+      drag.x2 = wpt.x; drag.y2 = wpt.y;
+      band = { x: Math.min(drag.sx, wpt.x), y: Math.min(drag.sy, wpt.y),
+               w: Math.abs(wpt.x - drag.sx), h: Math.abs(wpt.y - drag.sy) };
+      chosen = insideBand(band);
+      draw();
+    } else if (drag.kind === 'size') {
+      resizeBy(drag, wpt, e.shiftKey);
+      markDirty(); draw();
+    } else if (drag.kind === 'spin') {
+      var b0 = bounds(drag.snap);
+      var cx = b0.x + b0.w / 2, cy = b0.y + b0.h / 2;
+      var ang = Math.atan2(wpt.y - cy, wpt.x - cx);
+      if (e.shiftKey) ang = Math.round(ang / (Math.PI / 12)) * (Math.PI / 12);
+      drag.item.a = +ang.toFixed(4);
+      markDirty(); draw();
     } else if (drag.kind === 'move') {
       var dx = wpt.x - drag.sx, dy = wpt.y - drag.sy;
+      if (e.altKey) {            // прижать к точкам листа — они для этого и есть
+        var st = dotStep();
+        var b1 = bounds(drag.snap);
+        dx = Math.round((b1.x + dx) / st) * st - b1.x;
+        dy = Math.round((b1.y + dy) / st) * st - b1.y;
+      }
       var it = drag.item, s = drag.snap;
       if (it.t === 'stroke') {
         for (var i = 0; i < it.pts.length; i++) {
@@ -315,6 +524,7 @@
   });
 
   function stop() {
+    if (band) { band = null; }
     // ластиком провели, но ничего не задели — лишний шаг истории не нужен
     if (drag && drag.kind === 'erase' && !drag.touched && history.length) history.pop();
     if (draft) {
@@ -375,8 +585,19 @@
 
   /* Попадание: сначала по рамке, потом по самой линии — иначе выделять
      тонкие штрихи было бы мучением. */
-  function hit(p) {
+  function unspin(it, p) {
+    if (!it.a) return p;
+    var b = { x: Math.min(it.x, it.x + it.w2), y: Math.min(it.y, it.y + it.h2),
+              w: Math.abs(it.w2), h: Math.abs(it.h2) };
+    var cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    var c = Math.cos(-it.a), s2 = Math.sin(-it.a);
+    var dx = p.x - cx, dy = p.y - cy;
+    return { x: cx + dx * c - dy * s2, y: cy + dx * s2 + dy * c };
+  }
+
+  function hit(p0) {
     for (var i = items.length - 1; i >= 0; i--) {
+      var p = items[i].t === 'shape' ? unspin(items[i], p0) : p0;
       var b = bounds(items[i]);
       var pad = Math.max(8, items[i].w);
       if (p.x < b.x - pad || p.y < b.y - pad || p.x > b.x + b.w + pad || p.y > b.y + b.h + pad) continue;
@@ -557,8 +778,33 @@
 
   var buffer = null;      // что скопировано
 
+  document.addEventListener('keyup', function (e) {
+    if (e.code === 'Space') { spaceDown = false; document.body.classList.remove('panning'); }
+  });
+
   document.addEventListener('keydown', function (e) {
     if (typing.classList.contains('on')) return;   // пишем текст — клавиши его
+
+    if (e.code === 'Space' && !e.repeat) {
+      spaceDown = true;
+      document.body.classList.add('panning');
+      e.preventDefault();
+      return;
+    }
+
+    /* Замок: разложил основу — поставил замок, и она больше не сдвинется,
+       пока рисуешь рядом. */
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+      e.preventDefault();
+      var idx = chosen.length ? chosen : (selected >= 0 ? [selected] : []);
+      if (idx.length) {
+        push();
+        var on = !items[idx[0]].locked;
+        idx.forEach(function (i) { items[i].locked = on; });
+        notesSig = ''; markDirty(); draw();
+      }
+      return;
+    }
 
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
       e.preventDefault();
@@ -608,7 +854,14 @@
     if ((e.ctrlKey || e.metaKey) && (e.key === '-' || e.key === '_')) { e.preventDefault(); zoomAt(cv.clientWidth / 2, cv.clientHeight / 2, 0.8); return; }
     if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) { e.preventDefault(); zoomAt(cv.clientWidth / 2, cv.clientHeight / 2, 1.25); return; }
     if (e.key === 'Delete' || e.key === 'Backspace') {
-      if (selected >= 0) { push(); items.splice(selected, 1); selected = -1; markDirty(); draw(); }
+      var many = chosen.filter(function (i) { return !items[i].locked; });
+      if (many.length) {
+        push();
+        many.sort(function (a, b) { return b - a; }).forEach(function (i) { items.splice(i, 1); });
+        chosen = []; selected = -1; notesSig = ''; markDirty(); draw();
+      } else if (selected >= 0 && !items[selected].locked) {
+        push(); items.splice(selected, 1); selected = -1; notesSig = ''; markDirty(); draw();
+      }
     }
     var keys = { s: 'select', h: 'hand', p: 'pen', m: 'marker', e: 'eraser', g: 'text',
                  l: 'line', a: 'arrow', r: 'rect', o: 'ellipse', t: 'triangle' };
@@ -1067,6 +1320,69 @@
     markDirty();
     draw();
     renderNotes();
+  };
+
+  /**
+   * Доска картинкой. Разобрал задачу — приложил разбор в конспект или
+   * распечатал. Рисуем в отдельное полотно по настоящим границам, а не
+   * снимаем экран: иначе в картинку попадут панели и обрежется всё, что
+   * не влезло в окно.
+   */
+  B.png = function () {
+    if (!items.length) return '';
+    var b = items.map(bounds);
+    var pad = 40;
+    var x0 = Math.min.apply(null, b.map(function (r) { return r.x; })) - pad;
+    var y0 = Math.min.apply(null, b.map(function (r) { return r.y; })) - pad;
+    var x1 = Math.max.apply(null, b.map(function (r) { return r.x + r.w; })) + pad;
+    var y1 = Math.max.apply(null, b.map(function (r) { return r.y + r.h; })) + pad;
+
+    var out = document.createElement('canvas');
+    var scale = 2;                       // вдвое крупнее — чтобы не мылило
+    out.width = Math.max(1, Math.round((x1 - x0) * scale));
+    out.height = Math.max(1, Math.round((y1 - y0) * scale));
+    var g = out.getContext('2d');
+    g.fillStyle = css('--paper');
+    g.fillRect(0, 0, out.width, out.height);
+
+    var keepCtx = ctx, keepView = view, keepSel = selected;
+    ctx = g; view = { x: -x0 * scale, y: -y0 * scale, z: scale }; selected = -1;
+    g.save();
+    g.translate(view.x, view.y);
+    g.scale(scale, scale);
+    for (var i = 0; i < items.length; i++) drawItem(items[i], false);
+    g.restore();
+    ctx = keepCtx; view = keepView; selected = keepSel;
+    draw();
+    return out.toDataURL('image/png');
+  };
+
+  /** Поиск по доске: подсвечиваем то, где встретилось слово. */
+  B.find = function (needle) {
+    needle = (needle || '').trim().toLowerCase();
+    chosen = [];
+    if (needle) {
+      for (var i = 0; i < items.length; i++) {
+        var hay = (items[i].text || '') + ' ' + (items[i].md || '') + ' ' +
+                  (items[i].card || '') + ' ' +
+                  JSON.stringify(items[i].vals || {});
+        if (hay.toLowerCase().indexOf(needle) >= 0) chosen.push(i);
+      }
+      if (chosen.length) {
+        var b = chosen.map(function (i) { return bounds(items[i]); });
+        var x0 = Math.min.apply(null, b.map(function (r) { return r.x; }));
+        var y0 = Math.min.apply(null, b.map(function (r) { return r.y; }));
+        var x1 = Math.max.apply(null, b.map(function (r) { return r.x + r.w; }));
+        var y1 = Math.max.apply(null, b.map(function (r) { return r.y + r.h; }));
+        view.z = Math.min(2, Math.max(0.2, Math.min(
+          (cv.clientWidth - 160) / Math.max(1, x1 - x0),
+          (cv.clientHeight - 160) / Math.max(1, y1 - y0))));
+        view.x = cv.clientWidth / 2 - (x0 + x1) / 2 * view.z;
+        view.y = cv.clientHeight / 2 - (y0 + y1) / 2 * view.z;
+      }
+    }
+    draw();
+    return String(chosen.length);
   };
 
   /** Доска в текст: обычный JSON, который можно прочитать и поправить руками. */

@@ -90,6 +90,7 @@ class BoardWindow(Adw.ApplicationWindow):
         menu.append(t("board.pick"), "win.board-pick")
         menu.append(t("board.new"), "win.board-new")
         menu.append(t("board.clear"), "win.board-clear")
+        menu.append(t("board.png"), "win.board-png")
         head.pack_end(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu))
 
         write = Gtk.Button(icon_name="accessories-dictionary-symbolic",
@@ -182,6 +183,60 @@ class BoardWindow(Adw.ApplicationWindow):
             self._card_solve(payload)
         elif name == "onCardForm":
             self._card_form(payload)
+
+    # ——— поиск и картинка ———
+
+    def find(self) -> None:
+        """Через месяц на доске тридцать бумажек, и глазами уже не ищется."""
+        dlg = Adw.AlertDialog(heading=t("board.find"))
+        entry = Gtk.Entry(placeholder_text=t("board.find"))
+        dlg.set_extra_child(entry)
+        dlg.add_response("cancel", t("common.cancel"))
+        dlg.add_response("ok", t("board.find"))
+        dlg.set_default_response("ok")
+
+        def done(_d, answer):
+            if answer != "ok":
+                return
+            needle = entry.get_text().strip()
+            if not needle:
+                return
+
+            def got(web, res, *_):
+                try:
+                    n = int(web.evaluate_javascript_finish(res).to_string() or 0)
+                except (GLib.Error, ValueError, AttributeError):
+                    return
+                self.toasts.add_toast(Adw.Toast(
+                    title=t("board.found", n) if n else t("board.nothing")))
+
+            self.web.evaluate_javascript(
+                f"Board.find({json.dumps(needle)})", -1, None, None, None, got, None)
+
+        dlg.connect("response", done)
+        dlg.present(self)
+
+    def save_png(self) -> None:
+        """Картинка кладётся рядом с доской — там же, где и всё остальное."""
+        def got(web, res, *_):
+            try:
+                data = web.evaluate_javascript_finish(res).to_string() or ""
+            except GLib.Error:
+                return
+            if not data.startswith("data:image/png;base64,"):
+                self.toasts.add_toast(Adw.Toast(title=t("board.empty2")))
+                return
+            import base64
+
+            name = (self.path.stem if self.path else t("board.title")) + ".png"
+            out = (self.path.parent if self.path else self.folder) / name
+            try:
+                out.write_bytes(base64.b64decode(data.split(",", 1)[1]))
+                self.toasts.add_toast(Adw.Toast(title=t("board.pngSaved", name), timeout=6))
+            except (OSError, ValueError) as e:
+                self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", str(e))))
+
+        self.web.evaluate_javascript("Board.png()", -1, None, None, None, got, None)
 
     # ——— карточки-скрипты ———
 

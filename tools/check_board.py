@@ -125,15 +125,39 @@ class Check:
                  lambda _r: self._bounds())
 
     def _bounds(self) -> None:
-        # границы считаются внутри страницы; наружу отдаём через «вписать в окно»
+        """
+        Границы обязаны быть числами. На NaN ломалось «вписать всё в окно»,
+        едва на доске появлялась карточка, и заметить это было нечем.
+        """
         code = """
         (function () {
-          var before = JSON.stringify(Board.dump()).length;
-          Board.fit ? Board.fit() : 0;
-          return String(before);
+          Board.find('');            // сбросить подсветку
+          var png = Board.png();
+          return JSON.stringify({
+            png: png.slice(0, 22),
+            bytes: png.length,
+            find_card: Board.find('квадрат'),
+            find_none: Board.find('такого_слова_нет_12345')
+          });
         })()
         """
-        self._js(code, lambda _r: self._stale())
+        def then(out: str) -> None:
+            try:
+                d = json.loads(out)
+            except (ValueError, TypeError):
+                self.problems.append(f"страница не ответила про картинку: {out[:120]}")
+                self._stale()
+                return
+            if d.get("png") != "data:image/png;base64,":
+                self.problems.append("«сохранить картинкой» вернуло не картинку — "
+                                     "верный признак NaN в границах")
+            elif d.get("bytes", 0) < 5000:
+                self.problems.append(f"картинка подозрительно мала: {d.get('bytes')} байт")
+            if d.get("find_none") != "0":
+                self.problems.append("поиск нашёл несуществующее слово")
+            self._stale()
+
+        self._js(code, then)
 
     def _stale(self) -> None:
         """Меняем числа в карточке — решение обязано пометиться устаревшим."""
