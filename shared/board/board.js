@@ -107,7 +107,8 @@
     ctx.translate(view.x, view.y);
     ctx.scale(view.z, view.z);
     for (var i = 0; i < items.length; i++) {
-      drawItem(items[i], i === selected || chosen.indexOf(i) >= 0);
+      drawItem(items[i], i === selected || chosen.indexOf(i) >= 0,
+               found.indexOf(i) >= 0);
     }
     if (draft) drawItem(draft, false);
     ctx.restore();
@@ -141,15 +142,15 @@
     var hs = handles(it);
     if (!hs.length) return;
     ctx.save();
-    if (canSpin(it)) {
-      var b = bounds(it), top = toScreen(b.x + b.w / 2, b.y);
+    hs.forEach(function (h) {
+      if (h.kind !== 'spin' || !h.from) return;
       ctx.strokeStyle = css('--accent');
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(top.x, top.y);
-      ctx.lineTo(top.x, top.y - SPIN_UP);
+      ctx.moveTo(h.from.x, h.from.y);
+      ctx.lineTo(h.x, h.y);
       ctx.stroke();
-    }
+    });
     hs.forEach(function (h) {
       ctx.beginPath();
       if (h.kind === 'spin') ctx.arc(h.x, h.y, HANDLE / 2 + 1, 0, 6.2832);
@@ -163,7 +164,7 @@
     ctx.restore();
   }
 
-  function drawItem(it, isSelected) {
+  function drawItem(it, isSelected, isFound) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.strokeStyle = it.color;
@@ -211,13 +212,31 @@
     }
     ctx.globalAlpha = 1;
 
+    /* Найденное поиском только подсвечено и ничем не выделено: иначе Delete
+       после поиска стирал бы все находки разом. */
+    if (isFound && !isSelected) {
+      var fb = bounds(it);
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = css('--accent');
+      ctx.fillRect(fb.x - 8, fb.y - 8, fb.w + 16, fb.h + 16);
+      ctx.restore();
+    }
+
     if (isSelected) {
       var b = bounds(it);
+      ctx.save();
+      if (it.a) {
+        ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
+        ctx.rotate(it.a);
+        ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+      }
       ctx.setLineDash([5 / view.z, 4 / view.z]);
       ctx.strokeStyle = css('--accent');
       ctx.lineWidth = 1.5 / view.z;
       ctx.strokeRect(b.x - 6, b.y - 6, b.w + 12, b.h + 12);
       ctx.setLineDash([]);
+      ctx.restore();
       if (it.locked) {
         ctx.fillStyle = css('--accent');
         ctx.font = (13 / view.z) + 'px system-ui, sans-serif';
@@ -271,9 +290,14 @@
        ломалось на любой доске, где есть хоть одна карточка. Высоту слой
        считает сам, поэтому спрашиваем её у разметки. */
     if (it.t === 'note' || it.t === 'card') {
-      var el = noteNode(it);
-      var h = el ? el.offsetHeight : 200;
-      return { x: it.x, y: it.y, w: it.w || 360, h: h };
+      /* Высоту считает разметка, но лазить в неё на каждое движение мыши
+         дорого: hit() зовёт bounds() для каждого предмета. Поэтому меряем
+         раз на перерисовку слоя и держим при предмете. */
+      if (it._h === undefined) {
+        var el = noteNode(it);
+        it._h = el ? el.offsetHeight : 200;
+      }
+      return { x: it.x, y: it.y, w: it.w || 360, h: it._h };
     }
     return {
       x: Math.min(it.x, it.x + it.w2), y: Math.min(it.y, it.y + it.h2),
@@ -308,20 +332,38 @@
   function canSpin(it) { return it && it.t === 'shape' && !it.locked; }
 
   /** Ручки в экранных координатах — по ним и проверяем попадание. */
+  /** Точка фигуры с учётом её поворота — вокруг собственной середины. */
+  function spun(it, x, y) {
+    if (!it.a) return toScreen(x, y);
+    var b = bounds(it);
+    var cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    var c = Math.cos(it.a), sn = Math.sin(it.a);
+    var dx = x - cx, dy = y - cy;
+    return toScreen(cx + dx * c - dy * sn, cy + dx * sn + dy * c);
+  }
+
   function handles(it) {
     var b = bounds(it);
-    var p1 = toScreen(b.x, b.y), p2 = toScreen(b.x + b.w, b.y + b.h);
     var out = [];
     if (canSize(it)) {
-      out.push({ kind: 'size', corner: 'nw', x: p1.x, y: p1.y });
-      out.push({ kind: 'size', corner: 'ne', x: p2.x, y: p1.y });
-      out.push({ kind: 'size', corner: 'sw', x: p1.x, y: p2.y });
-      out.push({ kind: 'size', corner: 'se', x: p2.x, y: p2.y });
+      /* Углы берём повёрнутыми: иначе фигуру крутили, а ручки оставались на
+         месте, и тянуть приходилось вслепую. */
+      out.push({ kind: 'size', corner: 'nw', p: spun(it, b.x, b.y) });
+      out.push({ kind: 'size', corner: 'ne', p: spun(it, b.x + b.w, b.y) });
+      out.push({ kind: 'size', corner: 'sw', p: spun(it, b.x, b.y + b.h) });
+      out.push({ kind: 'size', corner: 'se', p: spun(it, b.x + b.w, b.y + b.h) });
     }
     if (canSpin(it)) {
-      out.push({ kind: 'spin', corner: '', x: (p1.x + p2.x) / 2, y: p1.y - SPIN_UP });
+      var top = spun(it, b.x + b.w / 2, b.y);
+      var mid = spun(it, b.x + b.w / 2, b.y + b.h / 2);
+      var len = Math.hypot(top.x - mid.x, top.y - mid.y) || 1;
+      out.push({ kind: 'spin', corner: '',
+                 p: { x: top.x + (top.x - mid.x) / len * SPIN_UP,
+                      y: top.y + (top.y - mid.y) / len * SPIN_UP },
+                 from: top });
     }
-    return out;
+    return out.map(function (h) { return { kind: h.kind, corner: h.corner,
+                                           x: h.p.x, y: h.p.y, from: h.from }; });
   }
 
   function toScreen(wx, wy) {
@@ -345,7 +387,14 @@
       it.w = Math.max(160, Math.round(right ? (s.w || 360) + (wpt.x - d.sx)
                                             : (s.w || 360) - (wpt.x - d.sx)));
       if (!right) it.x = Math.round(s.x + (wpt.x - d.sx));
-      notesSig = '';
+      /* Разметку не пересобираем на каждый пиксель — иначе тянется рывками.
+         Двигаем живой узел, а собрать заново успеем при отпускании. */
+      var live = noteNode(it);
+      if (live) {
+        live.style.width = it.w + 'px';
+        live.style.left = it.x + 'px';
+      }
+      delete it._h;
       return;
     }
     var x0 = s.x, y0 = s.y, w0 = s.w2, h0 = s.h2;
@@ -381,7 +430,11 @@
   var drag = null;
   var spaceDown = false;      // пробел зажат — лист двигается
   var band = null;            // рамка выделения
-  var chosen = [];            // выделено рамкой, несколько сразу
+  var chosen = [];            // выделено рамкой — над этим работают
+  var found = [];             // найдено поиском — только подсвечено
+
+  /* Разводить их обязательно: пока это был один список, «найти» и следом
+     Delete стирало все находки разом. */
 
   function pos(e) {
     var r = cv.getBoundingClientRect();
@@ -409,24 +462,34 @@
                  item: items[selected], snap: clone(items[selected]) };
         return;
       }
-      var found = hit(wpt);
-      if (found >= 0) {
+      var hitIdx = hit(wpt);
+      if (hitIdx >= 0) {
         /* Карточка или бумажка, которой коснулись, выходит вперёд — они
            ведут себя как окошки. Нарисованное остаётся, где нарисовано:
            обвёл формулу кружком, и кружок не должен нырять под карточку. */
-        if (items[found].t === 'note' || items[found].t === 'card') {
-          var moved = items.splice(found, 1)[0];
+        if (items[hitIdx].t === 'note' || items[hitIdx].t === 'card') {
+          /* Перестановка сдвигает номера, а в chosen лежат именно номера —
+             поэтому выделение рамкой после подъёма сбрасываем, а не портим.
+             И порядок предметов — часть доски: он идёт в историю и в файл. */
+          push();
+          var moved = items.splice(hitIdx, 1)[0];
           items.push(moved);
-          found = items.length - 1;
+          hitIdx = items.length - 1;
+          chosen = [];
           notesSig = '';
+          markDirty();
         }
-        selected = found;
+        selected = hitIdx;
         if (!items[selected].locked) {
           drag = { kind: 'move', sx: wpt.x, sy: wpt.y,
                    item: items[selected], snap: clone(items[selected]) };
         }
       } else {
+        // щелчок по пустому — сброс. Раньше «выделенное рамкой» переживало
+        // щелчок без движения мыши и оставалось под ударом Delete.
         selected = -1;
+        chosen = [];
+        found = [];
         drag = { kind: 'band', sx: wpt.x, sy: wpt.y, x2: wpt.x, y2: wpt.y };
       }
       draw();
@@ -525,6 +588,10 @@
 
   function stop() {
     if (band) { band = null; }
+    if (drag && (drag.kind === 'size' || drag.kind === 'move') &&
+        drag.item && (drag.item.t === 'note' || drag.item.t === 'card')) {
+      notesSig = '';                 // теперь можно и пересобрать
+    }
     // ластиком провели, но ничего не задели — лишний шаг истории не нужен
     if (drag && drag.kind === 'erase' && !drag.touched && history.length) history.pop();
     if (draft) {
@@ -558,12 +625,18 @@
   cv.addEventListener('pointercancel', stop);
   window.addEventListener('pointerup', stop);
   window.addEventListener('pointercancel', stop);
-  window.addEventListener('blur', stop);
+  window.addEventListener('blur', function () {
+    // ушли в другое окно с зажатым пробелом — keyup сюда уже не придёт
+    stop();
+    spaceDown = false;
+    document.body.classList.remove('panning');
+  });
 
   /* Колесо — тоже на окне. На холсте оно умирало, стоило курсору оказаться
      над карточкой: событие уходило к ней, а холст его не видел. */
   window.addEventListener('wheel', function (e) {
     if (typing.classList.contains('on')) return;
+    if (document.activeElement && document.activeElement.isContentEditable) return;
     // внутри бумажки колесо листает её саму, если ей есть куда листать
     var inside = e.target.closest && e.target.closest('.note .body, .note .form');
     if (inside && inside.scrollHeight > inside.clientHeight + 2) return;
@@ -778,12 +851,27 @@
 
   var buffer = null;      // что скопировано
 
+  /**
+   * Набирает ли человек текст прямо сейчас.
+   *
+   * Проверять одно только поле надписи было мало: бумажка правится через
+   * contentEditable, и при её правке пробел уходил в панорамирование, буквы
+   * переключали инструмент, а Delete удалял предмет с доски.
+   */
+  function isTyping() {
+    if (typing.classList.contains('on')) return true;
+    var el = document.activeElement;
+    if (!el) return false;
+    var tag = (el.tagName || '').toLowerCase();
+    return el.isContentEditable || tag === 'input' || tag === 'textarea';
+  }
+
   document.addEventListener('keyup', function (e) {
     if (e.code === 'Space') { spaceDown = false; document.body.classList.remove('panning'); }
   });
 
   document.addEventListener('keydown', function (e) {
-    if (typing.classList.contains('on')) return;   // пишем текст — клавиши его
+    if (isTyping()) return;   // набирают текст — клавиши его, не доски
 
     if (e.code === 'Space' && !e.repeat) {
       spaceDown = true;
@@ -949,6 +1037,7 @@
   function renderNotes() {
     markStale();
     notesLayer.innerHTML = '';
+    for (var q = 0; q < items.length; q++) delete items[q]._h;   // мерить заново
     for (var i = 0; i < items.length; i++) {
       var t = items[i].t;
       if (t === 'note') notesLayer.appendChild(noteEl(items[i], i));
@@ -1323,53 +1412,39 @@
   };
 
   /**
-   * Доска картинкой. Разобрал задачу — приложил разбор в конспект или
-   * распечатал. Рисуем в отдельное полотно по настоящим границам, а не
-   * снимаем экран: иначе в картинку попадут панели и обрежется всё, что
-   * не влезло в окно.
+   * Перед снимком: убрать рамки, ручки, подсветку и панели.
+   *
+   * Снимок делается со всей страницы, поэтому в кадр иначе попадают
+   * инструменты слева, палитра снизу и масштаб справа — в картинке с
+   * решением им делать нечего.
    */
-  B.png = function () {
-    if (!items.length) return '';
-    var b = items.map(bounds);
-    var pad = 40;
-    var x0 = Math.min.apply(null, b.map(function (r) { return r.x; })) - pad;
-    var y0 = Math.min.apply(null, b.map(function (r) { return r.y; })) - pad;
-    var x1 = Math.max.apply(null, b.map(function (r) { return r.x + r.w; })) + pad;
-    var y1 = Math.max.apply(null, b.map(function (r) { return r.y + r.h; })) + pad;
-
-    var out = document.createElement('canvas');
-    var scale = 2;                       // вдвое крупнее — чтобы не мылило
-    out.width = Math.max(1, Math.round((x1 - x0) * scale));
-    out.height = Math.max(1, Math.round((y1 - y0) * scale));
-    var g = out.getContext('2d');
-    g.fillStyle = css('--paper');
-    g.fillRect(0, 0, out.width, out.height);
-
-    var keepCtx = ctx, keepView = view, keepSel = selected;
-    ctx = g; view = { x: -x0 * scale, y: -y0 * scale, z: scale }; selected = -1;
-    g.save();
-    g.translate(view.x, view.y);
-    g.scale(scale, scale);
-    for (var i = 0; i < items.length; i++) drawItem(items[i], false);
-    g.restore();
-    ctx = keepCtx; view = keepView; selected = keepSel;
+  B.forShot = function (on) {
+    document.body.classList.toggle('shot', !!on);
+    if (on) { selected = -1; chosen = []; found = []; band = null; }
     draw();
-    return out.toDataURL('image/png');
   };
+
+  B.fitAll = function () { fit(); };
 
   /** Поиск по доске: подсвечиваем то, где встретилось слово. */
   B.find = function (needle) {
     needle = (needle || '').trim().toLowerCase();
-    chosen = [];
+    found = [];
     if (needle) {
       for (var i = 0; i < items.length; i++) {
+        /* Ищем и по названию формулы на языке человека, и по её словам-
+           подсказкам: внутреннее имя карточки — «quadratic», а ищут
+           «квадратное». Раньше карточка по-русски не находилась вовсе. */
+        var spec = byId[items[i].card] || {};
         var hay = (items[i].text || '') + ' ' + (items[i].md || '') + ' ' +
-                  (items[i].card || '') + ' ' +
+                  (items[i].card || '') + ' ' + (items[i].heading || '') + ' ' +
+                  Object.keys(spec.n || {}).map(function (k) { return spec.n[k]; }).join(' ') + ' ' +
+                  Object.keys(spec.k || {}).map(function (k) { return spec.k[k]; }).join(' ') + ' ' +
                   JSON.stringify(items[i].vals || {});
-        if (hay.toLowerCase().indexOf(needle) >= 0) chosen.push(i);
+        if (hay.toLowerCase().indexOf(needle) >= 0) found.push(i);
       }
-      if (chosen.length) {
-        var b = chosen.map(function (i) { return bounds(items[i]); });
+      if (found.length) {
+        var b = found.map(function (i) { return bounds(items[i]); });
         var x0 = Math.min.apply(null, b.map(function (r) { return r.x; }));
         var y0 = Math.min.apply(null, b.map(function (r) { return r.y; }));
         var x1 = Math.max.apply(null, b.map(function (r) { return r.x + r.w; }));
@@ -1382,13 +1457,24 @@
       }
     }
     draw();
-    return String(chosen.length);
+    return String(found.length);
   };
 
   /** Доска в текст: обычный JSON, который можно прочитать и поправить руками. */
   B.dump = function () {
     dirty = false;
-    return JSON.stringify({ version: 1, view: { x: Math.round(view.x), y: Math.round(view.y), z: +view.z.toFixed(3) }, items: items }, null, 1);
+    /* Служебное в файл не пишем: `_h` — запомненная высота бумажки, она
+       живёт только пока окно открыто. */
+    var clean = items.map(function (it) {
+      var out = {};
+      for (var k in it) if (k.charAt(0) !== '_') out[k] = it[k];
+      return out;
+    });
+    return JSON.stringify({
+      version: 1,
+      view: { x: Math.round(view.x), y: Math.round(view.y), z: +view.z.toFixed(3) },
+      items: clean,
+    }, null, 1);
   };
 
   B.load = function (text) {

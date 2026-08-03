@@ -84,7 +84,9 @@ class Check:
             GLib.timeout_add(500, self._start)
 
     def _start(self) -> bool:
-        self._js(f"Board.setLabels({{}}); Board.load({json.dumps(json.dumps(BOARD))}); 'ok'",
+        cat = json.loads((ROOT / "shared" / "cards" / "catalog.json").read_text(encoding="utf-8"))
+        self._js(f"Board.setLabels({{}}); Board.setCards({json.dumps(json.dumps(cat))}); "
+                 f"Board.load({json.dumps(json.dumps(BOARD))}); 'ok'",
                  lambda _r: GLib.timeout_add(700, self._dump))
         return False
 
@@ -132,12 +134,14 @@ class Check:
         code = """
         (function () {
           Board.find('');            // сбросить подсветку
-          var png = Board.png();
+          Board.fitAll();
+          Board.forShot(true); Board.forShot(false);
           return JSON.stringify({
-            png: png.slice(0, 22),
-            bytes: png.length,
             find_card: Board.find('квадрат'),
-            find_none: Board.find('такого_слова_нет_12345')
+            find_none: Board.find('такого_слова_нет_12345'),
+            // выделение и находки — разные списки: иначе Delete после поиска
+            // стирал бы все находки разом
+            after_find: JSON.parse(Board.dump()).items.length
           });
         })()
         """
@@ -148,11 +152,10 @@ class Check:
                 self.problems.append(f"страница не ответила про картинку: {out[:120]}")
                 self._stale()
                 return
-            if d.get("png") != "data:image/png;base64,":
-                self.problems.append("«сохранить картинкой» вернуло не картинку — "
-                                     "верный признак NaN в границах")
-            elif d.get("bytes", 0) < 5000:
-                self.problems.append(f"картинка подозрительно мала: {d.get('bytes')} байт")
+            if d.get("find_card") == "0":
+                self.problems.append("поиск не нашёл карточку, которая на доске есть")
+            if d.get("after_find") != len(BOARD["items"]):
+                self.problems.append("после поиска на доске стало другое число предметов")
             if d.get("find_none") != "0":
                 self.problems.append("поиск нашёл несуществующее слово")
             self._stale()

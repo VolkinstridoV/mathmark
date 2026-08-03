@@ -217,26 +217,40 @@ class BoardWindow(Adw.ApplicationWindow):
         dlg.present(self)
 
     def save_png(self) -> None:
-        """Картинка кладётся рядом с доской — там же, где и всё остальное."""
-        def got(web, res, *_):
-            try:
-                data = web.evaluate_javascript_finish(res).to_string() or ""
-            except GLib.Error:
-                return
-            if not data.startswith("data:image/png;base64,"):
-                self.toasts.add_toast(Adw.Toast(title=t("board.empty2")))
-                return
-            import base64
+        """
+        Картинка доски.
 
-            name = (self.path.stem if self.path else t("board.title")) + ".png"
-            out = (self.path.parent if self.path else self.folder) / name
-            try:
-                out.write_bytes(base64.b64decode(data.split(",", 1)[1]))
-                self.toasts.add_toast(Adw.Toast(title=t("board.pngSaved", name), timeout=6))
-            except (OSError, ValueError) as e:
-                self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", str(e))))
+        Рисовать самим по холсту нельзя: карточки и бумажки живут разметкой
+        поверх него, и в картинку попадало бы всё, кроме самого ценного —
+        решений. Поэтому снимаем саму страницу целиком, её же движком: он
+        рисует и холст, и разметку разом.
 
-        self.web.evaluate_javascript("Board.png()", -1, None, None, None, got, None)
+        Перед снимком вписываем доску в окно, иначе в кадр попадёт только то,
+        что видно сейчас.
+        """
+        def after_fit(*_):
+            def got(view, res, *_):
+                try:
+                    texture = view.get_snapshot_finish(res)
+                except GLib.Error as e:
+                    self._js("Board.forShot(false);")
+                    self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", e.message)))
+                    return
+                self._js("Board.forShot(false);")
+                name = (self.path.stem if self.path else t("board.title")) + ".png"
+                out = (self.path.parent if self.path else self.folder) / name
+                try:
+                    texture.save_to_png(str(out))
+                    self.toasts.add_toast(Adw.Toast(title=t("board.pngSaved", name), timeout=6))
+                except (GLib.Error, OSError) as e:
+                    self.toasts.add_toast(Adw.Toast(title=t("board.saveFailed", str(e))))
+
+            self.web.get_snapshot(WebKit.SnapshotRegion.FULL_DOCUMENT,
+                                  WebKit.SnapshotOptions.NONE, None, got)
+            return False
+
+        self._js("Board.forShot(true); Board.fitAll();")
+        GLib.timeout_add(450, after_fit)
 
     # ——— карточки-скрипты ———
 

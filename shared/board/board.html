@@ -134,6 +134,10 @@
     to{opacity:1; transform:none}
   }
 
+  /* На время снимка панели прячутся: в картинке с решением им делать нечего */
+  body.shot #tools, body.shot #style, body.shot #zoom{display:none}
+  body.shot .note .dots{display:none}
+
   .note .grip{position:absolute; right:2px; bottom:2px; width:14px; height:14px;
               cursor:nwse-resize; opacity:.45}
   .note .grip::after{content:''; position:absolute; right:3px; bottom:3px;
