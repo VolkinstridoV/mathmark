@@ -1,0 +1,2552 @@
+{
+ "version": 1,
+ "sections": [
+  {
+   "id": "algebra",
+   "n": {
+    "en": "Algebra",
+    "ru": "Алгебра",
+    "es": "Álgebra"
+   }
+  },
+  {
+   "id": "seq",
+   "n": {
+    "en": "Sequences",
+    "ru": "Прогрессии и ряды",
+    "es": "Sucesiones"
+   }
+  },
+  {
+   "id": "trig",
+   "n": {
+    "en": "Trigonometry",
+    "ru": "Тригонометрия",
+    "es": "Trigonometría"
+   }
+  },
+  {
+   "id": "calc",
+   "n": {
+    "en": "Calculus",
+    "ru": "Производные и интегралы",
+    "es": "Cálculo"
+   }
+  },
+  {
+   "id": "linalg",
+   "n": {
+    "en": "Linear algebra",
+    "ru": "Линейная алгебра",
+    "es": "Álgebra lineal"
+   }
+  },
+  {
+   "id": "geom",
+   "n": {
+    "en": "Geometry",
+    "ru": "Геометрия",
+    "es": "Geometría"
+   }
+  },
+  {
+   "id": "prob",
+   "n": {
+    "en": "Probability, statistics",
+    "ru": "Вероятность и статистика",
+    "es": "Probabilidad y estadística"
+   }
+  },
+  {
+   "id": "num",
+   "n": {
+    "en": "Numerical methods",
+    "ru": "Численные методы",
+    "es": "Métodos numéricos"
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "quadratic",
+   "s": "algebra",
+   "n": {
+    "en": "Quadratic equation",
+    "ru": "Квадратное уравнение",
+    "es": "Ecuación cuadrática"
+   },
+   "k": {
+    "en": "quadratic discriminant roots parabola second degree",
+    "ru": "квадратное уравнение дискриминант корни парабола",
+    "es": "cuadratica discriminante raices parabola"
+   },
+   "form": "ax^2+bx+c=0",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    },
+    {
+     "id": "c",
+     "l": "c"
+    }
+   ],
+   "need": [
+    {
+     "if": "a != 0",
+     "show": "a \\neq 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "D = b^2 - 4ac"
+    },
+    {
+     "tex": "D = (@b)^2 - 4\\cdot(@a)\\cdot(@c)"
+    },
+    {
+     "set": "D = b**2 - 4*a*c"
+    },
+    {
+     "tex": "D = @D"
+    },
+    {
+     "when": "D > 0",
+     "steps": [
+      {
+       "tex": "x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a}"
+      },
+      {
+       "set": "x1 = (-b + sqrt(D))/(2*a)"
+      },
+      {
+       "set": "x2 = (-b - sqrt(D))/(2*a)"
+      },
+      {
+       "tex": "x_1 = @x1,\\qquad x_2 = @x2"
+      }
+     ],
+     "else": [
+      {
+       "when": "D = 0",
+       "steps": [
+        {
+         "tex": "D = 0 \\Rightarrow x_1 = x_2 = -\\frac{b}{2a}"
+        },
+        {
+         "set": "x1 = -b/(2*a)"
+        },
+        {
+         "tex": "x = @x1"
+        }
+       ],
+       "else": [
+        {
+         "tex": "D < 0 \\Rightarrow x \\notin \\mathbb{R}"
+        },
+        {
+         "set": "x1 = (-b + sqrt(D))/(2*a)"
+        },
+        {
+         "set": "x2 = (-b - sqrt(D))/(2*a)"
+        },
+        {
+         "tex": "x_{1,2} = @x1,\\quad @x2"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "try": {
+    "a": "1",
+    "b": "-5",
+    "c": "6"
+   }
+  },
+  {
+   "id": "vieta",
+   "s": "algebra",
+   "n": {
+    "en": "Vieta's formulas",
+    "ru": "Теорема Виета",
+    "es": "Fórmulas de Vieta"
+   },
+   "k": {
+    "en": "vieta sum product of roots reduced",
+    "ru": "виета сумма произведение корней приведённое",
+    "es": "vieta suma producto raices"
+   },
+   "form": "x^2+px+q=0",
+   "f": [
+    {
+     "id": "p",
+     "l": "p"
+    },
+    {
+     "id": "q",
+     "l": "q"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "x_1 + x_2 = -p,\\qquad x_1 x_2 = q"
+    },
+    {
+     "set": "S = -p"
+    },
+    {
+     "set": "P = q"
+    },
+    {
+     "tex": "x_1 + x_2 = -(@p) = @S"
+    },
+    {
+     "tex": "x_1 x_2 = @P"
+    },
+    {
+     "set": "D = p**2 - 4*q"
+    },
+    {
+     "tex": "D = (@p)^2 - 4\\cdot(@q) = @D"
+    },
+    {
+     "when": "D >= 0",
+     "steps": [
+      {
+       "set": "x1 = (-p + sqrt(D))/2"
+      },
+      {
+       "set": "x2 = (-p - sqrt(D))/2"
+      },
+      {
+       "tex": "x_1 = @x1,\\qquad x_2 = @x2"
+      }
+     ],
+     "else": [
+      {
+       "tex": "D < 0 \\Rightarrow x \\notin \\mathbb{R}"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "p": "-7",
+    "q": "12"
+   }
+  },
+  {
+   "id": "linear",
+   "s": "algebra",
+   "n": {
+    "en": "Linear equation",
+    "ru": "Линейное уравнение",
+    "es": "Ecuación lineal"
+   },
+   "k": {
+    "en": "linear equation first degree solve",
+    "ru": "линейное уравнение первой степени решить",
+    "es": "lineal ecuacion primer grado"
+   },
+   "form": "ax+b=0",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    }
+   ],
+   "need": [
+    {
+     "if": "a != 0",
+     "show": "a \\neq 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "x = -\\frac{b}{a}"
+    },
+    {
+     "set": "x = -b/a"
+    },
+    {
+     "tex": "x = -\\frac{@b}{@a} = @x"
+    }
+   ],
+   "try": {
+    "a": "3",
+    "b": "-9"
+   }
+  },
+  {
+   "id": "lineq2",
+   "s": "algebra",
+   "n": {
+    "en": "System of two linear equations",
+    "ru": "Система двух линейных уравнений",
+    "es": "Sistema de dos ecuaciones lineales"
+   },
+   "k": {
+    "en": "system two linear cramer substitution",
+    "ru": "система двух линейных уравнений крамер подстановка",
+    "es": "sistema dos lineales cramer"
+   },
+   "form": "\\begin{cases} a_1x + b_1y = c_1 \\\\ a_2x + b_2y = c_2 \\end{cases}",
+   "f": [
+    {
+     "id": "a1",
+     "l": "a_1"
+    },
+    {
+     "id": "b1",
+     "l": "b_1"
+    },
+    {
+     "id": "c1",
+     "l": "c_1"
+    },
+    {
+     "id": "a2",
+     "l": "a_2"
+    },
+    {
+     "id": "b2",
+     "l": "b_2"
+    },
+    {
+     "id": "c2",
+     "l": "c_2"
+    }
+   ],
+   "need": [
+    {
+     "if": "a1*b2 - a2*b1 != 0",
+     "show": "a_1b_2 - a_2b_1 \\neq 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\Delta = \\begin{vmatrix} a_1 & b_1 \\\\ a_2 & b_2 \\end{vmatrix} = a_1b_2 - a_2b_1"
+    },
+    {
+     "set": "D = a1*b2 - a2*b1"
+    },
+    {
+     "tex": "\\Delta = (@a1)(@b2) - (@a2)(@b1) = @D"
+    },
+    {
+     "set": "Dx = c1*b2 - c2*b1"
+    },
+    {
+     "set": "Dy = a1*c2 - a2*c1"
+    },
+    {
+     "tex": "\\Delta_x = c_1b_2 - c_2b_1 = @Dx,\\qquad \\Delta_y = a_1c_2 - a_2c_1 = @Dy"
+    },
+    {
+     "set": "x = Dx/D"
+    },
+    {
+     "set": "y = Dy/D"
+    },
+    {
+     "tex": "x = \\frac{\\Delta_x}{\\Delta} = @x,\\qquad y = \\frac{\\Delta_y}{\\Delta} = @y"
+    }
+   ],
+   "try": {
+    "a1": "2",
+    "b1": "3",
+    "c1": "8",
+    "a2": "1",
+    "b2": "-1",
+    "c2": "1"
+   }
+  },
+  {
+   "id": "logeq",
+   "s": "algebra",
+   "n": {
+    "en": "Logarithm",
+    "ru": "Логарифм",
+    "es": "Logaritmo"
+   },
+   "k": {
+    "en": "logarithm base power log ln",
+    "ru": "логарифм основание степень натуральный",
+    "es": "logaritmo base potencia"
+   },
+   "form": "\\log_a b = x \\iff a^x = b",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    }
+   ],
+   "need": [
+    {
+     "if": "a > 0",
+     "show": "a > 0"
+    },
+    {
+     "if": "a != 1",
+     "show": "a \\neq 1"
+    },
+    {
+     "if": "b > 0",
+     "show": "b > 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\log_a b = \\frac{\\ln b}{\\ln a}"
+    },
+    {
+     "set": "x = log(b)/log(a)"
+    },
+    {
+     "tex": "\\log_{@a} @b = \\frac{\\ln @b}{\\ln @a} = @x"
+    },
+    {
+     "set": "xf = N(x, 8)"
+    },
+    {
+     "tex": "\\approx @xf"
+    }
+   ],
+   "try": {
+    "a": "2",
+    "b": "8"
+   }
+  },
+  {
+   "id": "percent",
+   "s": "algebra",
+   "n": {
+    "en": "Percentage",
+    "ru": "Проценты",
+    "es": "Porcentaje"
+   },
+   "k": {
+    "en": "percent part whole increase discount",
+    "ru": "процент часть целое доля скидка наценка",
+    "es": "porcentaje parte total descuento"
+   },
+   "form": "p\\% \\text{ of } N",
+   "f": [
+    {
+     "id": "N",
+     "l": "N"
+    },
+    {
+     "id": "p",
+     "l": "p"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "x = \\frac{p}{100}\\,N"
+    },
+    {
+     "set": "x = p*N/100"
+    },
+    {
+     "tex": "x = \\frac{@p}{100}\\cdot @N = @x"
+    },
+    {
+     "set": "up = N*(1 + p/100)"
+    },
+    {
+     "set": "down = N*(1 - p/100)"
+    },
+    {
+     "tex": "N\\left(1+\\tfrac{p}{100}\\right) = @up,\\qquad N\\left(1-\\tfrac{p}{100}\\right) = @down"
+    }
+   ],
+   "try": {
+    "N": "2500",
+    "p": "15"
+   }
+  },
+  {
+   "id": "powroot",
+   "s": "algebra",
+   "n": {
+    "en": "Power and root",
+    "ru": "Степень и корень",
+    "es": "Potencia y raíz"
+   },
+   "k": {
+    "en": "power root exponent degree radical",
+    "ru": "степень корень показатель радикал возведение",
+    "es": "potencia raiz exponente"
+   },
+   "form": "a^n,\\qquad \\sqrt[n]{a}",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "n",
+     "l": "n"
+    }
+   ],
+   "steps": [
+    {
+     "set": "P = a**n"
+    },
+    {
+     "tex": "a^n = (@a)^{@n} = @P"
+    },
+    {
+     "when": "a >= 0",
+     "steps": [
+      {
+       "set": "R = a**(1/n)"
+      },
+      {
+       "tex": "\\sqrt[@n]{@a} = @R"
+      },
+      {
+       "set": "Rf = N(R, 8)"
+      },
+      {
+       "tex": "\\approx @Rf"
+      }
+     ],
+     "else": [
+      {
+       "tex": "a < 0 \\Rightarrow \\sqrt[n]{a} \\notin \\mathbb{R}\\ \\ (2 \\mid n)"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "a": "16",
+    "n": "4"
+   }
+  },
+  {
+   "id": "arith",
+   "s": "seq",
+   "n": {
+    "en": "Arithmetic progression",
+    "ru": "Арифметическая прогрессия",
+    "es": "Progresión aritmética"
+   },
+   "k": {
+    "en": "arithmetic progression difference nth term sum",
+    "ru": "арифметическая прогрессия разность член сумма",
+    "es": "aritmetica progresion diferencia suma"
+   },
+   "form": "a_n = a_1 + (n-1)d",
+   "f": [
+    {
+     "id": "a1",
+     "l": "a_1"
+    },
+    {
+     "id": "d",
+     "l": "d"
+    },
+    {
+     "id": "n",
+     "l": "n"
+    }
+   ],
+   "need": [
+    {
+     "if": "n > 0",
+     "show": "n > 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "a_n = a_1 + (n-1)d"
+    },
+    {
+     "set": "an = a1 + (n-1)*d"
+    },
+    {
+     "tex": "a_{@n} = @a1 + (@n-1)\\cdot @d = @an"
+    },
+    {
+     "tex": "S_n = \\frac{(a_1+a_n)n}{2}"
+    },
+    {
+     "set": "S = (a1 + an)*n/2"
+    },
+    {
+     "tex": "S_{@n} = \\frac{(@a1 + @an)\\cdot @n}{2} = @S"
+    }
+   ],
+   "try": {
+    "a1": "2",
+    "d": "3",
+    "n": "10"
+   }
+  },
+  {
+   "id": "geomprog",
+   "s": "seq",
+   "n": {
+    "en": "Geometric progression",
+    "ru": "Геометрическая прогрессия",
+    "es": "Progresión geométrica"
+   },
+   "k": {
+    "en": "geometric progression ratio sum infinite",
+    "ru": "геометрическая прогрессия знаменатель сумма бесконечная",
+    "es": "geometrica progresion razon suma"
+   },
+   "form": "b_n = b_1 q^{\\,n-1}",
+   "f": [
+    {
+     "id": "b1",
+     "l": "b_1"
+    },
+    {
+     "id": "q",
+     "l": "q"
+    },
+    {
+     "id": "n",
+     "l": "n"
+    }
+   ],
+   "need": [
+    {
+     "if": "n > 0",
+     "show": "n > 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "b_n = b_1q^{\\,n-1}"
+    },
+    {
+     "set": "bn = b1*q**(n-1)"
+    },
+    {
+     "tex": "b_{@n} = @b1\\cdot(@q)^{@n-1} = @bn"
+    },
+    {
+     "when": "q != 1",
+     "steps": [
+      {
+       "tex": "S_n = b_1\\frac{q^n-1}{q-1}"
+      },
+      {
+       "set": "S = b1*(q**n - 1)/(q - 1)"
+      },
+      {
+       "tex": "S_{@n} = @S"
+      }
+     ],
+     "else": [
+      {
+       "set": "S = b1*n"
+      },
+      {
+       "tex": "q=1 \\Rightarrow S_{@n} = @S"
+      }
+     ]
+    },
+    {
+     "when": "Abs(q) < 1",
+     "steps": [
+      {
+       "tex": "S_\\infty = \\frac{b_1}{1-q}"
+      },
+      {
+       "set": "Sinf = b1/(1-q)"
+      },
+      {
+       "tex": "S_\\infty = @Sinf"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "b1": "1",
+    "q": "1/2",
+    "n": "5"
+   }
+  },
+  {
+   "id": "binom",
+   "s": "seq",
+   "n": {
+    "en": "Binomial coefficient",
+    "ru": "Биномиальный коэффициент",
+    "es": "Coeficiente binomial"
+   },
+   "k": {
+    "en": "binomial coefficient combinations choose pascal",
+    "ru": "биномиальный коэффициент сочетания число выборок паскаль",
+    "es": "binomial combinaciones"
+   },
+   "form": "\\binom{n}{k} = \\frac{n!}{k!\\,(n-k)!}",
+   "f": [
+    {
+     "id": "n",
+     "l": "n"
+    },
+    {
+     "id": "k",
+     "l": "k"
+    }
+   ],
+   "need": [
+    {
+     "if": "n >= 0",
+     "show": "n \\geq 0"
+    },
+    {
+     "if": "k >= 0",
+     "show": "k \\geq 0"
+    },
+    {
+     "if": "k <= n",
+     "show": "k \\leq n"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\binom{n}{k} = \\frac{n!}{k!\\,(n-k)!}"
+    },
+    {
+     "tex": "\\binom{@n}{@k} = \\frac{@n!}{@k!\\,(@n-@k)!}"
+    },
+    {
+     "set": "C = binomial(n, k)"
+    },
+    {
+     "tex": "= @C"
+    }
+   ],
+   "try": {
+    "n": "10",
+    "k": "3"
+   }
+  },
+  {
+   "id": "factorial",
+   "s": "seq",
+   "n": {
+    "en": "Factorial and permutations",
+    "ru": "Факториал и перестановки",
+    "es": "Factorial y permutaciones"
+   },
+   "k": {
+    "en": "factorial permutations arrangements",
+    "ru": "факториал перестановки размещения",
+    "es": "factorial permutaciones"
+   },
+   "form": "n! = 1\\cdot2\\cdots n",
+   "f": [
+    {
+     "id": "n",
+     "l": "n"
+    },
+    {
+     "id": "k",
+     "l": "k"
+    }
+   ],
+   "need": [
+    {
+     "if": "n >= 0",
+     "show": "n \\geq 0"
+    },
+    {
+     "if": "k >= 0",
+     "show": "k \\geq 0"
+    },
+    {
+     "if": "k <= n",
+     "show": "k \\leq n"
+    }
+   ],
+   "steps": [
+    {
+     "set": "F = factorial(n)"
+    },
+    {
+     "tex": "@n! = @F"
+    },
+    {
+     "tex": "A_n^k = \\frac{n!}{(n-k)!}"
+    },
+    {
+     "set": "A = factorial(n)/factorial(n-k)"
+    },
+    {
+     "tex": "A_{@n}^{@k} = \\frac{@n!}{(@n-@k)!} = @A"
+    }
+   ],
+   "try": {
+    "n": "6",
+    "k": "2"
+   }
+  },
+  {
+   "id": "trigval",
+   "s": "trig",
+   "n": {
+    "en": "Sine, cosine, tangent of an angle",
+    "ru": "Синус, косинус, тангенс угла",
+    "es": "Seno, coseno, tangente"
+   },
+   "k": {
+    "en": "sine cosine tangent angle degrees radians",
+    "ru": "синус косинус тангенс угол градусы радианы",
+    "es": "seno coseno tangente angulo grados"
+   },
+   "form": "\\sin\\alpha,\\ \\cos\\alpha,\\ \\tan\\alpha",
+   "f": [
+    {
+     "id": "deg",
+     "l": "\\alpha^\\circ"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\alpha = @deg^\\circ = \\frac{@deg\\pi}{180}"
+    },
+    {
+     "set": "r = deg*pi/180"
+    },
+    {
+     "tex": "\\alpha = @r"
+    },
+    {
+     "set": "s = sin(r)"
+    },
+    {
+     "set": "c = cos(r)"
+    },
+    {
+     "tex": "\\sin\\alpha = @s,\\qquad \\cos\\alpha = @c"
+    },
+    {
+     "when": "cos(deg*pi/180) != 0",
+     "steps": [
+      {
+       "set": "t = tan(r)"
+      },
+      {
+       "tex": "\\tan\\alpha = @t"
+      }
+     ],
+     "else": [
+      {
+       "tex": "\\cos\\alpha = 0 \\Rightarrow \\tan\\alpha \\text{ —}\\ \\nexists"
+      }
+     ]
+    },
+    {
+     "set": "sf = N(s, 8)"
+    },
+    {
+     "set": "cf = N(c, 8)"
+    },
+    {
+     "tex": "\\approx @sf,\\qquad @cf"
+    }
+   ],
+   "try": {
+    "deg": "30"
+   }
+  },
+  {
+   "id": "pythag",
+   "s": "trig",
+   "n": {
+    "en": "Pythagorean theorem",
+    "ru": "Теорема Пифагора",
+    "es": "Teorema de Pitágoras"
+   },
+   "k": {
+    "en": "pythagoras hypotenuse leg right triangle",
+    "ru": "пифагор гипотенуза катет прямоугольный треугольник",
+    "es": "pitagoras hipotenusa cateto"
+   },
+   "form": "a^2 + b^2 = c^2",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    }
+   ],
+   "need": [
+    {
+     "if": "a > 0",
+     "show": "a > 0"
+    },
+    {
+     "if": "b > 0",
+     "show": "b > 0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "c = \\sqrt{a^2+b^2}"
+    },
+    {
+     "set": "c = sqrt(a**2 + b**2)"
+    },
+    {
+     "tex": "c = \\sqrt{(@a)^2 + (@b)^2} = @c"
+    },
+    {
+     "set": "cf = N(c, 8)"
+    },
+    {
+     "tex": "\\approx @cf"
+    }
+   ],
+   "try": {
+    "a": "3",
+    "b": "4"
+   }
+  },
+  {
+   "id": "cosrule",
+   "s": "trig",
+   "n": {
+    "en": "Law of cosines",
+    "ru": "Теорема косинусов",
+    "es": "Teorema del coseno"
+   },
+   "k": {
+    "en": "law of cosines triangle side angle",
+    "ru": "теорема косинусов треугольник сторона угол",
+    "es": "teorema coseno triangulo"
+   },
+   "form": "c^2 = a^2 + b^2 - 2ab\\cos\\gamma",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    },
+    {
+     "id": "g",
+     "l": "\\gamma^\\circ"
+    }
+   ],
+   "need": [
+    {
+     "if": "a > 0",
+     "show": "a > 0"
+    },
+    {
+     "if": "b > 0",
+     "show": "b > 0"
+    },
+    {
+     "if": "g > 0",
+     "show": "\\gamma > 0"
+    },
+    {
+     "if": "g < 180",
+     "show": "\\gamma < 180^\\circ"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "c^2 = a^2 + b^2 - 2ab\\cos\\gamma"
+    },
+    {
+     "set": "r = g*pi/180"
+    },
+    {
+     "set": "c2 = a**2 + b**2 - 2*a*b*cos(r)"
+    },
+    {
+     "tex": "c^2 = (@a)^2 + (@b)^2 - 2\\cdot @a\\cdot @b\\cos @g^\\circ = @c2"
+    },
+    {
+     "set": "c = sqrt(c2)"
+    },
+    {
+     "tex": "c = @c"
+    },
+    {
+     "set": "cf = N(c, 8)"
+    },
+    {
+     "tex": "\\approx @cf"
+    }
+   ],
+   "try": {
+    "a": "5",
+    "b": "7",
+    "g": "60"
+   }
+  },
+  {
+   "id": "sinrule",
+   "s": "trig",
+   "n": {
+    "en": "Law of sines",
+    "ru": "Теорема синусов",
+    "es": "Teorema del seno"
+   },
+   "k": {
+    "en": "law of sines triangle circumradius",
+    "ru": "теорема синусов треугольник описанная окружность",
+    "es": "teorema seno triangulo"
+   },
+   "form": "\\frac{a}{\\sin\\alpha} = \\frac{b}{\\sin\\beta} = 2R",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "al",
+     "l": "\\alpha^\\circ"
+    },
+    {
+     "id": "be",
+     "l": "\\beta^\\circ"
+    }
+   ],
+   "need": [
+    {
+     "if": "a > 0",
+     "show": "a > 0"
+    },
+    {
+     "if": "al > 0",
+     "show": "\\alpha > 0"
+    },
+    {
+     "if": "al < 180",
+     "show": "\\alpha < 180^\\circ"
+    },
+    {
+     "if": "be > 0",
+     "show": "\\beta > 0"
+    },
+    {
+     "if": "be < 180",
+     "show": "\\beta < 180^\\circ"
+    },
+    {
+     "if": "al + be < 180",
+     "show": "\\alpha + \\beta < 180^\\circ"
+    }
+   ],
+   "steps": [
+    {
+     "set": "ra = al*pi/180"
+    },
+    {
+     "set": "rb = be*pi/180"
+    },
+    {
+     "set": "R = a/(2*sin(ra))"
+    },
+    {
+     "tex": "2R = \\frac{a}{\\sin\\alpha} \\Rightarrow R = @R"
+    },
+    {
+     "set": "b = 2*R*sin(rb)"
+    },
+    {
+     "tex": "b = 2R\\sin\\beta = @b"
+    },
+    {
+     "set": "ga = 180 - al - be"
+    },
+    {
+     "tex": "\\gamma = 180^\\circ - @al^\\circ - @be^\\circ = @ga^\\circ"
+    },
+    {
+     "set": "bf = N(b, 8)"
+    },
+    {
+     "tex": "b \\approx @bf"
+    }
+   ],
+   "try": {
+    "a": "5",
+    "al": "30",
+    "be": "45"
+   }
+  },
+  {
+   "id": "deriv",
+   "s": "calc",
+   "n": {
+    "en": "Derivative",
+    "ru": "Производная",
+    "es": "Derivada"
+   },
+   "k": {
+    "en": "derivative differentiate slope tangent",
+    "ru": "производная продифференцировать наклон касательная",
+    "es": "derivada derivar pendiente"
+   },
+   "form": "f'(x) = \\frac{d}{dx}f(x)",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "f(x) = @f"
+    },
+    {
+     "set": "d1 = diff(f, x)"
+    },
+    {
+     "tex": "f'(x) = @d1"
+    },
+    {
+     "set": "d2 = diff(f, x, 2)"
+    },
+    {
+     "tex": "f''(x) = @d2"
+    }
+   ],
+   "try": {
+    "f": "x^3 - 2x + 1"
+   }
+  },
+  {
+   "id": "derivat",
+   "s": "calc",
+   "n": {
+    "en": "Derivative at a point",
+    "ru": "Производная в точке",
+    "es": "Derivada en un punto"
+   },
+   "k": {
+    "en": "derivative at point tangent line value",
+    "ru": "производная в точке значение касательная",
+    "es": "derivada punto tangente"
+   },
+   "form": "f'(x_0),\\qquad y = f(x_0) + f'(x_0)(x-x_0)",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    },
+    {
+     "id": "x0",
+     "l": "x_0"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "f(x) = @f"
+    },
+    {
+     "set": "d1 = diff(f, x)"
+    },
+    {
+     "tex": "f'(x) = @d1"
+    },
+    {
+     "set": "v = d1.subs(x, x0)"
+    },
+    {
+     "set": "y0 = f.subs(x, x0)"
+    },
+    {
+     "tex": "f(@x0) = @y0,\\qquad f'(@x0) = @v"
+    },
+    {
+     "tex": "y = @y0 + @v\\,(x - @x0)"
+    }
+   ],
+   "try": {
+    "f": "x^2",
+    "x0": "3"
+   }
+  },
+  {
+   "id": "integ",
+   "s": "calc",
+   "n": {
+    "en": "Indefinite integral",
+    "ru": "Неопределённый интеграл",
+    "es": "Integral indefinida"
+   },
+   "k": {
+    "en": "integral antiderivative indefinite primitive",
+    "ru": "интеграл первообразная неопределённый",
+    "es": "integral primitiva indefinida"
+   },
+   "form": "\\int f(x)\\,dx",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\int @f \\,dx"
+    },
+    {
+     "set": "F = integrate(f, x)"
+    },
+    {
+     "tex": "= @F + C"
+    }
+   ],
+   "try": {
+    "f": "x^2 + 1"
+   }
+  },
+  {
+   "id": "definteg",
+   "s": "calc",
+   "n": {
+    "en": "Definite integral",
+    "ru": "Определённый интеграл",
+    "es": "Integral definida"
+   },
+   "k": {
+    "en": "definite integral area newton leibniz bounds",
+    "ru": "определённый интеграл площадь ньютон лейбниц пределы",
+    "es": "integral definida area"
+   },
+   "form": "\\int_a^b f(x)\\,dx = F(b) - F(a)",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    },
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    }
+   ],
+   "steps": [
+    {
+     "set": "F = integrate(f, x)"
+    },
+    {
+     "tex": "F(x) = \\int @f\\,dx = @F"
+    },
+    {
+     "set": "Fb = F.subs(x, b)"
+    },
+    {
+     "set": "Fa = F.subs(x, a)"
+    },
+    {
+     "tex": "F(@b) = @Fb,\\qquad F(@a) = @Fa"
+    },
+    {
+     "set": "I = Fb - Fa"
+    },
+    {
+     "tex": "\\int_{@a}^{@b} @f\\,dx = @I"
+    },
+    {
+     "set": "If = N(I, 8)"
+    },
+    {
+     "tex": "\\approx @If"
+    }
+   ],
+   "try": {
+    "f": "x^2",
+    "a": "0",
+    "b": "3"
+   }
+  },
+  {
+   "id": "limit",
+   "s": "calc",
+   "n": {
+    "en": "Limit",
+    "ru": "Предел",
+    "es": "Límite"
+   },
+   "k": {
+    "en": "limit tends approaches infinity",
+    "ru": "предел стремится бесконечность",
+    "es": "limite tiende infinito"
+   },
+   "form": "\\lim_{x \\to a} f(x)",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    },
+    {
+     "id": "a",
+     "l": "a",
+     "t": "expr"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\lim_{x \\to @a} @f"
+    },
+    {
+     "set": "L = limit(f, x, a)"
+    },
+    {
+     "tex": "= @L"
+    }
+   ],
+   "try": {
+    "f": "sin(x)/x",
+    "a": "0"
+   }
+  },
+  {
+   "id": "taylor",
+   "s": "calc",
+   "n": {
+    "en": "Taylor series",
+    "ru": "Ряд Тейлора",
+    "es": "Serie de Taylor"
+   },
+   "k": {
+    "en": "taylor maclaurin series expansion",
+    "ru": "тейлор маклорен ряд разложение",
+    "es": "taylor maclaurin serie"
+   },
+   "form": "f(x) = \\sum_{k=0}^{n}\\frac{f^{(k)}(a)}{k!}(x-a)^k",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    },
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "n",
+     "l": "n"
+    }
+   ],
+   "need": [
+    {
+     "if": "n > 0",
+     "show": "n > 0"
+    },
+    {
+     "if": "n <= 12",
+     "show": "n \\leq 12"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "f(x) = @f,\\qquad a = @a"
+    },
+    {
+     "set": "T = series(f, x, a, n+1).removeO()"
+    },
+    {
+     "tex": "f(x) \\approx @T"
+    }
+   ],
+   "try": {
+    "f": "exp(x)",
+    "a": "0",
+    "n": "4"
+   }
+  },
+  {
+   "id": "extrema",
+   "s": "calc",
+   "n": {
+    "en": "Critical points",
+    "ru": "Точки экстремума",
+    "es": "Puntos críticos"
+   },
+   "k": {
+    "en": "extremum maximum minimum critical points derivative zero",
+    "ru": "экстремум максимум минимум критические точки производная нуль",
+    "es": "extremo maximo minimo criticos"
+   },
+   "form": "f'(x) = 0",
+   "f": [
+    {
+     "id": "f",
+     "l": "f(x)",
+     "t": "expr"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "f(x) = @f"
+    },
+    {
+     "set": "d1 = diff(f, x)"
+    },
+    {
+     "tex": "f'(x) = @d1 = 0"
+    },
+    {
+     "set": "pts = solve(Eq(d1, 0), x)"
+    },
+    {
+     "tex": "x = @pts"
+    },
+    {
+     "set": "d2 = diff(f, x, 2)"
+    },
+    {
+     "tex": "f''(x) = @d2"
+    }
+   ],
+   "try": {
+    "f": "x^3 - 3x"
+   }
+  },
+  {
+   "id": "det2",
+   "s": "linalg",
+   "n": {
+    "en": "Determinant 2×2",
+    "ru": "Определитель 2×2",
+    "es": "Determinante 2×2"
+   },
+   "k": {
+    "en": "determinant two by two matrix",
+    "ru": "определитель два на два матрица",
+    "es": "determinante dos por dos"
+   },
+   "form": "\\begin{vmatrix} a & b \\\\ c & d \\end{vmatrix} = ad - bc",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    },
+    {
+     "id": "c",
+     "l": "c"
+    },
+    {
+     "id": "d",
+     "l": "d"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\Delta = ad - bc"
+    },
+    {
+     "set": "D = a*d - b*c"
+    },
+    {
+     "tex": "\\Delta = (@a)(@d) - (@b)(@c) = @D"
+    },
+    {
+     "when": "a*d - b*c != 0",
+     "steps": [
+      {
+       "tex": "A^{-1} = \\frac{1}{\\Delta}\\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}"
+      },
+      {
+       "set": "i11 = d/D"
+      },
+      {
+       "set": "i12 = -b/D"
+      },
+      {
+       "set": "i21 = -c/D"
+      },
+      {
+       "set": "i22 = a/D"
+      },
+      {
+       "tex": "A^{-1} = \\begin{pmatrix} @i11 & @i12 \\\\ @i21 & @i22 \\end{pmatrix}"
+      }
+     ],
+     "else": [
+      {
+       "tex": "\\Delta = 0 \\Rightarrow \\nexists\\, A^{-1}"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "a": "1",
+    "b": "2",
+    "c": "3",
+    "d": "4"
+   }
+  },
+  {
+   "id": "det3",
+   "s": "linalg",
+   "n": {
+    "en": "Determinant 3×3",
+    "ru": "Определитель 3×3",
+    "es": "Determinante 3×3"
+   },
+   "k": {
+    "en": "determinant three by three sarrus",
+    "ru": "определитель три на три саррюс",
+    "es": "determinante tres por tres sarrus"
+   },
+   "form": "\\begin{vmatrix} a_{11} & a_{12} & a_{13} \\\\ a_{21} & a_{22} & a_{23} \\\\ a_{31} & a_{32} & a_{33} \\end{vmatrix}",
+   "f": [
+    {
+     "id": "a",
+     "l": "a_{11}"
+    },
+    {
+     "id": "b",
+     "l": "a_{12}"
+    },
+    {
+     "id": "c",
+     "l": "a_{13}"
+    },
+    {
+     "id": "d",
+     "l": "a_{21}"
+    },
+    {
+     "id": "e",
+     "l": "a_{22}"
+    },
+    {
+     "id": "f",
+     "l": "a_{23}"
+    },
+    {
+     "id": "g",
+     "l": "a_{31}"
+    },
+    {
+     "id": "h",
+     "l": "a_{32}"
+    },
+    {
+     "id": "i",
+     "l": "a_{33}"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\Delta = a_{11}(a_{22}a_{33}-a_{23}a_{32}) - a_{12}(a_{21}a_{33}-a_{23}a_{31}) + a_{13}(a_{21}a_{32}-a_{22}a_{31})"
+    },
+    {
+     "set": "m1 = e*i - f*h"
+    },
+    {
+     "set": "m2 = d*i - f*g"
+    },
+    {
+     "set": "m3 = d*h - e*g"
+    },
+    {
+     "tex": "M_{11} = @m1,\\qquad M_{12} = @m2,\\qquad M_{13} = @m3"
+    },
+    {
+     "set": "D = a*m1 - b*m2 + c*m3"
+    },
+    {
+     "tex": "\\Delta = (@a)(@m1) - (@b)(@m2) + (@c)(@m3) = @D"
+    }
+   ],
+   "try": {
+    "a": "1",
+    "b": "2",
+    "c": "3",
+    "d": "4",
+    "e": "5",
+    "f": "6",
+    "g": "7",
+    "h": "8",
+    "i": "10"
+   }
+  },
+  {
+   "id": "eig2",
+   "s": "linalg",
+   "n": {
+    "en": "Eigenvalues 2×2",
+    "ru": "Собственные значения 2×2",
+    "es": "Valores propios 2×2"
+   },
+   "k": {
+    "en": "eigenvalue eigenvector characteristic polynomial spectrum",
+    "ru": "собственные значения векторы характеристический многочлен спектр",
+    "es": "valores propios caracteristico"
+   },
+   "form": "\\det(A - \\lambda I) = 0",
+   "f": [
+    {
+     "id": "a",
+     "l": "a_{11}"
+    },
+    {
+     "id": "b",
+     "l": "a_{12}"
+    },
+    {
+     "id": "c",
+     "l": "a_{21}"
+    },
+    {
+     "id": "d",
+     "l": "a_{22}"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "\\det(A - \\lambda I) = \\lambda^2 - (a_{11}+a_{22})\\lambda + \\det A"
+    },
+    {
+     "set": "tr = a + d"
+    },
+    {
+     "set": "D = a*d - b*c"
+    },
+    {
+     "tex": "\\operatorname{tr}A = @tr,\\qquad \\det A = @D"
+    },
+    {
+     "tex": "\\lambda^2 - @tr\\lambda + @D = 0"
+    },
+    {
+     "set": "dis = tr**2 - 4*D"
+    },
+    {
+     "tex": "D_\\lambda = (@tr)^2 - 4\\cdot @D = @dis"
+    },
+    {
+     "set": "l1 = (tr + sqrt(dis))/2"
+    },
+    {
+     "set": "l2 = (tr - sqrt(dis))/2"
+    },
+    {
+     "tex": "\\lambda_1 = @l1,\\qquad \\lambda_2 = @l2"
+    }
+   ],
+   "try": {
+    "a": "2",
+    "b": "1",
+    "c": "1",
+    "d": "2"
+   }
+  },
+  {
+   "id": "dotprod",
+   "s": "linalg",
+   "n": {
+    "en": "Dot product and angle",
+    "ru": "Скалярное произведение и угол",
+    "es": "Producto escalar y ángulo"
+   },
+   "k": {
+    "en": "dot scalar product angle between vectors projection",
+    "ru": "скалярное произведение угол между векторами проекция",
+    "es": "producto escalar angulo vectores"
+   },
+   "form": "\\vec a\\cdot\\vec b = |\\vec a||\\vec b|\\cos\\varphi",
+   "f": [
+    {
+     "id": "ax",
+     "l": "a_x"
+    },
+    {
+     "id": "ay",
+     "l": "a_y"
+    },
+    {
+     "id": "az",
+     "l": "a_z"
+    },
+    {
+     "id": "bx",
+     "l": "b_x"
+    },
+    {
+     "id": "by",
+     "l": "b_y"
+    },
+    {
+     "id": "bz",
+     "l": "b_z"
+    }
+   ],
+   "steps": [
+    {
+     "set": "s = ax*bx + ay*by + az*bz"
+    },
+    {
+     "tex": "\\vec a\\cdot\\vec b = @ax\\cdot @bx + @ay\\cdot @by + @az\\cdot @bz = @s"
+    },
+    {
+     "set": "na = sqrt(ax**2 + ay**2 + az**2)"
+    },
+    {
+     "set": "nb = sqrt(bx**2 + by**2 + bz**2)"
+    },
+    {
+     "tex": "|\\vec a| = @na,\\qquad |\\vec b| = @nb"
+    },
+    {
+     "when": "(ax**2+ay**2+az**2)*(bx**2+by**2+bz**2) > 0",
+     "steps": [
+      {
+       "set": "cf = s/(na*nb)"
+      },
+      {
+       "tex": "\\cos\\varphi = \\frac{@s}{@na\\cdot @nb} = @cf"
+      },
+      {
+       "set": "phi = acos(cf)*180/pi"
+      },
+      {
+       "set": "phif = N(phi, 6)"
+      },
+      {
+       "tex": "\\varphi \\approx @phif^\\circ"
+      }
+     ],
+     "else": [
+      {
+       "tex": "|\\vec a||\\vec b| = 0 \\Rightarrow \\nexists\\,\\varphi"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "ax": "1",
+    "ay": "2",
+    "az": "3",
+    "bx": "4",
+    "by": "5",
+    "bz": "6"
+   }
+  },
+  {
+   "id": "crossprod",
+   "s": "linalg",
+   "n": {
+    "en": "Cross product",
+    "ru": "Векторное произведение",
+    "es": "Producto vectorial"
+   },
+   "k": {
+    "en": "cross vector product area parallelogram normal",
+    "ru": "векторное произведение площадь параллелограмма нормаль",
+    "es": "producto vectorial area normal"
+   },
+   "form": "\\vec a\\times\\vec b = \\begin{vmatrix} i & j & k \\\\ a_x & a_y & a_z \\\\ b_x & b_y & b_z \\end{vmatrix}",
+   "f": [
+    {
+     "id": "ax",
+     "l": "a_x"
+    },
+    {
+     "id": "ay",
+     "l": "a_y"
+    },
+    {
+     "id": "az",
+     "l": "a_z"
+    },
+    {
+     "id": "bx",
+     "l": "b_x"
+    },
+    {
+     "id": "by",
+     "l": "b_y"
+    },
+    {
+     "id": "bz",
+     "l": "b_z"
+    }
+   ],
+   "steps": [
+    {
+     "set": "cx = ay*bz - az*by"
+    },
+    {
+     "set": "cy = az*bx - ax*bz"
+    },
+    {
+     "set": "cz = ax*by - ay*bx"
+    },
+    {
+     "tex": "\\vec c = (@cx,\\ @cy,\\ @cz)"
+    },
+    {
+     "set": "S = sqrt(cx**2 + cy**2 + cz**2)"
+    },
+    {
+     "tex": "|\\vec a\\times\\vec b| = @S"
+    },
+    {
+     "set": "Sf = N(S, 8)"
+    },
+    {
+     "tex": "\\approx @Sf"
+    }
+   ],
+   "try": {
+    "ax": "1",
+    "ay": "2",
+    "az": "3",
+    "bx": "4",
+    "by": "5",
+    "bz": "6"
+   }
+  },
+  {
+   "id": "circle",
+   "s": "geom",
+   "n": {
+    "en": "Circle",
+    "ru": "Окружность и круг",
+    "es": "Círculo"
+   },
+   "k": {
+    "en": "circle area circumference radius diameter",
+    "ru": "окружность круг площадь длина радиус диаметр",
+    "es": "circulo area circunferencia radio"
+   },
+   "form": "L = 2\\pi R,\\qquad S = \\pi R^2",
+   "f": [
+    {
+     "id": "R",
+     "l": "R"
+    }
+   ],
+   "need": [
+    {
+     "if": "R > 0",
+     "show": "R > 0"
+    }
+   ],
+   "steps": [
+    {
+     "set": "L = 2*pi*R"
+    },
+    {
+     "set": "S = pi*R**2"
+    },
+    {
+     "tex": "L = 2\\pi\\cdot @R = @L"
+    },
+    {
+     "tex": "S = \\pi(@R)^2 = @S"
+    },
+    {
+     "set": "Lf = N(L, 8)"
+    },
+    {
+     "set": "Sf = N(S, 8)"
+    },
+    {
+     "tex": "\\approx @Lf,\\qquad @Sf"
+    }
+   ],
+   "try": {
+    "R": "3"
+   }
+  },
+  {
+   "id": "triarea",
+   "s": "geom",
+   "n": {
+    "en": "Triangle area",
+    "ru": "Площадь треугольника",
+    "es": "Área del triángulo"
+   },
+   "k": {
+    "en": "triangle area heron sides semiperimeter",
+    "ru": "площадь треугольника герон стороны полупериметр",
+    "es": "area triangulo heron"
+   },
+   "form": "S = \\sqrt{p(p-a)(p-b)(p-c)}",
+   "f": [
+    {
+     "id": "a",
+     "l": "a"
+    },
+    {
+     "id": "b",
+     "l": "b"
+    },
+    {
+     "id": "c",
+     "l": "c"
+    }
+   ],
+   "need": [
+    {
+     "if": "a > 0",
+     "show": "a > 0"
+    },
+    {
+     "if": "b > 0",
+     "show": "b > 0"
+    },
+    {
+     "if": "c > 0",
+     "show": "c > 0"
+    },
+    {
+     "if": "a + b > c",
+     "show": "a + b > c"
+    },
+    {
+     "if": "a + c > b",
+     "show": "a + c > b"
+    },
+    {
+     "if": "b + c > a",
+     "show": "b + c > a"
+    }
+   ],
+   "steps": [
+    {
+     "set": "p = (a + b + c)/2"
+    },
+    {
+     "tex": "p = \\frac{@a + @b + @c}{2} = @p"
+    },
+    {
+     "set": "S = sqrt(p*(p-a)*(p-b)*(p-c))"
+    },
+    {
+     "tex": "S = \\sqrt{@p(@p-@a)(@p-@b)(@p-@c)} = @S"
+    },
+    {
+     "set": "Sf = N(S, 8)"
+    },
+    {
+     "tex": "\\approx @Sf"
+    }
+   ],
+   "try": {
+    "a": "3",
+    "b": "4",
+    "c": "5"
+   }
+  },
+  {
+   "id": "sphere",
+   "s": "geom",
+   "n": {
+    "en": "Sphere and ball",
+    "ru": "Сфера и шар",
+    "es": "Esfera y bola"
+   },
+   "k": {
+    "en": "sphere ball volume surface radius",
+    "ru": "сфера шар объём площадь поверхности радиус",
+    "es": "esfera volumen superficie"
+   },
+   "form": "S = 4\\pi R^2,\\qquad V = \\tfrac{4}{3}\\pi R^3",
+   "f": [
+    {
+     "id": "R",
+     "l": "R"
+    }
+   ],
+   "need": [
+    {
+     "if": "R > 0",
+     "show": "R > 0"
+    }
+   ],
+   "steps": [
+    {
+     "set": "S = 4*pi*R**2"
+    },
+    {
+     "set": "V = 4*pi*R**3/3"
+    },
+    {
+     "tex": "S = 4\\pi(@R)^2 = @S"
+    },
+    {
+     "tex": "V = \\tfrac{4}{3}\\pi(@R)^3 = @V"
+    },
+    {
+     "set": "Sf = N(S, 8)"
+    },
+    {
+     "set": "Vf = N(V, 8)"
+    },
+    {
+     "tex": "\\approx @Sf,\\qquad @Vf"
+    }
+   ],
+   "try": {
+    "R": "2"
+   }
+  },
+  {
+   "id": "dist2",
+   "s": "geom",
+   "n": {
+    "en": "Distance and midpoint",
+    "ru": "Расстояние и середина отрезка",
+    "es": "Distancia y punto medio"
+   },
+   "k": {
+    "en": "distance between points midpoint segment coordinates",
+    "ru": "расстояние между точками середина отрезка координаты",
+    "es": "distancia puntos medio segmento"
+   },
+   "form": "d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}",
+   "f": [
+    {
+     "id": "x1",
+     "l": "x_1"
+    },
+    {
+     "id": "y1",
+     "l": "y_1"
+    },
+    {
+     "id": "x2",
+     "l": "x_2"
+    },
+    {
+     "id": "y2",
+     "l": "y_2"
+    }
+   ],
+   "steps": [
+    {
+     "set": "d = sqrt((x2-x1)**2 + (y2-y1)**2)"
+    },
+    {
+     "tex": "d = \\sqrt{(@x2-@x1)^2 + (@y2-@y1)^2} = @d"
+    },
+    {
+     "set": "mx = (x1+x2)/2"
+    },
+    {
+     "set": "my = (y1+y2)/2"
+    },
+    {
+     "tex": "M = \\left(@mx,\\ @my\\right)"
+    },
+    {
+     "set": "df = N(d, 8)"
+    },
+    {
+     "tex": "d \\approx @df"
+    }
+   ],
+   "try": {
+    "x1": "0",
+    "y1": "0",
+    "x2": "3",
+    "y2": "4"
+   }
+  },
+  {
+   "id": "lineth",
+   "s": "geom",
+   "n": {
+    "en": "Line through two points",
+    "ru": "Прямая через две точки",
+    "es": "Recta por dos puntos"
+   },
+   "k": {
+    "en": "line through two points slope equation",
+    "ru": "прямая через две точки уравнение угловой коэффициент",
+    "es": "recta dos puntos pendiente"
+   },
+   "form": "y = kx + b",
+   "f": [
+    {
+     "id": "x1",
+     "l": "x_1"
+    },
+    {
+     "id": "y1",
+     "l": "y_1"
+    },
+    {
+     "id": "x2",
+     "l": "x_2"
+    },
+    {
+     "id": "y2",
+     "l": "y_2"
+    }
+   ],
+   "need": [
+    {
+     "if": "x1 != x2",
+     "show": "x_1 \\neq x_2"
+    }
+   ],
+   "steps": [
+    {
+     "set": "k = (y2-y1)/(x2-x1)"
+    },
+    {
+     "tex": "k = \\frac{@y2 - @y1}{@x2 - @x1} = @k"
+    },
+    {
+     "set": "b = y1 - k*x1"
+    },
+    {
+     "tex": "b = @y1 - @k\\cdot @x1 = @b"
+    },
+    {
+     "tex": "y = @k\\,x + @b"
+    }
+   ],
+   "try": {
+    "x1": "0",
+    "y1": "1",
+    "x2": "2",
+    "y2": "5"
+   }
+  },
+  {
+   "id": "variance",
+   "s": "prob",
+   "n": {
+    "en": "Mean and variance",
+    "ru": "Среднее и дисперсия",
+    "es": "Media y varianza"
+   },
+   "k": {
+    "en": "variance standard deviation mean average sample dispersion",
+    "ru": "дисперсия среднее квадратичное отклонение выборка разброс",
+    "es": "varianza desviacion media muestra"
+   },
+   "form": "D = \\frac{1}{n}\\sum (x_i - \\bar x)^2",
+   "f": [
+    {
+     "id": "xs",
+     "l": "x_i",
+     "t": "list"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "x = (@xs)"
+    },
+    {
+     "set": "nn = len(xs)"
+    },
+    {
+     "set": "m = sum(xs)/len(xs)"
+    },
+    {
+     "tex": "\\bar x = \\frac{1}{@nn}\\sum x_i = @m"
+    },
+    {
+     "set": "D = sum([(v - m)**2 for v in xs])/len(xs)"
+    },
+    {
+     "tex": "D = \\frac{1}{@nn}\\sum (x_i - @m)^2 = @D"
+    },
+    {
+     "set": "s = sqrt(D)"
+    },
+    {
+     "tex": "\\sigma = \\sqrt{D} = @s"
+    },
+    {
+     "set": "Ds = sum([(v - m)**2 for v in xs])/(len(xs)-1)"
+    },
+    {
+     "tex": "s^2 = \\frac{1}{n-1}\\sum (x_i - \\bar x)^2 = @Ds"
+    },
+    {
+     "set": "mf = N(m, 8)"
+    },
+    {
+     "set": "Df = N(D, 8)"
+    },
+    {
+     "set": "sf = N(s, 8)"
+    },
+    {
+     "tex": "\\approx \\bar x = @mf,\\quad D = @Df,\\quad \\sigma = @sf"
+    }
+   ],
+   "try": {
+    "xs": "2, 4, 4, 4, 5, 5, 7, 9"
+   }
+  },
+  {
+   "id": "bayes",
+   "s": "prob",
+   "n": {
+    "en": "Bayes' theorem",
+    "ru": "Формула Байеса",
+    "es": "Teorema de Bayes"
+   },
+   "k": {
+    "en": "bayes conditional probability posterior prior",
+    "ru": "байес условная вероятность апостериорная",
+    "es": "bayes probabilidad condicional"
+   },
+   "form": "P(A\\mid B) = \\frac{P(B\\mid A)P(A)}{P(B)}",
+   "f": [
+    {
+     "id": "pa",
+     "l": "P(A)"
+    },
+    {
+     "id": "pba",
+     "l": "P(B\\mid A)"
+    },
+    {
+     "id": "pbna",
+     "l": "P(B\\mid \\bar A)"
+    }
+   ],
+   "need": [
+    {
+     "if": "pa >= 0",
+     "show": "P(A) \\geq 0"
+    },
+    {
+     "if": "pa <= 1",
+     "show": "P(A) \\leq 1"
+    },
+    {
+     "if": "pba >= 0",
+     "show": "P(B\\mid A) \\geq 0"
+    },
+    {
+     "if": "pba <= 1",
+     "show": "P(B\\mid A) \\leq 1"
+    },
+    {
+     "if": "pbna >= 0",
+     "show": "P(B\\mid \\bar A) \\geq 0"
+    },
+    {
+     "if": "pbna <= 1",
+     "show": "P(B\\mid \\bar A) \\leq 1"
+    }
+   ],
+   "steps": [
+    {
+     "tex": "P(B) = P(B\\mid A)P(A) + P(B\\mid \\bar A)P(\\bar A)"
+    },
+    {
+     "set": "pb = pba*pa + pbna*(1-pa)"
+    },
+    {
+     "tex": "P(B) = @pba\\cdot @pa + @pbna\\cdot(1-@pa) = @pb"
+    },
+    {
+     "when": "pba*pa + pbna*(1-pa) > 0",
+     "steps": [
+      {
+       "set": "post = pba*pa/pb"
+      },
+      {
+       "tex": "P(A\\mid B) = \\frac{@pba\\cdot @pa}{@pb} = @post"
+      },
+      {
+       "set": "pf = N(post, 8)"
+      },
+      {
+       "tex": "\\approx @pf"
+      }
+     ],
+     "else": [
+      {
+       "tex": "P(B) = 0 \\Rightarrow \\nexists\\, P(A\\mid B)"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "pa": "0.01",
+    "pba": "0.9",
+    "pbna": "0.05"
+   }
+  },
+  {
+   "id": "binomdist",
+   "s": "prob",
+   "n": {
+    "en": "Binomial distribution",
+    "ru": "Биномиальное распределение",
+    "es": "Distribución binomial"
+   },
+   "k": {
+    "en": "binomial distribution bernoulli trials success probability",
+    "ru": "биномиальное распределение бернулли испытания успех вероятность",
+    "es": "binomial bernoulli ensayos exito"
+   },
+   "form": "P(X=k) = \\binom{n}{k}p^k(1-p)^{n-k}",
+   "f": [
+    {
+     "id": "n",
+     "l": "n"
+    },
+    {
+     "id": "k",
+     "l": "k"
+    },
+    {
+     "id": "p",
+     "l": "p"
+    }
+   ],
+   "need": [
+    {
+     "if": "n > 0",
+     "show": "n > 0"
+    },
+    {
+     "if": "k >= 0",
+     "show": "k \\geq 0"
+    },
+    {
+     "if": "k <= n",
+     "show": "k \\leq n"
+    },
+    {
+     "if": "p >= 0",
+     "show": "p \\geq 0"
+    },
+    {
+     "if": "p <= 1",
+     "show": "p \\leq 1"
+    }
+   ],
+   "steps": [
+    {
+     "set": "C = binomial(n, k)"
+    },
+    {
+     "tex": "\\binom{@n}{@k} = @C"
+    },
+    {
+     "set": "P = C*p**k*(1-p)**(n-k)"
+    },
+    {
+     "tex": "P(X=@k) = @C\\cdot(@p)^{@k}(1-@p)^{@n-@k} = @P"
+    },
+    {
+     "set": "E = n*p"
+    },
+    {
+     "set": "D = n*p*(1-p)"
+    },
+    {
+     "tex": "\\mathbb{E}X = np = @E,\\qquad DX = np(1-p) = @D"
+    },
+    {
+     "set": "Pf = N(P, 8)"
+    },
+    {
+     "tex": "P \\approx @Pf"
+    }
+   ],
+   "try": {
+    "n": "10",
+    "k": "3",
+    "p": "0.5"
+   }
+  },
+  {
+   "id": "normal",
+   "s": "prob",
+   "n": {
+    "en": "Normal distribution",
+    "ru": "Нормальное распределение",
+    "es": "Distribución normal"
+   },
+   "k": {
+    "en": "normal gauss distribution density sigma mu z score",
+    "ru": "нормальное распределение гаусс плотность сигма мю",
+    "es": "normal gauss densidad sigma"
+   },
+   "form": "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}",
+   "f": [
+    {
+     "id": "mu",
+     "l": "\\mu"
+    },
+    {
+     "id": "sg",
+     "l": "\\sigma"
+    },
+    {
+     "id": "x",
+     "l": "x"
+    }
+   ],
+   "need": [
+    {
+     "if": "sg > 0",
+     "show": "\\sigma > 0"
+    }
+   ],
+   "steps": [
+    {
+     "set": "z = (x - mu)/sg"
+    },
+    {
+     "tex": "z = \\frac{@x - @mu}{@sg} = @z"
+    },
+    {
+     "set": "fx = exp(-z**2/2)/(sg*sqrt(2*pi))"
+    },
+    {
+     "tex": "f(@x) = \\frac{1}{@sg\\sqrt{2\\pi}}e^{-\\frac{@z^2}{2}} = @fx"
+    },
+    {
+     "set": "ff = N(fx, 8)"
+    },
+    {
+     "set": "zf = N(z, 8)"
+    },
+    {
+     "tex": "z \\approx @zf,\\qquad f(x) \\approx @ff"
+    }
+   ],
+   "try": {
+    "mu": "0",
+    "sg": "1",
+    "x": "1"
+   }
+  },
+  {
+   "id": "lsq",
+   "s": "prob",
+   "n": {
+    "en": "Least squares line",
+    "ru": "Метод наименьших квадратов",
+    "es": "Mínimos cuadrados"
+   },
+   "k": {
+    "en": "least squares regression line fit slope intercept",
+    "ru": "наименьшие квадраты регрессия прямая приближение",
+    "es": "minimos cuadrados regresion recta"
+   },
+   "form": "y = kx + b,\\qquad k = \\frac{\\overline{xy} - \\bar x\\bar y}{\\overline{x^2} - \\bar x^2}",
+   "f": [
+    {
+     "id": "xs",
+     "l": "x_i",
+     "t": "list"
+    },
+    {
+     "id": "ys",
+     "l": "y_i",
+     "t": "list"
+    }
+   ],
+   "need": [
+    {
+     "if": "len(xs) == len(ys)",
+     "show": "|x| = |y|"
+    },
+    {
+     "if": "len(xs) > 1",
+     "show": "n > 1"
+    }
+   ],
+   "steps": [
+    {
+     "set": "nn = len(xs)"
+    },
+    {
+     "set": "mx = sum(xs)/len(xs)"
+    },
+    {
+     "set": "my = sum(ys)/len(ys)"
+    },
+    {
+     "tex": "\\bar x = @mx,\\qquad \\bar y = @my"
+    },
+    {
+     "set": "mxy = sum([xs[i]*ys[i] for i in range(len(xs))])/len(xs)"
+    },
+    {
+     "set": "mx2 = sum([v**2 for v in xs])/len(xs)"
+    },
+    {
+     "tex": "\\overline{xy} = @mxy,\\qquad \\overline{x^2} = @mx2"
+    },
+    {
+     "when": "sum([v**2 for v in xs])/len(xs) - (sum(xs)/len(xs))**2 != 0",
+     "steps": [
+      {
+       "set": "k = (mxy - mx*my)/(mx2 - mx**2)"
+      },
+      {
+       "set": "b = my - k*mx"
+      },
+      {
+       "tex": "k = \\frac{@mxy - @mx\\cdot @my}{@mx2 - (@mx)^2} = @k"
+      },
+      {
+       "tex": "b = @my - @k\\cdot @mx = @b"
+      },
+      {
+       "tex": "y = @k\\,x + @b"
+      }
+     ],
+     "else": [
+      {
+       "tex": "\\overline{x^2} - \\bar x^2 = 0 \\Rightarrow \\nexists\\, k"
+      }
+     ]
+    }
+   ],
+   "try": {
+    "xs": "1,2,3,4",
+    "ys": "2,4,5,8"
+   }
+  }
+ ]
+}
