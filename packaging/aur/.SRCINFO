@@ -14,6 +14,6 @@ pkgbase = mathmark
 	depends = webkitgtk-6.0
 	optdepends = python-pytest: for running the test suite
 	source = mathmark-1.4.1.tar.gz::https://github.com/VolkinstridoV/mathmark/archive/refs/tags/v1.4.1.tar.gz
-	sha256sums = e69c26786b413c9f0e8ff7b74a4bdf5d37297b9dec297ba6762dbac74f0dda07
+	sha256sums = 50b039c4f89d785cb0a7811c81330c83cdb183803668d0f382d86693b46367f3
 
 pkgname = mathmark
