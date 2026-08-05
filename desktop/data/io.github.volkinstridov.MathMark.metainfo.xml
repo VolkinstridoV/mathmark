@@ -60,8 +60,9 @@
     <release version="1.4.1" date="2026-08-05">
       <description>
         <p>An opened hidden block now stays marked with a thin frame, so you can see it
-           was hidden text and that tapping it closes it again. The About screen shows
-           the real version — it had been stuck at 1.0.2 for four releases.</p>
+           was hidden text and that tapping it closes it again. Fixed a bug in how the
+           program wrote its own version: the About screen had been showing 1.0.2 for
+           four releases while everything else was already at 1.4.</p>
       </description>
     </release>
     <release version="1.4" date="2026-08-03">

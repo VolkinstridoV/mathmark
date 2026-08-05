@@ -9,7 +9,7 @@ dentro de la aplicación tras actualizar.
 ## 1.4.1 — 2026-08-05
 
 - El bloque oculto abierto queda marcado: en su lugar permanece un marco fino, así se ve que era texto escondido y que al pulsarlo se cierra de nuevo. Antes una respuesta abierta se veía igual que el texto normal aunque seguía siendo pulsable
-- La ventana «acerca de» muestra la versión real. Llevaba cuatro versiones marcando 1.0.2: la línea vive en las traducciones y nadie la reconstruía. Ahora la comprobación de recetas también la vigila
+- Corregido un fallo en cómo el programa escribía su propia versión: la ventana «acerca de» mostró 1.0.2 durante cuatro versiones mientras todo lo demás ya iba por la 1.4. La línea vive en las traducciones y nadie la reconstruía al publicar. Arreglado, y ahora la comprobación de recetas la vigila para que no vuelva a desviarse
 
 
 ## 1.4 — 2026-08-03
