@@ -105,7 +105,15 @@
   }
   .hide > *{opacity:0; transition:opacity .15s}
   .hide{color:transparent}
-  .hide.open{background:none; box-shadow:none; color:inherit; cursor:text; user-select:text}
+  /* Раскрытое остаётся помеченным. Раньше здесь снимался и фон, и рамка —
+     открытый ответ становился неотличим от обычного текста, хотя по нему
+     по-прежнему можно нажать и закрыть обратно. Теперь на месте плашки
+     остаётся тонкая рамка в цвет темы: видно и что это был скрытый кусок,
+     и что он снова нажимается. */
+  .hide.open{
+    background:var(--quote); box-shadow:inset 0 0 0 1px var(--rule);
+    color:inherit; cursor:pointer; user-select:text;
+  }
   .hide.open > *{opacity:1}
   .hide:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
   /* В окне вырезания закрашенное выделяется наравне со всем: иначе кусок,

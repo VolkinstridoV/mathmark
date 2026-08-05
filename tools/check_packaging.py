@@ -66,6 +66,19 @@ def main() -> int:
         if v and code and v != code:
             problems.append(f"версия в {where} — {v}, а в коде {code}")
 
+    # 2б. версия в окне «о программе». Мина того же рода: строка лежит в
+    # переводах, её никто не пересобирает при выпуске, и она молча отстаёт —
+    # так до 1.4 в настройках обеих версий висело «MathMark 1.0.2».
+    for path in sorted((ROOT / "shared" / "i18n").glob("*.json")):
+        m = re.search(r'"settings\.version":\s*"MathMark ([^"]+)"',
+                      path.read_text(encoding="utf-8"))
+        if not m:
+            problems.append(f"не нашёл settings.version в {path.name}")
+        elif code and m.group(1) != code:
+            problems.append(
+                f"версия в окне «о программе» ({path.name}) — "
+                f"{m.group(1)}, а в коде {code}")
+
     # 3. отпечаток архива один и тот же в трёх местах
     shas = {
         "PKGBUILD": one(r"sha256sums=\('([0-9a-f]+)'\)", pkg, "PKGBUILD"),

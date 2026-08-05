@@ -197,7 +197,7 @@
   "settings.themeDark": "dark",
   "settings.themeLight": "light",
   "settings.title": "Settings",
-  "settings.version": "MathMark 1.0.2",
+  "settings.version": "MathMark 1.4.1",
   "settings.versionHint": "formulas drawn by KaTeX, no internet needed",
   "settings.view": "Look",
   "stats.empty": "Nothing marked yet. Mark a task and it will show up here.",

@@ -1,0 +1,14 @@
+{
+  "en": [
+    "An opened hidden block now stays marked: a thin frame remains in its place, so you can see it was hidden text and that tapping it closes it again. Before, an opened answer looked exactly like ordinary text while still being clickable",
+    "The About screen shows the real version. It had been stuck at 1.0.2 for four releases: the line lives in the translations and nothing rebuilt it. The packaging check now watches it too"
+  ],
+  "ru": [
+    "Раскрытое скрытое место остаётся помеченным: на нём сохраняется тонкая рамка, и видно, что это был спрятанный кусок и что нажатие закроет его обратно. Раньше открытый ответ выглядел ровно как обычный текст, хотя по нему по-прежнему можно было нажать",
+    "В окне «о программе» показывается настоящая версия. Она четыре выпуска стояла на 1.0.2: строка живёт в переводах, и её никто не пересобирал. Теперь за ней следит проверка рецептов"
+  ],
+  "es": [
+    "El bloque oculto abierto queda marcado: en su lugar permanece un marco fino, así se ve que era texto escondido y que al pulsarlo se cierra de nuevo. Antes una respuesta abierta se veía igual que el texto normal aunque seguía siendo pulsable",
+    "La ventana «acerca de» muestra la versión real. Llevaba cuatro versiones marcando 1.0.2: la línea vive en las traducciones y nadie la reconstruía. Ahora la comprobación de recetas también la vigila"
+  ]
+}

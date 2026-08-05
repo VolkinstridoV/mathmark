@@ -6,6 +6,12 @@ Every version and what appeared in it. The same lists are shown inside the app
 after an update.
 
 
+## 1.4.1 — 2026-08-05
+
+- An opened hidden block now stays marked: a thin frame remains in its place, so you can see it was hidden text and that tapping it closes it again. Before, an opened answer looked exactly like ordinary text while still being clickable
+- The About screen shows the real version. It had been stuck at 1.0.2 for four releases: the line lives in the translations and nothing rebuilt it. The packaging check now watches it too
+
+
 ## 1.4 — 2026-08-03
 
 - The board no longer loses a file: writing is atomic, a damaged file is set aside instead of being overwritten, and closing asks instead of saving silently. Plus autosave once a minute

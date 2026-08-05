@@ -6,6 +6,12 @@ Todas las versiones y lo que apareció en cada una. Las mismas listas se ven
 dentro de la aplicación tras actualizar.
 
 
+## 1.4.1 — 2026-08-05
+
+- El bloque oculto abierto queda marcado: en su lugar permanece un marco fino, así se ve que era texto escondido y que al pulsarlo se cierra de nuevo. Antes una respuesta abierta se veía igual que el texto normal aunque seguía siendo pulsable
+- La ventana «acerca de» muestra la versión real. Llevaba cuatro versiones marcando 1.0.2: la línea vive en las traducciones y nadie la reconstruía. Ahora la comprobación de recetas también la vigila
+
+
 ## 1.4 — 2026-08-03
 
 - La pizarra ya no pierde el archivo: la escritura es atómica, un archivo dañado se aparta en vez de sobrescribirse y al cerrar se pregunta en lugar de guardar en silencio. Y autoguardado cada minuto
